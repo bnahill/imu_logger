@@ -116,6 +116,8 @@ const char *logger_init(const char *prefix){
 	// Seek to pre-allocate
 	if(f_lseek(&file, LOG_PAGE_LEN) != FR_OK)
 		return NULL;
+	if(f_lseek(&file, 0) != FR_OK)
+		return NULL;
 	
 	// Write header
 	if(f_write(&file, (uint8_t *)&log_header, sizeof(log_header), &write_len) != FR_OK)

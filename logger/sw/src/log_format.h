@@ -9,7 +9,7 @@
 #define LOG_VERSION 1
 
 #define LOG_KEY 0xDEFEC8ED
-#define LOG_PAGE_LEN 4096
+#define LOG_PAGE_LEN 8192
 
 /*
 // sizeof can't be used in preprocessor conditionals...

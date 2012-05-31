@@ -511,6 +511,11 @@
               <FileType>1</FileType>
               <FilePath>..\src\sdio.c</FilePath>
             </File>
+            <File>
+              <FileName>jitter_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\jitter_buffer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1487,6 +1492,11 @@
               <FileType>1</FileType>
               <FilePath>..\src\sdio.c</FilePath>
             </File>
+            <File>
+              <FileName>jitter_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\jitter_buffer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2428,6 +2438,11 @@
               <FileName>sdio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\sdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>jitter_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\jitter_buffer.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3371,6 +3386,11 @@
               <FileType>1</FileType>
               <FilePath>..\src\sdio.c</FilePath>
             </File>
+            <File>
+              <FileName>jitter_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\jitter_buffer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -4313,6 +4333,11 @@
               <FileType>1</FileType>
               <FilePath>..\src\sdio.c</FilePath>
             </File>
+            <File>
+              <FileName>jitter_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\jitter_buffer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -5254,6 +5279,11 @@
               <FileName>sdio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\sdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>jitter_buffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\jitter_buffer.c</FilePath>
             </File>
           </Files>
         </Group>

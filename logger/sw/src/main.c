@@ -1,3 +1,10 @@
+/*!
+ @file main.c
+ @author Ben Nahill <bnahill@gmail.com>
+ @brief The high-level control logic for the logging system
+ */
+ 
+
 #include "stm32f10x.h"
 #include "lsm303.h"
 #include "lpry.h"
@@ -17,9 +24,10 @@
 
 static volatile uint32_t tick = 0;
 static volatile uint32_t frame_count;
-static jitter_buffer_t jitter_buffer;
 
-
+/*!
+ @brief Take data from sensors and put it in the jitter buffer
+ */
 void frame_to_jb(void);
 
 void led_init(void);
@@ -32,12 +40,48 @@ static enum {
 	MODE_RUNNING
 } mode;
 
+/*!
+ @addtogroup application Application
+ @brief The business logic driving the logger application
+ 
+ The application behavior is a cooperative effort between the
+ SysTick_Handler() (running in interrupt context) and main(). During active 
+ recording, main() handles writes to the logger. Since these operations are
+ inconsistent in their run time, transfers are asynchronously handled in a
+ two-stage process by the SysTick_Handler(). On each cycle, sensors are
+ checked to see if they have new data. If they do, a frame is assembled and
+ pushed onto the jitter buffer. Then new sensor readings are started according
+ to each sensor's schedule. main() then checks (loosely synchronized with
+ SysTick) the jitter buffer and writes to the log accordingly.
+ 
+ @{
+ */
+
+//! A jitter buffer to accomodate the inconsistent timing of the SD card
+static jitter_buffer_t jitter_buffer;
+
+/*!
+ @brief The application entry point
+ */
+int main(void);
+
+/*!
+ @brief The handler of the SysTick device. Handles sensor reads and data collection.
+ */
+void SysTick_Handler(void);
+
+//! @}
+
+
+//! @callgraph
 int main(void){
 	int i;
 	jb_frame_t frame;
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	
+	
+	// Initialize sensors and peripherals
 	rtc_init();
 	lsm303_init();
 	lpry_init();
@@ -48,6 +92,7 @@ int main(void){
 	while(1){
 		mode = MODE_STOPPED;
 		
+		// Wait for button press
 		while(!button_check_press());
 	
 		mode = MODE_RUNNING;
@@ -68,7 +113,10 @@ int main(void){
 		jb_init(&jitter_buffer);
 		
 		while(1){
+			// Wait for a tick
 			while(!tick);
+			// Only decrement it so that we may run multiple times if we
+			// miss a deadline
 			tick -= 1;
 			if(++i == 2){
 				led_clr();
@@ -77,15 +125,16 @@ int main(void){
 				led_set();
 			}
 			
-			#if DO_LOG	
-			///////////////////////////////////////////
-			// Update data logs
-			///////////////////////////////////////////
+			//////////////////////////////////////
+			// Check for new data frames
+			//////////////////////////////////////
+			
 			if(jb_pop(&jitter_buffer, &frame)){
-				// Log the last set of readings
+#if DO_LOG	
+				// And commit them to the log
 				logger_update(&frame);
+#endif
 			}
-			#endif
 
 
 			if(button_check_press())
@@ -146,11 +195,16 @@ void frame_to_jb(void){
 		while(1);
 }
 
+//! @callgraph
 void SysTick_Handler(void){
 	int do_update;
 	switch(mode){
 	case MODE_RUNNING:
 		do_update = 0;
+		
+		//////////////////////////////////////
+		// First check if any sensors are done
+		//////////////////////////////////////
 		
 		if(lsm303_acc_xfer_complete()){
 			lsm303_update_acc();
@@ -172,8 +226,16 @@ void SysTick_Handler(void){
 			do_update = 1;
 		}
 		
+		//////////////////////////////////////
+		// If any were, post a new frame
+		//////////////////////////////////////
+		
 		if(do_update)
 			frame_to_jb();
+		
+		//////////////////////////////////////
+		// Start new measurements
+		//////////////////////////////////////
 		
 		// Start mag/acc readings
 		lsm303_read_acc();

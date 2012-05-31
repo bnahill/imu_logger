@@ -108,7 +108,7 @@ static void lsm303_device_init(lsm303_t *lsm);
 //! @}
 
 #if HAS_MAGACC
-//! @ingroup lsm_pub
+//! @ingroup lsm
 //! @brief The accelerometer instance and configuration
 lsm303_t magacc = {
 	{0.0, 0.0, 0.0},

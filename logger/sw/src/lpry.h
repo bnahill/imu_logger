@@ -5,7 +5,7 @@
 #include "sensor_config.h"
 
 /*!
- @addtogroup lpry LPRYxxxAL Gyroscopes
+ @addtogroup lpry LPR430AL/LY330ALH Gyroscopes
  @brief The pair of 2-axis pitch/roll gyro with a 1-axis yaw gyro
  @note Much of this code is derived from the the iNEMO platform driver
  @{
@@ -51,9 +51,9 @@ void lpry_self_test_off(void);
 /*!
  @brief Start a read on the gyros
  
- This will return almost immediately. Check lpry_xfer_complete to see if data
- is ready. If you want to perform the full read/wait/update sequence in one
- call, use lpry_read_sync.
+ This will return almost immediately. Check lpry_xfer_complete() to see if
+ data is ready. If you want to perform the full read/wait/update sequence in
+ one call, use lpry_read_sync().
  */
 void lpry_read(void);
 
@@ -65,7 +65,7 @@ int lpry_xfer_complete(void);
 
 /*!
  @brief Update the gyro state based on the most recent readings
- @pre lpry_xfer_complete returns 1
+ @pre lpry_xfer_complete() returns 1
  */
 void lpry_update(void);
 

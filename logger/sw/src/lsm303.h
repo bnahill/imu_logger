@@ -8,9 +8,10 @@
 /*!
  @addtogroup lsm LSM303DLH Accelerometer + Magnetometer
  @{
- @addtogroup lsm_pub Public
- @{
  */
+
+//! @name Public Data Structures
+//! @{
 
 //! Accelerometer data output rate
 typedef enum {
@@ -79,18 +80,39 @@ typedef struct {
 	lsm_mag_fs_t   mag_fs;
 	//! The power mode of the device
 	lsm_pm_t       pow_mode;
-	//! Transfer structures for asynchronous reads
-	i2c_transfer_t acc_xfer, mag_xfer;
+	//! Transfer structures for asynchronous accelerometer reads
+	i2c_transfer_t acc_xfer;
+	//! Transfer structure for asynchronous magnetometer reads
+	i2c_transfer_t mag_xfer;
 	//! Transfer buffers for asynchronous magnetometer reads
 	uint8_t        acc_buff[6];
 	//! Transfer buffers for asynchronous magnetometer reads
 	uint8_t        mag_buff[6];
 } lsm303_t;
 
+//! @}
+
+//! @name Public Methods
+//! @{
+
 /*!
  @brief Initialize the LSM303 hardware and associated peripherals
  */
 void lsm303_init(void);
+
+/*!
+ @brief Change the accelerometer full-scale output range
+ @param lsm The LSM303 instance
+ @param fs The new full-scale output range
+ */
+void lsm303_set_acc_fs(lsm303_t *lsm, lsm_acc_fs_t fs);
+
+/*!
+ @brief Set the output rate for the accelerometer
+ @param lsm The LSM303 instance
+ @param acc_rate The new accelerometer output rate
+ */
+void lsm303_set_acc_rate(lsm303_t *lsm, lsm_acc_rate_t acc_rate);
 
 /*!
  @brief Begin a read of the LSM303 output data
@@ -100,12 +122,25 @@ void lsm303_init(void);
  */
 void lsm303_read(void);
 
+/*!
+ @brief Begin a read of the magnetometer output data
+ 
+ This only starts the read. The read is complete when lsm303_mag_xfer_complete()
+ returns 1.
+ */
 void lsm303_read_mag(void);
+
+/*!
+ @brief Begin a read of the accelerometer output data
+ 
+ This only starts the read. The read is complete when lsm303_acc_xfer_complete()
+ returns 1.
+ */
 void lsm303_read_acc(void);
 
 /*!
  @brief Poll the state of the current transfer
- When this returns 1, it is fair to call lsm303_update
+ When this returns 1, it is fair to call lsm303_update()
  
  @return 1 if complete
  
@@ -129,19 +164,19 @@ int lsm303_acc_xfer_complete(void);
 /*!
  @brief Format the data received from the lsm303_read and store in data
  structures
- @pre lsm303_xfer_complete returns 1
+ @pre lsm303_xfer_complete() returns 1
  */
 void lsm303_update(void);
 
 /*!
  @brief Format the accelerometer data from lsm303_read_acc
- @pre lsm303_xfer_complete returns 1
+ @pre lsm303_xfer_complete() returns 1
  */
 void lsm303_update_acc(void);
 
 /*!
  @brief Format the magnetometer data from lsm303_read_mag
- @pre lsm303_xfer_complete returns 1
+ @pre lsm303_xfer_complete() returns 1
  */
 void lsm303_update_mag(void);
 
@@ -152,6 +187,7 @@ void lsm303_update_mag(void);
 void lsm303_read_sync(void);
 
 //! @}
+
 //! @}
 
 #if HAS_MAGACC

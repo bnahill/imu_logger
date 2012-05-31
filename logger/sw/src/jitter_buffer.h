@@ -14,9 +14,9 @@
  */
 
 //! The number of frames to allocate
-#define JB_LENGTH 8
+#define JB_LENGTH 16
 
-//! A single frame of data to be stored
+//! A single frame of sensor data to be stored
 typedef struct {
 	euclidean3_t acc;
 	euclidean3_t mag;
@@ -26,7 +26,7 @@ typedef struct {
 	int          valid;
 } jb_frame_t;
 
-//! The jitter buffer instance
+//! A jitter buffer instance
 typedef struct {
 	//! Storage for the FIFO
 	jb_frame_t frames[JB_LENGTH];

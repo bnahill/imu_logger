@@ -10,6 +10,8 @@
 
 #include "toolchain.h"
 
+
+
 #ifndef BIT
 #define BIT(x) (1 << x)
 #endif
@@ -45,9 +47,6 @@
 #define USE_I2C1 ((HAS_MAGACC) ? 1 : 0)
 #define USE_I2C2 ((HAS_PRESSURE) ? 1 : 0)
 #define USE_I2C3 0
-
-#define USE_SPI1 ((HAS_GYRO_1 || HAS_GYRO_2) ? 1 : 0)
-#define USE_SPI2 0
 
 typedef struct {
 	GPIO_TypeDef *const gpio;

@@ -7,32 +7,6 @@
 
 #include "log_format.h"
 
-static log_config_header_t log_header = {
-	LOG_KEY,
-	LOG_VERSION,
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	LOG_PAGE_LEN,
-	50,
-	{
-		1, // Gyro 1;
-		0, // Gyro 2
-		1, // Acc 1
-		0, // Acc 2
-		2, // Mag 1
-		0, // Mag 2
-		4, // Pressure 1
-		0, // Pressure 2
-		0, // Temperature 1
-		0, // Temperature 2
-		0,
-		0,
-		0,
-		0,
-		0,
-		0
-	}
-};
-
 /*!
  @addtogroup log Logger
  @brief A utility to record readings to the SD card
@@ -74,9 +48,35 @@ static log_config_header_t log_header = {
  time it isn't important as that data will not be concatenated with another
  set.
  @{
- @addtogroup log_priv Private
+ @name Private variables
  @{
  */
+
+static log_config_header_t log_header = {
+	LOG_KEY,
+	LOG_VERSION,
+	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+	LOG_PAGE_LEN,
+	50,
+	{
+		1, // Gyro 1;
+		0, // Gyro 2
+		1, // Acc 1
+		0, // Acc 2
+		2, // Mag 1
+		0, // Mag 2
+		4, // Pressure 1
+		0, // Pressure 2
+		0, // Temperature 1
+		0, // Temperature 2
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
+	}
+};
 
 //! A buffer to contain the current page to write to the log
 static uint32_t write_buffer[LOG_PAGE_LEN >> 2];
@@ -96,6 +96,7 @@ static union {
 	float     *f;
 } write_ptr;
 
+//! A buffer used for the length reported by f_write()
 static UINT write_len;
 static char filename[32];
 static FATFS fs;
@@ -104,10 +105,13 @@ static FRESULT res;
 static uint32_t cycle_len;
 static uint32_t cycle_lcm;
 
+//! @}
+//! @name Private methods
+//! @{
 static uint32_t logger_calc_cycle_len(void);
 static INLINE uint32_t logger_space_left(void);
-
 //! @}
+
 //! @}
 
 static uint32_t logger_calc_cycle_len(void){

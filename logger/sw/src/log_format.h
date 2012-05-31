@@ -6,23 +6,18 @@
 #ifndef __LOG_FORMAT_H_
 #define __LOG_FORMAT_H_
 
+/*!
+ @addtogroup log
+ @addtogroup logformat Log Format
+ @{
+ */
+
 #define LOG_VERSION 1
 
 #define LOG_KEY 0xDEFEC8ED
 #define LOG_PAGE_LEN 8192
 
-/*
-// sizeof can't be used in preprocessor conditionals...
-#define LOG_FRAME_SIZE (4 * 10)
-
-#define LOG_PAGE_FRAMES ((LOG_BUFFER_LEN - 4) / LOG_FRAME_SIZE)
-#define LOG_PAGE_PADDING ((LOG_BUFFER_LEN - 4) - (LOG_BUFFER_FRAMES * LOG_FRAME_SIZE))
-*/
-
 #define LOG_MAX_SENSORS  16
-
-//! The maximum size of a frame
-#define LOG_MAX_FRAME_SIZE (4 * 3 * 3 + 4 * 2)
 
 /*!
  @name Available sensor flags
@@ -67,5 +62,7 @@ typedef struct {
 
 //! The header when sleeping is a run length in master samples
 typedef uint32_t log_sleep_header_t;
+
+//! @}
 
 #endif

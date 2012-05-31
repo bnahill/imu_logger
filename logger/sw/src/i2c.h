@@ -3,6 +3,13 @@
 
 #include "sensor_config.h"
 
+/*!
+ @addtogroup i2c I2C
+ @brief A driver for a common I2C read/write protocol with 8-bit addressing
+ @{
+ */
+
+//! I2C mode
 typedef enum {
 	I2C_MODE_DISABLED = 0,
 	I2C_MODE_MASTER,
@@ -10,11 +17,13 @@ typedef enum {
 	I2C_MODE_SLAVE
 } i2c_mode_t;
 
+//! Operation type
 typedef enum {
 	I2C_OP_READ,
 	I2C_OP_WRITE
 } i2c_op_t;
 
+//! States in the I2C transfer state machine
 typedef enum {
 	I2C_ST_IDLE,
 	I2C_ST_MASTER_REQ,
@@ -27,6 +36,7 @@ typedef enum {
 	I2C_ST_CLOSING_WRITE
 } i2c_state_t;
 
+
 //! @name I2C transfer termination flags
 //! @{
 #define I2C_XFER_FLAG_DONE 0x01
@@ -35,6 +45,7 @@ typedef enum {
 //! @}
 
 typedef struct _i2c_transfer {
+	//! The current operation being performed
 	i2c_op_t op;
 	//! The I2C address of the slave
 	uint8_t devaddr;
@@ -46,6 +57,8 @@ typedef struct _i2c_transfer {
 	uint8_t count;
 	//! A flag to indicate completion and errors
 	uint8_t done;
+	//! A flag to indicate that the operation is pending
+	uint8_t busy;
 	struct _i2c_transfer *next;
 } i2c_transfer_t;
 
@@ -78,14 +91,6 @@ typedef struct {
 	i2c_config_t const * const config;
 } i2c_t;
 
-#if USE_I2C1
-extern i2c_t i2c1;
-#endif
-
-#if USE_I2C2
-extern i2c_t i2c2;
-#endif
-
 /*!
  @brief Initialize an I2C device
  @param i2c The I2C device to configure
@@ -98,22 +103,49 @@ extern i2c_t i2c2;
  */
 int i2c_init(i2c_t *i2c, i2c_mode_t mode, uint32_t speed);
 
-//void i2c_write_byte(i2c_t *i2c, uint8_t devaddr, uint8_t addr, uint8_t value);
+/*!
+ @brief Write a single byte over I2C synchronously
+ @param i2c The I2C device to use
+ @param devaddr The I2C address of the peripheral you want to access
+ @param addr The address on the peripheral to write to
+ @param value The value to write
+ */
 void i2c_write_byte(i2c_t *i2c, uint8_t const devaddr, uint8_t const addr, uint8_t const value);
 
+/*!
+ @brief Write a single byte over I2C synchronously
+ @param i2c The I2C device to use
+ @param devaddr The I2C address of the peripheral you want to access
+ @param addr The address on the peripheral to read from
+ @return The value read
+ */
 uint8_t i2c_read_byte(i2c_t *i2c, uint8_t devaddr, uint8_t addr);
 
+/*!
+ @brief Initialize a transfer structure
+ */
 void i2c_mk_transfer(i2c_transfer_t *xfer,
-                            i2c_op_t op,
-                            uint8_t devaddr,
-                            uint8_t addr,
-                            uint8_t *buffer,
-                            uint8_t count);
+                     i2c_op_t op,
+                     uint8_t devaddr,
+                     uint8_t addr,
+                     uint8_t *buffer,
+                     uint8_t count);
 
 /*!
  @brief Start or queue a transfer
  */
 void i2c_transfer(i2c_t *i2c, i2c_transfer_t *xfer);
+
+
+//! @}
+
+#if USE_I2C1
+extern i2c_t i2c1;
+#endif
+
+#if USE_I2C2
+extern i2c_t i2c2;
+#endif
 
 #endif
 

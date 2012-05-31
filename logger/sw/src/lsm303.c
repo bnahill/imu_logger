@@ -2,6 +2,13 @@
 #include "i2c.h"
 #include "lsm303.h"
 
+/*!
+ @addtogroup lsm LSM303 Accelerometer + Magnetometer
+ @{
+ @addtogroup lsm_priv Private
+ @{
+ */
+
 //! @name I2C Addresses
 //! @{
 #define ACC_ADDR 0x33
@@ -40,7 +47,7 @@
 #define ACC_REG_TIME_LIM  0x3B
 #define ACC_REG_TIME_LAT  0x3C
 #define ACC_REG_TIME_WIN  0x3D
-//! }@
+//! @}
 
 //! @name Magnetometer register addresses
 //! @{
@@ -61,13 +68,15 @@
 #define MAG_REG_TEMP_L    0x32
 //! @}
 
-const float acc_scale[] = {
+//! Accelerometer scale to be indexed with lsm_acc_fs_t
+static const float acc_scale[] = {
 	1.0 / 1000.0,
 	2.0 / 1000.0,
 	3.9 / 1000.0
 };
 
-const float mag_scale_xy[] = {
+//! Magnetometer X/Y scale to be indexed with lsm_mag_fs_t
+static const float mag_scale_xy[] = {
 	0,
 	1.0 / 1055.0,
 	1.0 / 795.0,
@@ -78,7 +87,8 @@ const float mag_scale_xy[] = {
 	1.0 / 230.0
 };
 
-const float mag_scale_z[] = {
+//! Magnetometer X/Y scale to be indexed with lsm_mag_fs_t
+static const float mag_scale_z[] = {
 	0,
 	1.0 / 950.0,
 	1.0 / 710.0,
@@ -89,18 +99,30 @@ const float mag_scale_z[] = {
 	1.0 / 205.0
 };
 
+static void lsm303_do_read_acc(lsm303_t *lsm);
+static void lsm303_do_read_mag(lsm303_t *lsm);
+static void lsm303_do_update_acc(lsm303_t *lsm);
+static void lsm303_do_update_mag(lsm303_t *lsm);
+static void lsm303_device_init(lsm303_t *lsm);
+
+//! @}
+
 #if HAS_MAGACC
+//! @ingroup lsm_pub
+//! @brief The accelerometer instance and configuration
 lsm303_t magacc = {
 	{0.0, 0.0, 0.0},
 	{0.0, 0.0, 0.0},
 	&i2c1,
-	LSM_ACC_RATE_100,
-	LSM_MAG_RATE_75,
-	LSM_ACC_FS_4G,
+	LSM_ACC_RATE_50,
+	LSM_MAG_RATE_30,
+	LSM_ACC_FS_8G,
 	LSM_MAG_FS_4,
 	LSM_PM_NORM
 };
 #endif
+
+//! @}
 
 void lsm303_set_acc_fs(lsm303_t *lsm, lsm_acc_fs_t fs){
 	uint8_t current = i2c_read_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL4 | 0x80) & 0xCF;
@@ -118,6 +140,12 @@ static void lsm303_device_init(lsm303_t *lsm){
 	// Init CTRL1-6
 	uint8_t conf_buffer[6];
 	i2c_transfer_t xfer;
+	
+	// Initialize both to not appear busy
+	lsm->mag_xfer.done = 0;
+	lsm->acc_xfer.done = 0;
+	lsm->mag_xfer.busy = 0;
+	lsm->acc_xfer.busy = 0;
 	
 	conf_buffer[0] = (lsm->pow_mode << 5) | (lsm->acc_rate << 3) | 0x07;
 	conf_buffer[1] = 0;
@@ -154,7 +182,7 @@ static void lsm303_device_init(lsm303_t *lsm){
 	while(!xfer.done);
 }
 
-static void lsm303_do_read(lsm303_t *lsm){
+static void lsm303_do_read_mag(lsm303_t *lsm){
 	i2c_mk_transfer(&lsm->mag_xfer,
 	                I2C_OP_READ,
 	                MAG_ADDR,
@@ -162,7 +190,12 @@ static void lsm303_do_read(lsm303_t *lsm){
 	                lsm->mag_buff,
 	                6
 	);
-	
+
+	// Start the transfer
+	i2c_transfer(lsm->i2c, &lsm->mag_xfer);
+}
+
+static void lsm303_do_read_acc(lsm303_t *lsm){
 	i2c_mk_transfer(&lsm->acc_xfer,
 	                I2C_OP_READ,
 	                ACC_ADDR,
@@ -171,11 +204,24 @@ static void lsm303_do_read(lsm303_t *lsm){
 	                6
 	);
 	
-	// Add the mag transfer as a followup from the acc transfer
-	lsm->acc_xfer.next = &lsm->mag_xfer;
-	
 	// Start the acc transfer
 	i2c_transfer(lsm->i2c, &lsm->acc_xfer);
+}
+
+int lsm303_mag_xfer_complete(void){
+#if HAS_MAGACC
+	if(!magacc.mag_xfer.done)
+		return 0;
+#endif
+	return 1;	
+}
+
+int lsm303_acc_xfer_complete(void){
+#if HAS_MAGACC
+	if(!magacc.acc_xfer.done || !magacc.acc_xfer.done)
+		return 0;
+#endif
+	return 1;
 }
 
 int lsm303_xfer_complete(void){
@@ -192,15 +238,26 @@ void lsm303_read_sync(void){
 	lsm303_update();
 }
 
-void lsm303_do_update(lsm303_t *lsm){
+static void lsm303_do_update_acc(lsm303_t *lsm){
 	int16_t tmp16;
-	tmp16 = lsm->acc_buff[0] | (lsm->acc_buff[1] << 8);
-	lsm->acc.x = tmp16 * acc_scale[lsm->acc_fs];
-	tmp16 = lsm->acc_buff[2] | (lsm->acc_buff[3] << 8);
-	lsm->acc.y = tmp16 * acc_scale[lsm->acc_fs];
-	tmp16 = lsm->acc_buff[4] | (lsm->acc_buff[5] << 8);
-	lsm->acc.z = tmp16 * acc_scale[lsm->acc_fs];
 	
+	lsm->acc_xfer.done = 0;
+	
+	// Read the raw sensor value
+	tmp16 = lsm->acc_buff[0] | (lsm->acc_buff[1] << 8);
+	// Scale it to match the sensitivity
+	lsm->acc.x = (tmp16 >> 4) * acc_scale[lsm->acc_fs];
+	tmp16 = lsm->acc_buff[2] | (lsm->acc_buff[3] << 8);
+	lsm->acc.y = (tmp16 >> 4) * acc_scale[lsm->acc_fs];
+	tmp16 = lsm->acc_buff[4] | (lsm->acc_buff[5] << 8);
+	lsm->acc.z = (tmp16 >> 4) * acc_scale[lsm->acc_fs];
+}
+
+void lsm303_do_update_mag(lsm303_t *lsm){
+	int16_t tmp16;
+	
+	lsm->acc_xfer.done = 0;
+
 	tmp16 = lsm->mag_buff[1] | (lsm->mag_buff[0] << 8);
 	lsm->mag.x = tmp16 * mag_scale_xy[lsm->mag_fs];
 	tmp16 = lsm->mag_buff[3] | (lsm->mag_buff[2] << 8);
@@ -209,10 +266,22 @@ void lsm303_do_update(lsm303_t *lsm){
 	lsm->mag.y = tmp16 * mag_scale_z[lsm->mag_fs];
 }
 
+void lsm303_update_acc(void){
+#if HAS_MAGACC
+	lsm303_do_update_acc(&magacc);
+#endif	
+}
+
+void lsm303_update_mag(void){
+#if HAS_MAGACC
+	lsm303_do_update_mag(&magacc);
+#endif	
+}
 
 void lsm303_update(void){
 #if HAS_MAGACC
-	lsm303_do_update(&magacc);
+	lsm303_do_update_acc(&magacc);
+	lsm303_do_update_mag(&magacc);
 #endif	
 }
 
@@ -224,7 +293,18 @@ void lsm303_init(void){
 
 void lsm303_read(void){
 #if HAS_MAGACC
-	lsm303_do_read(&magacc);
+	lsm303_do_read_acc(&magacc);
+	lsm303_do_read_mag(&magacc);
 #endif
 }
 
+void lsm303_read_mag(void){
+#if HAS_MAGACC
+	lsm303_do_read_mag(&magacc);
+#endif
+}
+void lsm303_read_acc(void){
+#if HAS_MAGACC
+	lsm303_do_read_acc(&magacc);
+#endif
+}

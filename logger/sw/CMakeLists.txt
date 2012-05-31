@@ -88,6 +88,7 @@ set(APP_SOURCES
 	${APP_DIR}/logger.c
 	${APP_DIR}/lsm303.c
 	${APP_DIR}/sdio.c
+	${APP_DIR}/jitter_buffer.c
 	${APP_DIR}/system_stm32f10x.c
 	${APP_DIR}/fs_hal.c
 	${APP_DIR}/lpry.c

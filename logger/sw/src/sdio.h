@@ -31,25 +31,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
 
-/** @addtogroup Utilities
+/** @addtogroup SDIO
   * @{
   */
   
-/** @addtogroup STM32_EVAL
+/** @addtogroup ST
   * @{
   */ 
 
-/** @addtogroup Common
-  * @{
-  */
-  
-/** @addtogroup STM32_EVAL_SDIO_SD
-  * @{
-  */  
-
-/** @defgroup STM32_EVAL_SDIO_SD_Exported_Types
-  * @{
-  */ 
 typedef enum
 {
 /** 
@@ -225,10 +214,6 @@ typedef struct
 /**
   * @}
   */
-  
-/** @defgroup STM32_EVAL_SDIO_SD_Exported_Constants
-  * @{
-  */ 
 
 /** 
   * @brief SDIO Commands  Index 
@@ -331,20 +316,10 @@ typedef struct
 #define SDIO_SECURE_DIGITAL_IO_COMBO_CARD          ((uint32_t)0x00000006)
 #define SDIO_HIGH_CAPACITY_MMC_CARD                ((uint32_t)0x00000007)
 
-/**
-  * @}
-  */ 
-  
-/** @defgroup STM32_EVAL_SDIO_SD_Exported_Macros
-  * @{
-  */ 
-/**
-  * @}
-  */ 
 
 SD_Error SD_Wait(void);
 
-/** @defgroup STM32_EVAL_SDIO_SD_Exported_Functions
+/** @defgroup Exported_Functions
   * @{
   */ 
 void SD_DeInit(void);
@@ -388,12 +363,5 @@ SD_Error SD_WaitWriteOperation(void);
   * @}
   */
 
-/**
-  * @}
-  */ 
-
-/**
-  * @}
-  */ 
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

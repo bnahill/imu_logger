@@ -17,17 +17,9 @@ typedef struct {
 	sd_xfer_t *xfer;
 } sd_state_t;
 
-static struct {
-	uint32_t block_size;
-	int is_init;
-} sd_disk;
-
 DSTATUS disk_initialize (BYTE disk){
-	static SD_CardInfo ci;
 	if(SD_Init() == SD_OK){
 		is_init = 1;
-		SD_GetCardInfo(&ci);
-		sd_disk.block_size = ci.CardBlockSize;
 		return 0;
 	}
 	return disk_status(disk);

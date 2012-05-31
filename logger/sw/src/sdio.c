@@ -193,32 +193,15 @@
 #include "sdio.h"
 #include "sdio_ll.h"
 
-/** @addtogroup Utilities
+/** @addtogroup SDIO
   * @{
   */
-  
-/** @addtogroup STM32_EVAL
-  * @{
-  */ 
 
-/** @addtogroup Common
+/** @addtogroup ST
   * @{
   */
-  
-/** @addtogroup STM32_EVAL_SDIO_SD
-  * @brief      This file provides all the SD Card driver firmware functions.
-  * @{
-  */ 
 
-/** @defgroup STM32_EVAL_SDIO_SD_Private_Types
-  * @{
-  */ 
-/**
-  * @}
-  */ 
-
-
-/** @defgroup STM32_EVAL_SDIO_SD_Private_Defines
+/** @addtogroup Private
   * @{
   */ 
 /** 
@@ -293,22 +276,6 @@
   */
 #define SDIO_SEND_IF_COND               ((uint32_t)0x00000008)
 
-/**
-  * @}
-  */ 
-
-
-/** @defgroup STM32_EVAL_SDIO_SD_Private_Macros
-  * @{
-  */
-/**
-  * @}
-  */ 
-  
-
-/** @defgroup STM32_EVAL_SDIO_SD_Private_Variables
-  * @{
-  */
 static uint32_t CardType =  SDIO_STD_CAPACITY_SD_CARD_V1_1;
 static uint32_t CSD_Tab[4], CID_Tab[4], RCA = 0;
 static uint8_t SDSTATUS_Tab[16];
@@ -320,14 +287,7 @@ SD_CardInfo SDCardInfo;
 SDIO_InitTypeDef SDIO_InitStructure;
 SDIO_CmdInitTypeDef SDIO_CmdInitStructure;
 SDIO_DataInitTypeDef SDIO_DataInitStructure;   
-/**
-  * @}			     
-  */ 
 
-
-/** @defgroup STM32_EVAL_SDIO_SD_Private_Function_Prototypes
-  * @{
-  */
 static SD_Error CmdError(void);
 static SD_Error CmdResp1Error(uint8_t cmd);
 static SD_Error CmdResp7Error(void);
@@ -342,11 +302,6 @@ uint8_t convert_from_bytes_to_power_of_two(uint16_t NumberOfBytes);
 /**
   * @}
   */ 
-
-
-/** @defgroup STM32_EVAL_SDIO_SD_Private_Functions
-  * @{
-  */  
 
 /**
   * @brief  DeInitializes the SDIO interface.
@@ -2528,12 +2483,5 @@ uint8_t convert_from_bytes_to_power_of_two(uint16_t NumberOfBytes)
   * @}
   */
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */  
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

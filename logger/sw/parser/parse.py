@@ -28,24 +28,30 @@ LOG_SENSOR_TEMP2  = 9
 def parse(f):
 	f.seek(0)
 	
+	# Check the key and make sure it is a valid file
 	key = struct.unpack_from('<I', f.read(4))[0]
 	assert key == 0xDEFEC8ED, "This is not a valid log file: Key = 0x%08X" % key
 	print("Key: 0x%08X" % key)
 	
+	# Check the log file version
 	log_version = struct.unpack_from('<I', f.read(4))[0]
 	assert (log_version == 1), "This log version is not supported"
 	print("Log Version: %u" % log_version)
 	
+	# Read the device ID
 	device_id = struct.unpack_from('B' * 16, f.read(16))
 	device_id_string = ":".join(map(lambda x: "%02X" % x, device_id))
 	print("Device ID: " + device_id_string)
 	
+	# Read the page size
 	page_size = struct.unpack_from('<I', f.read(4))[0]
 	print("Page Size: %u" % page_size)
 	
+	# Read the sample rate
 	master_fs = struct.unpack_from('<I', f.read(4))[0]
 	print("Master f_s: %u" % master_fs)
 	
+	# Check the individual relative sensor rates
 	sub_rates = struct.unpack_from('B'*10, f.read(10))
 	gyro1_rate = sub_rates[LOG_SENSOR_GYR1]
 	gyro2_rate = sub_rates[LOG_SENSOR_GYR2]
@@ -91,29 +97,31 @@ def parse(f):
 		frameset_num = 0
 		
 		while True:
+			# Page will terminate if we run out of space in it...
 			if len(page_remaining) == 0:
-				# print("Frameset done!")
 				break
 
+			# Read the new frameset header
 			frameset_header = struct.unpack_from('<I', page_remaining)[0]
 			print("Frameset header (int): %u, %f" % (frameset_header & 0x7FFFFFFF, struct.unpack_from('<f', page_remaining)[0]))
+			
+			# Header of 0 indicates that the page is over
 			if frameset_header == 0:
-				# print("Frameset done!")
-				# Page is done
 				break
 			
+			# Increment to the first byte of data
 			page_remaining = page_remaining[4:]
 			
-			# print("Frameset %u" % frameset_num)
 			frameset_num += 1
 			
+			# Check if this frameset is silent
 			if frameset_header & 0x80000000 == 0:
 				print("Silent frameset identified")
 				# Idle frameset
 				result_stream.append(int(frameset_header))
-				page_remaining = page_remaining[4:]
 				continue
 			
+			# Initialize storage for all sensors
 			if gyro1_rate:
 				gyro1p = []
 				gyro1r = []
@@ -147,8 +155,10 @@ def parse(f):
 			if temp2_rate:
 				temp2 = []
 
-			if int(frameset_header & 0x7FFFFFFF) > 10000:
-				sys.exit("TOO BIG!!!")
+			# Check if the frameset size is absurdly large
+			assert int(frameset_header & 0x7FFFFFFF) < 10000:
+			
+			# Read each sample
 			for sample in range(frameset_header & 0x7FFFFFFF):
 				if gyro1_rate and (sample % gyro1_rate == 0):
 					(p,r,y) = struct.unpack_from('<fff', page_remaining)
@@ -201,6 +211,7 @@ def parse(f):
 			
 			d = dict()
 			
+			# Format into a convenient dictionary
 			if gyro1_rate:
 				d['gyr1'] = np.array([gyro1p, gyro1r, gyro1y])
 			if gyro2_rate:
@@ -221,16 +232,23 @@ def parse(f):
 				d['temp1'] = np.array(temp1, dtype=np.float32)
 			if temp2_rate:
 				d['temp2'] = np.array(temp2, dtype=np.float32)
-				
+			
+			# Add this frameset to the larger list of framesets
 			result_stream.append(d)
 		
 		# Advance to the next page
 		f.seek(page_size, os.SEEK_CUR)
 	f.close()
 	
+	#
+	# Concatenate adjacent frames of the same type (either data or silence)
+	#
+	
+	# Define a silence stream and a data stream just for identifying adjacent frames
 	current_silence_stream = None
 	current_data_stream = None
 	
+	# New result stream for concatenated framesets
 	new_result_stream = []
 	
 	for frameset in result_stream:
@@ -267,28 +285,29 @@ def parse(f):
 	for frameset in new_result_stream:
 		if frameset.__class__ != dict:
 			# Only looking for those that contain data
+			# Silent framesets don't need interpolation
 			continue
 		for key in frameset.keys():
 			if key == 'gyr1':
-				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_GYR1]),
+				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_GYR1]).T
 			if key == 'gyr2':
-				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_GYR2]),
+				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_GYR2]).T
 			if key == 'acc1':
-				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_ACC1]),
+				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_ACC1]).T
 			if key == 'acc2':
-				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_ACC2]),
+				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_ACC2]).T
 			if key == 'mag1':
-				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_MAG1]),
+				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_MAG1]).T
 			if key == 'mag2':
-				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_MAG2]),	
+				frameset[key] = interpolate3(frameset[key],sub_rates[LOG_SENSOR_MAG2]).T
 			elif key == 'press1':
-				frameset[key] = interpolate(frameset[key],sub_rates[LOG_SENSOR_PRESS1])
+				frameset[key] = interpolate(frameset[key],sub_rates[LOG_SENSOR_PRESS1]).T
 			elif key == 'press2':
-				frameset[key] = interpolate(frameset[key],sub_rates[LOG_SENSOR_PRESS2])
+				frameset[key] = interpolate(frameset[key],sub_rates[LOG_SENSOR_PRESS2]).T
 			elif key == 'temp1':
-				frameset[key] = interpolate(frameset[key],sub_rates[LOG_SENSOR_TEMP1])
+				frameset[key] = interpolate(frameset[key],sub_rates[LOG_SENSOR_TEMP1]).T
 			elif key == 'temp2':
-				frameset[key] = interpolate(frameset[key],sub_rates[LOG_SENSOR_TEMP2])
+				frameset[key] = interpolate(frameset[key],sub_rates[LOG_SENSOR_TEMP2]).T
 	
 	return (header, new_result_stream)
 
@@ -318,7 +337,7 @@ def interpolate(arr, factor):
 #  @param factor The factor by which you want to interpolate
 def interpolate3(arr, factor):
 	if factor == 1:
-		return mat
+		return arr
 	return np.array([interpolate(arr[0], factor), interpolate(arr[1], factor), interpolate(arr[2], factor)])
 	
 ## @}

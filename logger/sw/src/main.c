@@ -19,8 +19,20 @@
 #define LED_PIN  BIT(9)
 #define LED_CLK  RCC_APB2Periph_GPIOB
 
+/*!
+ @addtogroup application
+ @{
+ @name Configuration Flags
+ @{
+ */
+
 //! Flag for debugging to not log any data
 #define DO_LOG 1
+
+//! Flag to enable stop mode when not recording (core debug doesn't work when stopped)
+#define DO_LOPWR 1
+
+//! @} @} Configuration flags
 
 static volatile uint32_t tick = 0;
 static volatile uint32_t frame_count;
@@ -48,7 +60,7 @@ static enum {
  
  The application behavior is a cooperative effort between the
  SysTick_Handler() (running in interrupt context) and main(). During active 
- recording, main() handles writes to the logger. Since these operations are
+ recording, do_run() handles writes to the logger. Since these operations are
  inconsistent in their run time, transfers are asynchronously handled in a
  two-stage process by the SysTick_Handler(). On each cycle, sensors are
  checked to see if they have new data. If they do, a frame is assembled and
@@ -98,7 +110,9 @@ static INLINE void do_run(void);
 //! @callgraph
 int main(void){	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
-	
+#if DO_LOPWR
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
+#endif
 	
 	// Initialize sensors and peripherals
 	rtc_init();
@@ -111,6 +125,8 @@ int main(void){
 	mode = MODE_INIT;
 	
 	while(1){
+		lpry_power_off();
+		
 		switch(mode){
 		case MODE_INIT:
 			do_init();
@@ -119,14 +135,22 @@ int main(void){
 			do_error();
 			break;
 		case MODE_STOPPED:
-			// Wait for button press or change of modes
 			while(1){
+				// Wait for button press or change of modes
+#if DO_LOPWR
+				if(PWR_GetFlagStatus(PWR_FLAG_WU) != RESET)
+					PWR_ClearFlag(PWR_FLAG_WU);
+				SystemCoreClockUpdate();
+#endif
 				if(mode != MODE_STOPPED)
 					break;
 				if(button_check_press()){
 					mode = MODE_RUNNING;
 					break;
 				}
+#if DO_LOPWR
+				PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
+#endif
 			}
 			break;
 		case MODE_RUNNING:
@@ -175,6 +199,8 @@ static INLINE void do_run(void){
 	jb_frame_t frame;
 	
 	frame_count = 0;
+	
+	lpry_power_on();
 	
 #if DO_LOG
 	if(logger_init("test") == NULL)

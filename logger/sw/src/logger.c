@@ -372,18 +372,24 @@ void logger_sync(void){
 		return;
 	}
 		
-	if(frame_count){
+	if(frame_count && (frame_count - frame_cycle_count)){
 		// We were in the middle of a frameset, finalize it
-		*(frameset_header++) = 0x80000000 | frame_count;
+		// But first rewind to the last full cycle
+		frame_count -= frame_cycle_count;
+		write_ptr.u = frameset_header + 1 + cycle_len * (frame_count / cycle_lcm);
+		*(frameset_header) = 0x80000000 | frame_count;
 		// Indicate that there are no further framesets in this page
 		*write_ptr.u = 0;
 	} else {
 		*frameset_header = 0;
 	}
 	
-	// Commit the data
-	if(f_write(&file, (uint8_t *)&write_buffer, LOG_PAGE_LEN, &write_len) != FR_OK)
-		while(1);
+	// Check to see if it's worth writing the page before doing it
+	if((frameset_header != write_buffer) || (*frameset_header != 0)){
+		// Commit the data
+		if(f_write(&file, (uint8_t *)&write_buffer, LOG_PAGE_LEN, &write_len) != FR_OK)
+			while(1);
+	}
 	
 	// Reset pointers
 	frameset_header = write_buffer;

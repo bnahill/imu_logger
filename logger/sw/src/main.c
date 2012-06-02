@@ -35,9 +35,11 @@ void led_set(void);
 void led_clr(void);
 
 static enum {
+	MODE_INIT,
 	MODE_STOPPED,
 	MODE_IDLE,
-	MODE_RUNNING
+	MODE_RUNNING,
+	MODE_ERROR
 } mode;
 
 /*!
@@ -70,14 +72,31 @@ int main(void);
  */
 void SysTick_Handler(void);
 
+//! @name Run modes
+//! @{
+
+/*!
+ @brief Provide a quick flashing init sequence to show it is starting up.
+ */
+static INLINE void do_init(void);
+
+/*!
+ @brief Provide feedback feedback for errors
+ */
+static INLINE void do_error(void);
+
+/*!
+ @brief Perform the repeated sensor logging
+ */
+static INLINE void do_run(void);
+
+//! @}
+
 //! @}
 
 
 //! @callgraph
-int main(void){
-	int i;
-	jb_frame_t frame;
-	
+int main(void){	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	
 	
@@ -89,67 +108,129 @@ int main(void){
 	button_init();
 	lps_init();
 	
-	while(1){
-		mode = MODE_STOPPED;
-		
-		// Wait for button press
-		while(!button_check_press());
+	mode = MODE_INIT;
 	
-		mode = MODE_RUNNING;
-		
-		SysTick_Config(SystemCoreClock / 50);
-		
-		frame_count = 0;
-		
-#if DO_LOG
-		if(logger_init("test") == NULL)
-			while(1);
-#endif
-			
+	while(1){
+		switch(mode){
+		case MODE_INIT:
+			do_init();
+			break;
+		case MODE_ERROR:
+			do_error();
+			break;
+		case MODE_STOPPED:
+			// Wait for button press or change of modes
+			while(1){
+				if(mode != MODE_STOPPED)
+					break;
+				if(button_check_press()){
+					mode = MODE_RUNNING;
+					break;
+				}
+			}
+			break;
+		case MODE_RUNNING:
+			do_run();
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+static INLINE void do_init(void){
+	int i;
+	SysTick_Config(SystemCoreClock / 50);
+	for(i = 0; i < 5; i++){
+		tick = 0;
 		led_set();
-		
-		i = 0;
-		
-		jb_init(&jitter_buffer);
-		
-		while(1){
-			// Wait for a tick
-			while(!tick);
-			// Only decrement it so that we may run multiple times if we
-			// miss a deadline
-			tick -= 1;
-			if(++i == 2){
-				led_clr();
-			} else if(i == 50){
-				i = 0;
-				led_set();
-			}
-			
-			//////////////////////////////////////
-			// Check for new data frames
-			//////////////////////////////////////
-			
-			if(jb_pop(&jitter_buffer, &frame)){
-#if DO_LOG	
-				// And commit them to the log
-				logger_update(&frame);
+		while(tick < 2);
+		led_clr();
+		while(tick < 10);
+	}
+	SysTick_Config(0xFFFFFFFF);
+	tick = 0;
+	mode = MODE_STOPPED;
+}
+
+static INLINE void do_error(void){
+	SysTick_Config(SystemCoreClock / 50);
+	while(1){
+		tick = 0;
+		led_clr();
+		while(tick < 5);
+		led_set();
+		while(tick < 10);
+		if(button_check_press()){
+			SysTick_Config(0xFFFFFFFF);
+			tick = 0;
+			mode = MODE_STOPPED;
+			break;
+		}
+	}
+}
+
+static INLINE void do_run(void){
+	int i;
+	jb_frame_t frame;
+	
+	frame_count = 0;
+	
+#if DO_LOG
+	if(logger_init("test") == NULL)
+		while(1);
 #endif
-			}
-
-
-			if(button_check_press())
-				break;
+	
+	SysTick_Config(SystemCoreClock / 50);
+		
+	led_set();
+	
+	i = 0;
+	
+	jb_init(&jitter_buffer);
+	
+	while(1){
+		// Wait for a tick
+		while(!tick);
+		// Only decrement it so that we may run multiple times if we
+		// miss a deadline
+		tick -= 1;
+		if(++i == 2){
+			led_clr();
+		} else if(i == 50){
+			i = 0;
+			led_set();
 		}
 		
-		led_clr();
-		
-		// Disable SysTick
-		SysTick_Config(0xFFFFFFFF);
+		//////////////////////////////////////
+		// Check for new data frames
+		//////////////////////////////////////
+		if(jb_pop(&jitter_buffer, &frame)){
 #if DO_LOG	
-		logger_sync();
-		logger_close();
+			// And commit them to the log
+			logger_update(&frame);
 #endif
+		}
+
+
+		// Check for escape triggers
+		if(button_check_press()){
+			mode = MODE_STOPPED;
+			break;
+		} else if(mode != MODE_RUNNING){
+			// Escape if something changes the mode
+			break;
+		}
 	}
+	
+	led_clr();
+
+	// Disable SysTick
+	SysTick_Config(0xFFFFFFFF);
+#if DO_LOG	
+	logger_sync();
+	logger_close();
+#endif
 }
 
 void led_init(void){
@@ -192,7 +273,7 @@ void frame_to_jb(void){
 	frame.temperature = pressure.temperature;
 	
 	if(!jb_push(&jitter_buffer, &frame))
-		while(1);
+		mode = MODE_ERROR;
 }
 
 //! @callgraph

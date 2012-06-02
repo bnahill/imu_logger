@@ -14,7 +14,7 @@
  */
 
 //! The number of frames to allocate
-#define JB_LENGTH 16
+#define JB_LENGTH 256
 
 //! A single frame of sensor data to be stored
 typedef struct {

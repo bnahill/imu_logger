@@ -33,7 +33,7 @@ DSTATUS disk_status (BYTE disk){
 
 DRESULT disk_read (BYTE disk, BYTE* buf, DWORD sector, BYTE count){
 	// Check alignment
-	if((int)buf & 3 != 0)
+	if(((int)buf & 3) != 0)
 		return RES_ERROR;
 
 	if(count > 1){
@@ -52,7 +52,7 @@ DRESULT disk_read (BYTE disk, BYTE* buf, DWORD sector, BYTE count){
 
 DRESULT disk_write (BYTE disk, const BYTE* buf, DWORD sector, BYTE count){
 	// Check alignment
-	if((int)buf & 3 != 0)
+	if(((int)buf & 3) != 0)
 		return RES_ERROR;
 
 	if(count > 1){

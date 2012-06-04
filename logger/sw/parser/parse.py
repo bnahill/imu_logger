@@ -82,7 +82,7 @@ def parse(f):
 		# Read a page
 		page_buffer = f.read(page_size)
 		if(len(page_buffer) != page_size):
-			print("Page done!")
+			print("Log done!")
 			# Done!
 			break
 		page = np.frombuffer(page_buffer, dtype=np.uint8)
@@ -236,9 +236,7 @@ def parse(f):
 			
 			# Add this frameset to the larger list of framesets
 			result_stream.append(d)
-		
-		# Advance to the next page
-		f.seek(page_size, os.SEEK_CUR)
+
 	f.close()
 	
 	#

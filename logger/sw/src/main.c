@@ -189,6 +189,7 @@ static INLINE void do_error(void){
 			SysTick_Config(0xFFFFFFFF);
 			tick = 0;
 			mode = MODE_STOPPED;
+			led_clr();
 			break;
 		}
 	}

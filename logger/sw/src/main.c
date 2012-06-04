@@ -30,7 +30,7 @@
 #define DO_LOG 1
 
 //! Flag to enable stop mode when not recording (core debug doesn't work when stopped)
-#define DO_LOPWR 1
+#define DO_LOPWR 0
 
 //! @} @} Configuration flags
 
@@ -172,7 +172,7 @@ static INLINE void do_init(void){
 		led_clr();
 		while(tick < 10);
 	}
-	SysTick_Config(0xFFFFFFFF);
+	SysTick_Config(0);
 	tick = 0;
 	mode = MODE_STOPPED;
 }
@@ -186,7 +186,7 @@ static INLINE void do_error(void){
 		led_set();
 		while(tick < 10);
 		if(button_check_press()){
-			SysTick_Config(0xFFFFFFFF);
+			SysTick_Config(0);
 			tick = 0;
 			mode = MODE_STOPPED;
 			led_clr();
@@ -204,17 +204,20 @@ static INLINE void do_run(void){
 	lpry_power_on();
 	
 #if DO_LOG
-	if(logger_init("test") == NULL)
-		while(1);
+	if(logger_init("test") == NULL){
+		mode = MODE_ERROR;
+		return;
+	}
 #endif
 	
-	SysTick_Config(SystemCoreClock / 50);
-		
 	led_set();
 	
 	i = 0;
+	tick = 0;
 	
 	jb_init(&jitter_buffer);
+	
+	SysTick_Config(SystemCoreClock / 50);
 	
 	while(1){
 		// Wait for a tick
@@ -253,7 +256,7 @@ static INLINE void do_run(void){
 	led_clr();
 
 	// Disable SysTick
-	SysTick_Config(0xFFFFFFFF);
+	SysTick_Config(0);
 #if DO_LOG	
 	logger_sync();
 	logger_close();

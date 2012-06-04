@@ -103,11 +103,12 @@ def parse(f):
 
 			# Read the new frameset header
 			frameset_header = struct.unpack_from('<I', page_remaining)[0]
-			print("Frameset header (int): %u, %f" % (frameset_header & 0x7FFFFFFF, struct.unpack_from('<f', page_remaining)[0]))
 			
 			# Header of 0 indicates that the page is over
 			if frameset_header == 0:
 				break
+			
+			print("Frameset header (int): %u" % (frameset_header & 0x7FFFFFFF,))
 			
 			# Increment to the first byte of data
 			page_remaining = page_remaining[4:]
@@ -156,7 +157,7 @@ def parse(f):
 				temp2 = []
 
 			# Check if the frameset size is absurdly large
-			assert int(frameset_header & 0x7FFFFFFF) < 10000:
+			assert int(frameset_header & 0x7FFFFFFF) < 10000
 			
 			# Read each sample
 			for sample in range(frameset_header & 0x7FFFFFFF):

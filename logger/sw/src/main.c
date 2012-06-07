@@ -29,8 +29,13 @@
 //! Flag for debugging to not log any data
 #define DO_LOG 1
 
-//! Flag to enable stop mode when not recording (core debug doesn't work when stopped)
-#define DO_LOPWR 0
+//! Flag to enable stop mode when not recording (core debug doesn't work when
+//! stopped)
+#define DO_LOPWR 1
+
+//! Flag to enable the internal RC oscillator to drive debug circuitry in
+//! stop mode
+#define DO_LP_DEBUG 1
 
 //! @} @} Configuration flags
 
@@ -123,6 +128,10 @@ int main(void){
 	lps_init();
 	
 	mode = MODE_INIT;
+
+#if DO_LP_DEBUG
+	DBGMCU_Config(DBGMCU_STOP, ENABLE);
+#endif
 	
 	while(1){
 		lpry_power_off();

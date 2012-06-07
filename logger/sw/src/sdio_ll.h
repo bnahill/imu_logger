@@ -6,7 +6,7 @@
 #include "sdio.h"
 
 #define SDIO_INIT_CLK_DIV ((uint8_t)60)
-#define SDIO_TRANSFER_CLK_DIV ((uint8_t)0)
+#define SDIO_TRANSFER_CLK_DIV ((uint8_t)1)
 
 #define SDIO_FIFO_Address               ((u32)0x40018080)
 

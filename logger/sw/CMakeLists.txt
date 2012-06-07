@@ -44,7 +44,7 @@ set(MCU cortex-m3)
 set(MCFLAGS "-mcpu=${MCU} -mthumb")
 
 add_definitions(${MCFLAGS})
-add_definitions(-g -ffunction-sections  -fdata-sections -fpromote-loop-indices -Wredundant-decls -Wshadow -Wcast-qual -Wcast-align)
+add_definitions(-g -ffunction-sections  -fdata-sections -Wredundant-decls -Wshadow -Wcast-qual -Wcast-align)
 add_definitions(-DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD -DHSE_VALUE=8000000 -DARM_MATH_CM3)
 
 # Eliminate the need for a bunch of extra support code that may not work on the chip anyways

@@ -114,6 +114,8 @@ void lsm303_set_acc_fs(lsm303_t *lsm, lsm_acc_fs_t fs);
  */
 void lsm303_set_acc_rate(lsm303_t *lsm, lsm_acc_rate_t acc_rate);
 
+void lsm303_set_pm(lsm303_t *lsm, lsm_pm_t pm);
+
 /*!
  @brief Begin a read of the LSM303 output data
  

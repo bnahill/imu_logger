@@ -124,10 +124,13 @@ lsm303_t magacc = {
 
 //! @}
 
+void lsm303_set_pm(lsm303_t *lsm, lsm_pm_t pm){
+	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL1, (pm << 5) | (lsm->acc_rate << 3) | 0x07);
+	lsm->pow_mode = pm;
+}
+
 void lsm303_set_acc_fs(lsm303_t *lsm, lsm_acc_fs_t fs){
-	uint8_t current = i2c_read_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL4 | 0x80) & 0xCF;
-	current |= (fs & 0x3) << 4;
-	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL4, current);
+	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL4, 0x80 | (fs << 4));
 	lsm->acc_fs = fs;
 }
 

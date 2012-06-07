@@ -6,6 +6,12 @@
 //! @addtogroup lps LPS001 Pressure Sensor
 //! @{
 
+typedef enum {
+	LPS_PM_NORMAL = 1,
+	LPS_PM_OFF = 2,
+	LPS_PM_LP = 3
+} lps001_pm_t;
+
 //! The state and configuration of a sensor
 typedef struct {
 	//! The I2C device it is connected to
@@ -14,6 +20,7 @@ typedef struct {
 	float pressure;
 	//! The most recent temperature reading in C
 	float temperature;
+	lps001_pm_t pow_mode;
 	//! The transfer state object
 	i2c_transfer_t xfer;
 	//! A buffer for read data
@@ -24,6 +31,8 @@ typedef struct {
  @brief Initialize the sensor and related peripherals
  */
 void lps_init(void);
+
+void lps_set_pm(lps001_pm_t pm);
 
 /*!
  @brief Begin a read of the sensor

@@ -45,7 +45,9 @@ lps001_t pressure = {
 	// Pressure reading
 	0.0,
 	// Temperature reading
-	0.0
+	0.0,
+	// Power mode
+	LPS_PM_NORMAL
 };
 
 //! @}
@@ -55,7 +57,12 @@ void lps_init(void){
 	if(i2c_read_byte(pressure.i2c, LPS_ADDR, LPS_REG_WHOAMI) != 0xBA)
 		while(1);
 	
-	i2c_write_byte(pressure.i2c, LPS_ADDR, LPS_REG_CTRL1, 0x74);
+	i2c_write_byte(pressure.i2c, LPS_ADDR, LPS_REG_CTRL1, (pressure.pow_mode << 6) | 0x34);
+}
+
+void lps_set_pm(lps001_pm_t pm){
+	i2c_write_byte(pressure.i2c, LPS_ADDR, LPS_REG_CTRL1, (pm << 6) | 0x34);
+	pressure.pow_mode = pm;
 }
 
 void lps_read(void){

@@ -126,6 +126,8 @@ int main(void){
 	
 	while(1){
 		lpry_power_off();
+		lsm303_set_pm(&magacc, LSM_PM_OFF);
+		lps_set_pm(LPS_PM_OFF);
 		
 		switch(mode){
 		case MODE_INIT:
@@ -201,6 +203,8 @@ static INLINE void do_run(void){
 	
 	frame_count = 0;
 	
+	lps_set_pm(LPS_PM_NORMAL);
+	lsm303_set_pm(&magacc, LSM_PM_NORM);
 	lpry_power_on();
 	
 #if DO_LOG

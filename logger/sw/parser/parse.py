@@ -11,6 +11,10 @@ import sys
 #  @ref log "logger"
 #  @{
 
+##
+# @name Sensor order constants
+# @brief This is the order that all sensors are written in logs
+# @{
 LOG_SENSOR_GYR1   = 0
 LOG_SENSOR_GYR2   = 1
 LOG_SENSOR_ACC1   = 2
@@ -21,6 +25,7 @@ LOG_SENSOR_PRESS1 = 6
 LOG_SENSOR_PRESS2 = 7
 LOG_SENSOR_TEMP1  = 8
 LOG_SENSOR_TEMP2  = 9
+## @}
 
 ## Parse a log file
 #  @param f The file-like object to read from
@@ -237,11 +242,11 @@ def parse(f):
 			# Add this frameset to the larger list of framesets
 			result_stream.append(d)
 
-	f.close()
 	
 	#
 	# Concatenate adjacent frames of the same type (either data or silence)
 	#
+	print("Joining framesets...")
 	
 	# Define a silence stream and a data stream just for identifying adjacent frames
 	current_silence_stream = None
@@ -280,6 +285,7 @@ def parse(f):
 	"""
 	Interpolate to get all to the same sample rate
 	"""
+	print("Interpolating...")
 	
 	for frameset in new_result_stream:
 		if frameset.__class__ != dict:

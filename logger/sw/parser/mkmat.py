@@ -8,6 +8,7 @@ if __name__ == '__main__':
 	
 	with open(sys.argv[1], 'r') as f:
 		(header, data) = parse(f)
+		print("Processed data; generating output...")
 		mat = header
 		for i in range(len(data)):
 			mat["data"+str(i)] = data[i]

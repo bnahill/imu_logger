@@ -31,6 +31,9 @@ LOG_SENSOR_TEMP2  = 9
 #  @param f The file-like object to read from
 #  @return A tuple of (header_dict, frameset_list)
 def parse(f):
+	f.seek(0, os.SEEK_END)	
+	fsize = f.tell()
+	
 	f.seek(0)
 	
 	# Check the key and make sure it is a valid file
@@ -50,7 +53,9 @@ def parse(f):
 	
 	# Read the page size
 	page_size = struct.unpack_from('<I', f.read(4))[0]
-	print("Page Size: %u" % page_size)
+	num_pages = (fsize / page_size) - 1
+	print("Page Size: %u (%u pages)" % (page_size, num_pages))
+	
 	
 	# Read the sample rate
 	master_fs = struct.unpack_from('<I', f.read(4))[0]
@@ -83,17 +88,21 @@ def parse(f):
 	result_stream = []
 	pagenum = 0
 	
+	print("Reading data...")	
+
 	while True:
+		sys.stdout.write("%u%% complete\r" % (100 * pagenum / num_pages))
+		
 		# Read a page
 		page_buffer = f.read(page_size)
 		if(len(page_buffer) != page_size):
-			print("Log done!")
+			print("\nLog done!")
 			# Done!
 			break
 		page = np.frombuffer(page_buffer, dtype=np.uint8)
 		
 			
-		print("Page %u" % pagenum)
+		#print("Page %u" % pagenum)
 		pagenum += 1
 		
 		# Create in iterator to move around page
@@ -113,7 +122,7 @@ def parse(f):
 			if frameset_header == 0:
 				break
 			
-			print("Frameset header (int): %u" % (frameset_header & 0x7FFFFFFF,))
+			#print("Frameset header (int): %u" % (frameset_header & 0x7FFFFFFF,))
 			
 			# Increment to the first byte of data
 			page_remaining = page_remaining[4:]
@@ -122,9 +131,19 @@ def parse(f):
 			
 			# Check if this frameset is silent
 			if frameset_header & 0x80000000 == 0:
-				print("Silent frameset identified")
+				print("\nSilent frameset identified")
 				# Idle frameset
-				result_stream.append(int(frameset_header))
+				try:
+					# Attempt to append it to the previous frameset
+					# if of the same type
+					if result_stream[-1].__class__ == int:
+						result_stream[-1] = result_stream[-1] + int(frameset_header)
+					else:
+						# Not really, just want same behavior
+						raise IndexError
+				except IndexError:
+					result_stream.append(int(frameset_header))
+
 				continue
 			
 			# Initialize storage for all sensors
@@ -240,14 +259,33 @@ def parse(f):
 				d['temp2'] = np.array(temp2, dtype=np.float32)
 			
 			# Add this frameset to the larger list of framesets
-			result_stream.append(d)
-
+			#result_stream.append(d)
+			try:
+				if result_stream[-1].__class__ == list:
+					result_stream[-1].append(d)
+				else:
+					# Not really, just want same behavior
+					raise IndexError
+			except IndexError:
+				result_stream.append([d])
 	
 	#
 	# Concatenate adjacent frames of the same type (either data or silence)
 	#
 	print("Joining framesets...")
+
+	new_result_stream = []
+
+	for res in result_stream:
+		if res.__class__ == list:
+			new_result_stream.append(dict_append(res))
+		else:
+			new_result_stream.append(res)
+
+	result_stream = new_result_stream
 	
+	
+	"""	
 	# Define a silence stream and a data stream just for identifying adjacent frames
 	current_silence_stream = None
 	current_data_stream = None
@@ -281,13 +319,13 @@ def parse(f):
 		new_result_stream.append(current_data_stream)
 	elif current_silence_stream:
 		new_result_stream.append(current_silence_stream)
-	
+	"""
 	"""
 	Interpolate to get all to the same sample rate
 	"""
 	print("Interpolating...")
 	
-	for frameset in new_result_stream:
+	for frameset in result_stream:
 		if frameset.__class__ != dict:
 			# Only looking for those that contain data
 			# Silent framesets don't need interpolation
@@ -314,17 +352,44 @@ def parse(f):
 			elif key == 'temp2':
 				frameset[key] = interpolate(frameset[key],sub_rates[LOG_SENSOR_TEMP2]).T
 	
-	return (header, new_result_stream)
+	return (header, result_stream)
 
 ## Append a list of dicts (with array members) together
 #  @param dicts The list of dicts to use
 def dict_append(dicts):
 	ret = dict()
-	for k in dicts[0].keys():
-		ret[k] = dicts[0][k]
-		for d in dicts[1:]:
-			ret[k] = np.concatenate((ret[k].T, d[k].T)).T
-			#ret[k] += d[k
+	keys = dicts[0].keys()
+
+	for k in keys:
+		# Compute the length of the output
+		length = 0
+		if dicts[0][k].ndim == 2:
+			width = len(dicts[0][k])
+		else:
+			width = 1
+		
+		for d in dicts:
+			length += len(d[k].T)
+
+		# Create array
+		if width > 1:
+			arr = np.empty((width,length), dtype=np.float32)
+		else:
+			arr = np.empty(length, dtype=np.float32)
+
+		# Iterate through it
+		it = arr
+		for d in dicts:
+			# Assign value
+			if width > 1:
+				it.T[:len(d[k].T)] = d[k].T
+			else:
+				it.T[:len(d[k])] = d[k]
+			# Advance iterator
+			it = it.T[len(d[k].T):].T
+		# Assign to output dict
+		ret[k] = arr
+		
 	return ret
 
 ## Perform linear interpolation to expand an array

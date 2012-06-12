@@ -1,4 +1,5 @@
 #include "button.h"
+#include "exti.h"
 
 #define BUTTON_GPIO         GPIOC
 #define BUTTON_PORT_SRC     GPIO_PortSourceGPIOC
@@ -14,6 +15,8 @@
 static enum {BUTTON_ON, BUTTON_OFF} button_state;
 static uint16_t button_tmr_prescaler;
 static int has_been_pressed = 0;
+
+static void button_isr(uint8_t);
 
 static void button_set_off(void){
 	button_state = BUTTON_OFF;
@@ -38,7 +41,6 @@ static void button_start_timer(void){
 
 void button_init(void){
 	GPIO_InitTypeDef gpio_init_s;
-	EXTI_InitTypeDef exti_init_s;
 	NVIC_InitTypeDef nvic_init_s;
 	TIM_TimeBaseInitTypeDef  timebase_s;
 	RCC_ClocksTypeDef rcc_clocks;
@@ -56,14 +58,12 @@ void button_init(void){
 	gpio_init_s.GPIO_Pin = BUTTON_PIN;
 	GPIO_Init(BUTTON_GPIO, &gpio_init_s);
 	
-	GPIO_EXTILineConfig(BUTTON_PORT_SRC, BUTTON_PIN_SRC);
+
 	
-	// Configure EXTI
-	exti_init_s.EXTI_Line = BUTTON_EXTI;
-	exti_init_s.EXTI_Mode = EXTI_Mode_Interrupt;
-	exti_init_s.EXTI_Trigger = EXTI_Trigger_Falling;
-	exti_init_s.EXTI_LineCmd = ENABLE;
-	EXTI_Init(&exti_init_s);
+	exti_register_handler(BUTTON_GPIO,
+	                      BUTTON_PIN_SRC,
+	                      EXTI_Trigger_Falling,
+	                      button_isr);
 	
 	timebase_s.TIM_Period = 65535;
 	timebase_s.TIM_Prescaler = 0;
@@ -77,12 +77,6 @@ void button_init(void){
 	nvic_init_s.NVIC_IRQChannel = TIM2_IRQn;
 	nvic_init_s.NVIC_IRQChannelPreemptionPriority = 0;
 	nvic_init_s.NVIC_IRQChannelSubPriority = 1;
-	nvic_init_s.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&nvic_init_s);
-	
-	nvic_init_s.NVIC_IRQChannel = BUTTON_EXTI_IRQ;
-	nvic_init_s.NVIC_IRQChannelPreemptionPriority = 0x0F;
-	nvic_init_s.NVIC_IRQChannelSubPriority = 0x0F;
 	nvic_init_s.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&nvic_init_s);
 	
@@ -101,7 +95,7 @@ int button_check_press(void){
 	return 0;
 }
 
-void BUTTON_EXTI_ISR(void){
+static void button_isr(uint8_t _){
   if(EXTI_GetITStatus(BUTTON_EXTI) != RESET)
   {
     /* Clear the  EXTI line 0 pending bit */

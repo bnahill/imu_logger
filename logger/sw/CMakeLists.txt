@@ -95,6 +95,7 @@ set(APP_SOURCES
 	${APP_DIR}/main.c
 	${APP_DIR}/sdio_ll.c
 	${APP_DIR}/i2c.c
+	${APP_DIR}/exti.c
 	${APP_DIR}/lps001.c
 	${APP_DIR}/rtc.c
 	${APP_DIR}/stm32f10x_it.c

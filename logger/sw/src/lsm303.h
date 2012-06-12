@@ -13,6 +13,41 @@
 //! @name Public Data Structures
 //! @{
 
+//! Interrupt sources
+typedef enum {
+	LSM_INTSRC_XLO = 0x01,
+	LSM_INTSRC_XHI = 0x02,
+	LSM_INTSRC_YLO = 0x04,
+	LSM_INTSRC_YHI = 0x08,
+	LSM_INTSRC_ZLO = 0x10,
+	LSM_INTSRC_ZHI = 0x20
+} lsm_intsrc_t;
+
+typedef enum {
+	LSM_INTMODE_OR = 0,
+	LSM_INTMODE_6DIR_MOVEMENT = 1,
+	LSM_INTMODE_AND = 2,
+	LSM_INTMODE_6DIR_POSITION = 3
+} lsm_intmode_t;
+
+typedef enum {
+	LSM_INT_1 = 0,
+	LSM_INT_2 = 1
+} lsm_int_index_t;
+
+typedef struct {
+	//! The GPIO pin to use
+	af_gpio_pin_t const gpio;
+	enum {
+		ENABLED,
+		DISABLED
+	} state;
+	uint8_t src;
+	lsm_intmode_t mode;
+	uint8_t threshold;
+	uint8_t duration;
+} lsm_int_t;
+
 //! Accelerometer data output rate
 typedef enum {
 	LSM_ACC_RATE_50   = 0,
@@ -70,6 +105,7 @@ typedef struct {
 	euclidean3_t   acc;
 	//! The I2C device to use
 	i2c_t *const   i2c;
+	lsm_int_t      interrupt[2];
 	//! The accelerometer output rate
 	lsm_acc_rate_t acc_rate;
 	//! The magnetometer output rate
@@ -187,6 +223,17 @@ void lsm303_update_mag(void);
  structures
  */
 void lsm303_read_sync(void);
+
+int lsm303_int_config(lsm303_t *lsm,
+                      lsm_int_index_t index,
+                      uint8_t src,
+                      lsm_intmode_t mode,
+                      uint8_t threshold,
+                      uint8_t duration);
+
+void lsm303_int_enable(lsm303_t *lsm, lsm_int_index_t index);
+
+void lsm303_int_disable(lsm303_t *lsm, lsm_int_index_t index);
 
 //! @}
 

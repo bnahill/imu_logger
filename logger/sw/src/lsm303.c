@@ -114,6 +114,10 @@ lsm303_t magacc = {
 	{0.0, 0.0, 0.0},
 	{0.0, 0.0, 0.0},
 	&i2c1,
+	{
+		{{GPIOB, BIT(12), 12}},
+		{{GPIOB, BIT(13), 13}},
+	},
 	LSM_ACC_RATE_50,
 	LSM_MAG_RATE_30,
 	LSM_ACC_FS_8G,
@@ -123,6 +127,60 @@ lsm303_t magacc = {
 #endif
 
 //! @}
+
+int lsm303_int_config(lsm303_t *lsm,
+                      lsm_int_index_t index,
+                      uint8_t src,
+                      lsm_intmode_t mode,
+                      uint8_t threshold,
+                      uint8_t duration){
+	uint8_t buffer[4];
+	i2c_transfer_t xfer;
+	lsm_int_t * const i = &lsm->interrupt[index];
+	// Check for valid numbers
+	if((threshold & 0x80) || (duration & 0x80) || (src & 0xC0))
+		return 0;
+	i->src = src;
+	i->mode = mode;
+	i->threshold = threshold;
+	i->duration = duration;
+	
+	i2c_mk_transfer(&xfer, I2C_OP_WRITE, ACC_ADDR, ACC_REG_INT1_CFG + 4*index,
+	                buffer, 4);
+	
+	buffer[0] = (mode << 6) | src;
+	// This address is read-only, but whatever...
+	buffer[1] = 0;
+	buffer[2] = threshold;
+	buffer[3] = duration;
+	
+	i2c_transfer(lsm->i2c, &xfer);
+	while(!xfer.done);
+	return 1;
+}
+
+void lsm303_int_enable(lsm303_t *lsm, lsm_int_index_t index){
+	EXTI_InitTypeDef exti_init_s;
+	
+	lsm_int_t * const i = &lsm->interrupt[index];
+	i->state = ENABLED;
+	
+	exti_init_s.EXTI_Line = i->gpio.pin;
+	exti_init_s.EXTI_Mode = EXTI_Mode_Interrupt;
+	exti_init_s.EXTI_Trigger = EXTI_Trigger_Rising;
+	exti_init_s.EXTI_LineCmd = ENABLE;
+	EXTI_Init(&exti_init_s);
+	
+	// Read to clear interrupts
+	i2c_read_byte(lsm->i2c, ACC_ADDR, ACC_REG_INT1_SRC + (4*index));
+}
+
+void lsm303_int_disable(lsm303_t *lsm, lsm_int_index_t index){
+	lsm_int_t * const i = &lsm->interrupt[index];
+	
+	EXTI->RTSR &= i->gpio.pin;
+	EXTI->FTSR &= i->gpio.pin;
+}
 
 void lsm303_set_pm(lsm303_t *lsm, lsm_pm_t pm){
 	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL1, (pm << 5) | (lsm->acc_rate << 3) | 0x07);
@@ -149,6 +207,9 @@ static void lsm303_device_init(lsm303_t *lsm){
 	lsm->acc_xfer.done = 0;
 	lsm->mag_xfer.busy = 0;
 	lsm->acc_xfer.busy = 0;
+	
+	lsm->interrupt[0].src = 0;
+	lsm->interrupt[1].src = 0;
 	
 	conf_buffer[0] = (lsm->pow_mode << 5) | (lsm->acc_rate << 3) | 0x07;
 	conf_buffer[1] = 0;

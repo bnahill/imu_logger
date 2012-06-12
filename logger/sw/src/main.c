@@ -6,6 +6,7 @@
  
 
 #include "stm32f10x.h"
+#include "exti.h"
 #include "lsm303.h"
 #include "lpry.h"
 #include "lps001.h"
@@ -27,7 +28,7 @@
  */
 
 //! Flag for debugging to not log any data
-#define DO_LOG 1
+#define DO_LOG 0
 
 //! Flag to enable stop mode when not recording (core debug doesn't work when
 //! stopped)
@@ -118,6 +119,8 @@ int main(void){
 #if DO_LOPWR
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
 #endif
+	
+	exti_init();
 	
 	// Initialize sensors and peripherals
 	rtc_init();

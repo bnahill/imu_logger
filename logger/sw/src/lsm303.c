@@ -1,6 +1,7 @@
 #include "stm32f10x.h"
 #include "i2c.h"
 #include "lsm303.h"
+#include "exti.h"
 
 /*!
  @addtogroup lsm LSM303 Accelerometer + Magnetometer
@@ -22,7 +23,7 @@
 #define ACC_REG_CTRL3     0x22
 #define ACC_REG_CTRL4     0x23
 #define ACC_REG_CTRL5     0x24
-#define ACC_REG_CTRL6     0x25
+#define ACC_REG_HP_RESET  0x25
 #define ACC_REG_REFA      0x26
 #define ACC_REG_STAT      0x27
 #define ACC_REG_X_L       0x28
@@ -128,58 +129,68 @@ lsm303_t magacc = {
 
 //! @}
 
-int lsm303_int_config(lsm303_t *lsm,
-                      lsm_int_index_t index,
-                      uint8_t src,
-                      lsm_intmode_t mode,
-                      uint8_t threshold,
-                      uint8_t duration){
+int lsm303_int_config(lsm303_t *lsm, lsm_int_config_t const *config){
 	uint8_t buffer[4];
 	i2c_transfer_t xfer;
-	lsm_int_t * const i = &lsm->interrupt[index];
+	lsm_int_t * const i = &lsm->interrupt[config->index];
 	// Check for valid numbers
-	if((threshold & 0x80) || (duration & 0x80) || (src & 0xC0))
+	if((config->threshold & 0x80) || (config->duration & 0x80) || (config->src & 0xC0))
 		return 0;
-	i->src = src;
-	i->mode = mode;
-	i->threshold = threshold;
-	i->duration = duration;
+	i->src = config->src;
+	i->mode = config->mode;
+	i->threshold = config->threshold;
+	i->duration = config->duration;
+	i->cb = config->cb;
+	i->arg = config->arg;
 	
-	i2c_mk_transfer(&xfer, I2C_OP_WRITE, ACC_ADDR, ACC_REG_INT1_CFG + 4*index,
-	                buffer, 4);
-	
-	buffer[0] = (mode << 6) | src;
-	// This address is read-only, but whatever...
+	// Write threshold and duration
+	buffer[0] = (i->mode << 6) | i->src;
 	buffer[1] = 0;
-	buffer[2] = threshold;
-	buffer[3] = duration;
+	buffer[2] = i->threshold;
+	buffer[3] = i->duration;
+	
+	i2c_mk_transfer(&xfer, I2C_OP_WRITE, ACC_ADDR, 0x80 + ACC_REG_INT1_CFG + 4*config->index,
+	                buffer, 4);
 	
 	i2c_transfer(lsm->i2c, &xfer);
 	while(!xfer.done);
+	
+	
+	if(!exti_register_handler(i->gpio.gpio,
+	                          i->gpio.pinsrc,
+	                          EXTI_Trigger_Rising,
+	                          config->cb,
+	                          config->arg))
+		return 0;
+	
+	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_INT1_CFG + 4*config->index, (i->mode << 6) | i->src);
+	
+	i2c_mk_transfer(&xfer, I2C_OP_READ, ACC_ADDR, 0x80 + ACC_REG_INT1_CFG + 4*config->index, buffer, 4);
+	i2c_transfer(lsm->i2c, &xfer);
+	while(!xfer.done);
+	
+	EXTI->RTSR &= ~i->gpio.pin;
+	EXTI->FTSR &= ~i->gpio.pin;
+	
 	return 1;
 }
 
 void lsm303_int_enable(lsm303_t *lsm, lsm_int_index_t index){
-	EXTI_InitTypeDef exti_init_s;
-	
 	lsm_int_t * const i = &lsm->interrupt[index];
 	i->state = ENABLED;
 	
-	exti_init_s.EXTI_Line = i->gpio.pin;
-	exti_init_s.EXTI_Mode = EXTI_Mode_Interrupt;
-	exti_init_s.EXTI_Trigger = EXTI_Trigger_Rising;
-	exti_init_s.EXTI_LineCmd = ENABLE;
-	EXTI_Init(&exti_init_s);
-	
 	// Read to clear interrupts
 	i2c_read_byte(lsm->i2c, ACC_ADDR, ACC_REG_INT1_SRC + (4*index));
+	
+	EXTI->RTSR &= ~i->gpio.pin;
+	EXTI->FTSR |= i->gpio.pin;
 }
 
 void lsm303_int_disable(lsm303_t *lsm, lsm_int_index_t index){
 	lsm_int_t * const i = &lsm->interrupt[index];
 	
-	EXTI->RTSR &= i->gpio.pin;
-	EXTI->FTSR &= i->gpio.pin;
+	EXTI->RTSR &= ~i->gpio.pin;
+	EXTI->FTSR &= ~i->gpio.pin;
 }
 
 void lsm303_set_pm(lsm303_t *lsm, lsm_pm_t pm){
@@ -198,9 +209,19 @@ void lsm303_set_acc_rate(lsm303_t *lsm, lsm_acc_rate_t acc_rate){
 }
 
 static void lsm303_device_init(lsm303_t *lsm){
-	// Init CTRL1-6
-	uint8_t conf_buffer[6];
+	GPIO_InitTypeDef gpio_init_s;
+	
+	// Init CTRL1-5
+	uint8_t conf_buffer[5];
 	i2c_transfer_t xfer;
+	
+	// Initialize interrupt pins
+	GPIO_StructInit(&gpio_init_s);
+	gpio_init_s.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	gpio_init_s.GPIO_Pin = lsm->interrupt[0].gpio.pin;
+	GPIO_Init(lsm->interrupt[0].gpio.gpio, &gpio_init_s);
+	gpio_init_s.GPIO_Pin = lsm->interrupt[1].gpio.pin;
+	GPIO_Init(lsm->interrupt[1].gpio.gpio, &gpio_init_s);
 	
 	// Initialize both to not appear busy
 	lsm->mag_xfer.done = 0;
@@ -213,22 +234,25 @@ static void lsm303_device_init(lsm303_t *lsm){
 	
 	conf_buffer[0] = (lsm->pow_mode << 5) | (lsm->acc_rate << 3) | 0x07;
 	conf_buffer[1] = 0;
-	conf_buffer[2] = 0;
+	conf_buffer[2] = 0xA4;
 	conf_buffer[3] = 0x80 | (lsm->acc_fs << 4);
-	conf_buffer[4] = 0;
-	conf_buffer[5] = 0;
+	// Enable sleep-to-wake
+	conf_buffer[4] = 0x03;
 	
 	i2c_mk_transfer(&xfer,
 	                I2C_OP_WRITE,
 	                ACC_ADDR,
 	                ACC_REG_CTRL1 | 0x80,
 	                conf_buffer,
-	                6
+	                5
 	);
 
 	// Initialize I2C device
 	i2c_init(lsm->i2c, I2C_MODE_MASTER, 400000);
 
+	// Reset memory
+	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL2, 0x80);
+	
 	// Apply accelerometer configuration
 	i2c_transfer(lsm->i2c, &xfer);
 	while(!xfer.done);

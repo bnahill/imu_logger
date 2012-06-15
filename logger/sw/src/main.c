@@ -32,7 +32,7 @@
 
 //! Flag to enable stop mode when not recording (core debug doesn't work when
 //! stopped)
-#define DO_LOPWR 1
+#define DO_LOPWR 0
 
 //! Flag to enable the internal RC oscillator to drive debug circuitry in
 //! stop mode
@@ -110,6 +110,10 @@ static INLINE void do_run(void);
 
 //! @}
 
+static void lsm_wakeup(void *_);
+
+static void config_lsm_interrupts(void);
+
 //! @}
 
 
@@ -132,15 +136,17 @@ int main(void){
 	
 	mode = MODE_INIT;
 
+	config_lsm_interrupts();
+	
 #if DO_LP_DEBUG
 	DBGMCU_Config(DBGMCU_STOP, ENABLE);
 #endif
 	
 	while(1){
 		lpry_power_off();
-		lsm303_set_pm(&magacc, LSM_PM_OFF);
+		//lsm303_set_pm(&magacc, LSM_PM_LP_1);
 		lps_set_pm(LPS_PM_OFF);
-		
+		lsm303_int_enable(&magacc, LSM_INT_1);
 		switch(mode){
 		case MODE_INIT:
 			do_init();
@@ -278,6 +284,29 @@ static INLINE void do_run(void){
 	logger_close();
 #endif
 }
+
+static void lsm_wakeup(void *_){
+	lsm303_int_disable(&magacc, LSM_INT_1);
+	if(mode != MODE_ERROR){
+		mode = MODE_RUNNING;
+	}
+}
+
+static void config_lsm_interrupts(void){
+	lsm_int_config_t conf;
+	conf.arg = NULL;
+	conf.cb = lsm_wakeup;
+	conf.threshold = 10;
+	conf.duration = 1;
+	conf.index = LSM_INT_1;
+	conf.mode = LSM_INTMODE_OR;
+	conf.src = LSM_INTSRC_XHI | LSM_INTSRC_YHI | LSM_INTSRC_ZHI;
+	
+	if(!lsm303_int_config(&magacc, &conf))
+		while(1);
+}
+
+
 
 void led_init(void){
 	GPIO_InitTypeDef gpio_init_s;

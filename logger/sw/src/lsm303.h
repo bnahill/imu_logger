@@ -35,19 +35,6 @@ typedef enum {
 	LSM_INT_2 = 1
 } lsm_int_index_t;
 
-typedef struct {
-	//! The GPIO pin to use
-	af_gpio_pin_t const gpio;
-	enum {
-		ENABLED,
-		DISABLED
-	} state;
-	uint8_t src;
-	lsm_intmode_t mode;
-	uint8_t threshold;
-	uint8_t duration;
-} lsm_int_t;
-
 //! Accelerometer data output rate
 typedef enum {
 	LSM_ACC_RATE_50   = 0,
@@ -96,6 +83,34 @@ typedef enum {
 	LSM_MAG_FS_5_6   = 6,
 	LSM_MAG_FS_8_1   = 7
 } lsm_mag_fs_t;
+
+typedef void (*lsm_callback_t)(void *);
+
+typedef struct {
+	//! The GPIO pin to use
+	af_gpio_pin_t const gpio;
+	enum {
+		ENABLED,
+		DISABLED
+	} state;
+	uint8_t src;
+	lsm_intmode_t mode;
+	uint8_t threshold;
+	uint8_t duration;
+	lsm_callback_t cb;
+	void *arg;
+} lsm_int_t;
+
+//! A configuration structure to pass 
+typedef struct {
+	lsm_int_index_t index;
+	uint8_t src;
+	lsm_intmode_t mode;
+	uint8_t threshold;
+	uint8_t duration;
+	lsm_callback_t cb;
+	void *arg;
+} lsm_int_config_t;
 
 //! Configuration and state information for an LSM303DLH
 typedef struct {
@@ -224,12 +239,7 @@ void lsm303_update_mag(void);
  */
 void lsm303_read_sync(void);
 
-int lsm303_int_config(lsm303_t *lsm,
-                      lsm_int_index_t index,
-                      uint8_t src,
-                      lsm_intmode_t mode,
-                      uint8_t threshold,
-                      uint8_t duration);
+int lsm303_int_config(lsm303_t *lsm, lsm_int_config_t const *config);
 
 void lsm303_int_enable(lsm303_t *lsm, lsm_int_index_t index);
 

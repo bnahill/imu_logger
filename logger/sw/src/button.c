@@ -16,7 +16,7 @@ static enum {BUTTON_ON, BUTTON_OFF} button_state;
 static uint16_t button_tmr_prescaler;
 static int has_been_pressed = 0;
 
-static void button_isr(uint8_t);
+static void button_isr(void *);
 
 static void button_set_off(void){
 	button_state = BUTTON_OFF;
@@ -57,14 +57,13 @@ void button_init(void){
 	gpio_init_s.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	gpio_init_s.GPIO_Pin = BUTTON_PIN;
 	GPIO_Init(BUTTON_GPIO, &gpio_init_s);
-	
 
-	
 	exti_register_handler(BUTTON_GPIO,
 	                      BUTTON_PIN_SRC,
 	                      EXTI_Trigger_Falling,
-	                      button_isr);
-	
+	                      button_isr,
+	                      NULL);
+
 	timebase_s.TIM_Period = 65535;
 	timebase_s.TIM_Prescaler = 0;
 	timebase_s.TIM_ClockDivision = 0;
@@ -95,11 +94,7 @@ int button_check_press(void){
 	return 0;
 }
 
-static void button_isr(uint8_t _){
-  if(EXTI_GetITStatus(BUTTON_EXTI) != RESET)
-  {
-    /* Clear the  EXTI line 0 pending bit */
-    EXTI_ClearITPendingBit(BUTTON_EXTI);
+static void button_isr(void *_){
 	switch(button_state){
 	case BUTTON_ON:
 		// Check if it's already gone away
@@ -120,7 +115,6 @@ static void button_isr(uint8_t _){
 		button_start_timer();
 		break;
 	}
-  }
 }
 
 

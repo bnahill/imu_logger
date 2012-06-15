@@ -172,12 +172,19 @@ add_custom_target(ctags
 set(GDB    ${TC_PREFIX}gdb)
 set(GDBTUI ${TC_PREFIX}gdbtui)
 
-set(GDB_ARGS -ex "target remote localhost:3333" -ex "mon reset init")
-add_custom_target(gdb COMMAND ${GDB} ${GDB_ARGS} ${OUTFILE})
-add_custom_target(gdbtui COMMAND ${GDBTUI} ${GDB_ARGS} ${OUTFILE})
-add_custom_target(ddd COMMAND ddd --gdb --debugger \"${GDB} ${GDB_ARGS}\" ${OUTFILE} > /dev/null 2>&1 &
+set(GDB_ARGS -x start.gdb)
+add_custom_target(gdb COMMAND ${GDB} ${GDB_ARGS})
+add_custom_target(gdbtui COMMAND ${GDBTUI} ${GDB_ARGS})
+add_custom_target(ddd COMMAND ddd --gdb --debugger \"${GDB} ${GDB_ARGS}\" > /dev/null 2>&1 &
 	COMMENT "Launching DDD"
 )
+
+add_dependencies(gdb gdb_script)
+add_dependencies(gdbtui gdb_script)
+add_dependencies(ddd gdb_script)
+
+add_custom_command(OUTPUT start.gdb COMMAND cat ${CMAKE_SOURCE_DIR}/start.gdb > start.gdb DEPENDS ${CMAKE_SOURCE_DIR}/start.gdb)
+add_custom_target(gdb_script DEPENDS start.gdb)
 
 ##############################################################
 # Configuration for OpenOCD
@@ -185,7 +192,7 @@ add_custom_target(ddd COMMAND ddd --gdb --debugger \"${GDB} ${GDB_ARGS}\" ${OUTF
 
 set(OPENOCD openocd)
 set(OPENOCD_SCRIPTS
-	board/stm32f4discovery.cfg
+	target.cfg
 )
 foreach(s ${OPENOCD_SCRIPTS})
 	set(OPENOCD_ARGS ${OPENOCD_ARGS} -f ${s})
@@ -195,6 +202,9 @@ add_custom_target(openocd COMMAND ${OPENOCD} ${OPENOCD_ARGS}
 	COMMENT "Launching OpenOCD..."
 )
 
+add_custom_command(OUTPUT target.cfg COMMAND cat ${CMAKE_SOURCE_DIR}/target.cfg > target.cfg DEPENDS ${CMAKE_SOURCE_DIR}/target.cfg)
+add_custom_target(openocd_script DEPENDS target.cfg)
+add_dependencies(openocd openocd_script)
 ##############################################################
 # Doxygen Output
 ##############################################################

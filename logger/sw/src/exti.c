@@ -35,22 +35,48 @@ void exti_init(void){
 int exti_register_handler(GPIO_TypeDef const * gpio,
                           uint8_t pin_num,
                           EXTITrigger_TypeDef direction,
-                          exti_callback_t cb){
+                          exti_callback_t cb,
+                          void *arg){
 	EXTI_InitTypeDef exti_init_s;
+	uint8_t portsrc;
 	uint32_t mask = BIT(pin_num);
+	exti_handler_t * const handler = &handlers[pin_num];
 	__disable_irq();
 	
 	// Check if there's already a handler
-	if((pin_num > 15) || handlers[pin_num].valid ||
+	if((pin_num > 15) || (handler->valid && handler->gpio != gpio) ||
 	   (EXTI->RTSR & mask) || (EXTI->FTSR & mask)){
 		__enable_irq();
 		return 0;
 	}
 	
-	GPIO_EXTILineConfig(gpio - GPIOA, pin_num);
+	switch((uint32_t)gpio){
+	case (uint32_t)GPIOA:
+		portsrc = GPIO_PortSourceGPIOA;
+		break;
+	case (uint32_t)GPIOB:
+		portsrc = GPIO_PortSourceGPIOB;
+		break;
+	case (uint32_t)GPIOC:
+		portsrc = GPIO_PortSourceGPIOC;
+		break;
+	case (uint32_t)GPIOD:
+		portsrc = GPIO_PortSourceGPIOD;
+		break;
+	case (uint32_t)GPIOE:
+		portsrc = GPIO_PortSourceGPIOE;
+		break;
+	default:
+		__enable_irq();
+		return 0;
+	}
 	
-	handlers[pin_num].valid = 1;
-	handlers[pin_num].cb = cb;
+	GPIO_EXTILineConfig(portsrc, pin_num);
+	
+	handler->gpio = gpio;
+	handler->valid = 1;
+	handler->cb = cb;
+	handler->arg = arg;
 	
 	// Configure EXTI
 	exti_init_s.EXTI_Line = BIT(pin_num);
@@ -64,12 +90,11 @@ int exti_register_handler(GPIO_TypeDef const * gpio,
 	return 1;
 }
 
-/*
 
 static INLINE void exti_run_isr(uint32_t pin_num){
 	EXTI->PR = BIT(pin_num);
 	if(handlers[pin_num].valid){
-		handlers[pin_num].cb(pin_num);
+		handlers[pin_num].cb(handlers[pin_num].arg);
 	}
 }
 
@@ -98,4 +123,3 @@ void EXTI2_IRQHandler(void){exti_run_isr(2);}
 void EXTI3_IRQHandler(void){exti_run_isr(3);}
 void EXTI4_IRQHandler(void){exti_run_isr(4);}
 
-*/

@@ -100,12 +100,6 @@ static const float mag_scale_z[] = {
 	1.0 / 205.0
 };
 
-static void lsm303_do_read_acc(lsm303_t *lsm);
-static void lsm303_do_read_mag(lsm303_t *lsm);
-static void lsm303_do_update_acc(lsm303_t *lsm);
-static void lsm303_do_update_mag(lsm303_t *lsm);
-static void lsm303_device_init(lsm303_t *lsm);
-
 //! @}
 
 #if HAS_MAGACC
@@ -123,15 +117,17 @@ lsm303_t magacc = {
 	LSM_MAG_RATE_30,
 	LSM_ACC_FS_8G,
 	LSM_MAG_FS_4,
-	LSM_PM_NORM
+	LSM_PM_NORM,
+	LSM_HP_0,
+	LSM_DISABLE
 };
 #endif
 
 //! @}
 
 int lsm303_int_config(lsm303_t *lsm, lsm_int_config_t const *config){
-	uint8_t buffer[4];
-	i2c_transfer_t xfer;
+	uint8_t buffer[128];
+
 	lsm_int_t * const i = &lsm->interrupt[config->index];
 	// Check for valid numbers
 	if((config->threshold & 0x80) || (config->duration & 0x80) || (config->src & 0xC0))
@@ -142,6 +138,10 @@ int lsm303_int_config(lsm303_t *lsm, lsm_int_config_t const *config){
 	i->duration = config->duration;
 	i->cb = config->cb;
 	i->arg = config->arg;
+	i->highpass = config->highpass;
+	
+	*buffer = i2c_read_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL2) & ~(0x04 << config->index);
+	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL2, *buffer | (i->highpass << (2+config->index)));
 	
 	// Write threshold and duration
 	buffer[0] = (i->mode << 6) | i->src;
@@ -149,12 +149,7 @@ int lsm303_int_config(lsm303_t *lsm, lsm_int_config_t const *config){
 	buffer[2] = i->threshold;
 	buffer[3] = i->duration;
 	
-	i2c_mk_transfer(&xfer, I2C_OP_WRITE, ACC_ADDR, 0x80 + ACC_REG_INT1_CFG + 4*config->index,
-	                buffer, 4);
-	
-	i2c_transfer(lsm->i2c, &xfer);
-	while(!xfer.done);
-	
+	i2c_write_buffer(lsm->i2c, ACC_ADDR, 0x80 + ACC_REG_INT1_CFG + 4*config->index, buffer, 4);
 	
 	if(!exti_register_handler(i->gpio.gpio,
 	                          i->gpio.pinsrc,
@@ -163,32 +158,34 @@ int lsm303_int_config(lsm303_t *lsm, lsm_int_config_t const *config){
 	                          config->arg))
 		return 0;
 	
-	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_INT1_CFG + 4*config->index, (i->mode << 6) | i->src);
-	
-	i2c_mk_transfer(&xfer, I2C_OP_READ, ACC_ADDR, 0x80 + ACC_REG_INT1_CFG + 4*config->index, buffer, 4);
-	i2c_transfer(lsm->i2c, &xfer);
-	while(!xfer.done);
-	
 	EXTI->RTSR &= ~i->gpio.pin;
 	EXTI->FTSR &= ~i->gpio.pin;
+	
+	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_INT1_CFG + 4*config->index, (i->mode << 6) | i->src);
+	
+	i2c_read_buffer(lsm->i2c, ACC_ADDR, 0x80 + ACC_REG_INT1_CFG + 4*config->index, buffer, 4);
 	
 	return 1;
 }
 
 void lsm303_int_enable(lsm303_t *lsm, lsm_int_index_t index){
 	lsm_int_t * const i = &lsm->interrupt[index];
-	i->state = ENABLED;
-	
-	// Read to clear interrupts
-	i2c_read_byte(lsm->i2c, ACC_ADDR, ACC_REG_INT1_SRC + (4*index));
+	i->state = LSM_ENABLE;
 	
 	EXTI->RTSR &= ~i->gpio.pin;
 	EXTI->FTSR |= i->gpio.pin;
+	
+	// Read to clear old interrupts
+	i2c_read_byte(lsm->i2c, ACC_ADDR, ACC_REG_INT1_SRC + (4*index));
 }
 
 void lsm303_int_disable(lsm303_t *lsm, lsm_int_index_t index){
 	lsm_int_t * const i = &lsm->interrupt[index];
+	i->state = LSM_DISABLE;
+	// Mask the interrupt
+	//exti_mask(i->gpio.pin);
 	
+	// Disable edge triggers
 	EXTI->RTSR &= ~i->gpio.pin;
 	EXTI->FTSR &= ~i->gpio.pin;
 }
@@ -208,12 +205,11 @@ void lsm303_set_acc_rate(lsm303_t *lsm, lsm_acc_rate_t acc_rate){
 	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL1, (lsm->pow_mode << 5) | (lsm->acc_rate << 3) | 0x07);
 }
 
-static void lsm303_device_init(lsm303_t *lsm){
+void lsm303_init(lsm303_t *lsm){
 	GPIO_InitTypeDef gpio_init_s;
 	
 	// Init CTRL1-5
 	uint8_t conf_buffer[5];
-	i2c_transfer_t xfer;
 	
 	// Initialize interrupt pins
 	GPIO_StructInit(&gpio_init_s);
@@ -233,44 +229,35 @@ static void lsm303_device_init(lsm303_t *lsm){
 	lsm->interrupt[1].src = 0;
 	
 	conf_buffer[0] = (lsm->pow_mode << 5) | (lsm->acc_rate << 3) | 0x07;
-	conf_buffer[1] = 0;
+	conf_buffer[1] = lsm->hp_cuttoff | (lsm->hp_enable << 4);
 	conf_buffer[2] = 0xA4;
-	conf_buffer[3] = 0x80 | (lsm->acc_fs << 4);
+	// BDU
+	//conf_buffer[3] = 0x80 | (lsm->acc_fs << 4);
+	// No BDU
+	conf_buffer[3] = (lsm->acc_fs << 4);
 	// Enable sleep-to-wake
 	conf_buffer[4] = 0x03;
 	
-	i2c_mk_transfer(&xfer,
-	                I2C_OP_WRITE,
-	                ACC_ADDR,
-	                ACC_REG_CTRL1 | 0x80,
-	                conf_buffer,
-	                5
-	);
 
 	// Initialize I2C device
 	i2c_init(lsm->i2c, I2C_MODE_MASTER, 400000);
 
 	// Reset memory
 	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL2, 0x80);
+	while(i2c_read_byte(lsm->i2c, ACC_ADDR, ACC_REG_CTRL2) != 0x00);
 	
 	// Apply accelerometer configuration
-	i2c_transfer(lsm->i2c, &xfer);
-	while(!xfer.done);
+	i2c_write_buffer(lsm->i2c, ACC_ADDR, ACC_REG_CTRL1 | 0x80, conf_buffer, 5);
 
-	xfer.devaddr = MAG_ADDR;
-	xfer.addr = MAG_REG_CRA | 0x80;
-	xfer.buffer = conf_buffer;
 	conf_buffer[0] = lsm->mag_rate << 2;
 	conf_buffer[1] = lsm->mag_fs << 5;
 	conf_buffer[2] = 0;
-	xfer.count = 3;
 
 	// Apply magnetometer configuration
-	i2c_transfer(lsm->i2c, &xfer);
-	while(!xfer.done);
+	i2c_write_buffer(lsm->i2c, MAG_ADDR, MAG_REG_CRA | 0x80, conf_buffer, 3);
 }
 
-static void lsm303_do_read_mag(lsm303_t *lsm){
+void lsm303_read_mag(lsm303_t *lsm){
 	i2c_mk_transfer(&lsm->mag_xfer,
 	                I2C_OP_READ,
 	                MAG_ADDR,
@@ -283,7 +270,7 @@ static void lsm303_do_read_mag(lsm303_t *lsm){
 	i2c_transfer(lsm->i2c, &lsm->mag_xfer);
 }
 
-static void lsm303_do_read_acc(lsm303_t *lsm){
+void lsm303_read_acc(lsm303_t *lsm){
 	i2c_mk_transfer(&lsm->acc_xfer,
 	                I2C_OP_READ,
 	                ACC_ADDR,
@@ -296,7 +283,16 @@ static void lsm303_do_read_acc(lsm303_t *lsm){
 	i2c_transfer(lsm->i2c, &lsm->acc_xfer);
 }
 
-int lsm303_mag_xfer_complete(void){
+
+int lsm303_mag_xfer_complete(lsm303_t *lsm){
+	return lsm->mag_xfer.done;
+}
+
+int lsm303_acc_xfer_complete(lsm303_t *lsm){
+	return lsm->acc_xfer.done;
+}
+
+int lsm303_mag_xfer_complete_all(void){
 #if HAS_MAGACC
 	if(!magacc.mag_xfer.done)
 		return 0;
@@ -304,15 +300,15 @@ int lsm303_mag_xfer_complete(void){
 	return 1;	
 }
 
-int lsm303_acc_xfer_complete(void){
+int lsm303_acc_xfer_complete_all(void){
 #if HAS_MAGACC
-	if(!magacc.acc_xfer.done || !magacc.acc_xfer.done)
+	if(!magacc.acc_xfer.done)
 		return 0;
 #endif
 	return 1;
 }
 
-int lsm303_xfer_complete(void){
+int lsm303_xfer_complete_all(void){
 #if HAS_MAGACC
 	if(!magacc.mag_xfer.done || !magacc.acc_xfer.done)
 		return 0;
@@ -320,13 +316,13 @@ int lsm303_xfer_complete(void){
 	return 1;	
 }
 
-void lsm303_read_sync(void){
-	lsm303_read();
-	while(!lsm303_xfer_complete());
-	lsm303_update();
+void lsm303_read_sync_all(void){
+	lsm303_read_all();
+	while(!lsm303_xfer_complete_all());
+	lsm303_update_all();
 }
 
-static void lsm303_do_update_acc(lsm303_t *lsm){
+void lsm303_update_acc(lsm303_t *lsm){
 	int16_t tmp16;
 	
 	lsm->acc_xfer.done = 0;
@@ -341,7 +337,7 @@ static void lsm303_do_update_acc(lsm303_t *lsm){
 	lsm->acc.z = (tmp16 >> 4) * acc_scale[lsm->acc_fs];
 }
 
-void lsm303_do_update_mag(lsm303_t *lsm){
+void lsm303_update_mag(lsm303_t *lsm){
 	int16_t tmp16;
 	
 	lsm->acc_xfer.done = 0;
@@ -354,45 +350,45 @@ void lsm303_do_update_mag(lsm303_t *lsm){
 	lsm->mag.y = tmp16 * mag_scale_z[lsm->mag_fs];
 }
 
-void lsm303_update_acc(void){
+void lsm303_update_acc_all(void){
 #if HAS_MAGACC
-	lsm303_do_update_acc(&magacc);
+	lsm303_update_acc(&magacc);
 #endif	
 }
 
-void lsm303_update_mag(void){
+void lsm303_update_mag_all(void){
 #if HAS_MAGACC
-	lsm303_do_update_mag(&magacc);
+	lsm303_update_mag(&magacc);
 #endif	
 }
 
-void lsm303_update(void){
+void lsm303_update_all(void){
 #if HAS_MAGACC
-	lsm303_do_update_acc(&magacc);
-	lsm303_do_update_mag(&magacc);
+	lsm303_update_acc(&magacc);
+	lsm303_update_mag(&magacc);
 #endif	
 }
 
-void lsm303_init(void){
+void lsm303_init_all(void){
 #if HAS_MAGACC
-	lsm303_device_init(&magacc);
+	lsm303_init(&magacc);
 #endif
 }
 
-void lsm303_read(void){
+void lsm303_read_all(void){
 #if HAS_MAGACC
-	lsm303_do_read_acc(&magacc);
-	lsm303_do_read_mag(&magacc);
+	lsm303_read_acc(&magacc);
+	lsm303_read_mag(&magacc);
 #endif
 }
 
-void lsm303_read_mag(void){
+void lsm303_read_mag_all(void){
 #if HAS_MAGACC
-	lsm303_do_read_mag(&magacc);
+	lsm303_read_mag(&magacc);
 #endif
 }
-void lsm303_read_acc(void){
+void lsm303_read_acc_all(void){
 #if HAS_MAGACC
-	lsm303_do_read_acc(&magacc);
+	lsm303_read_acc(&magacc);
 #endif
 }

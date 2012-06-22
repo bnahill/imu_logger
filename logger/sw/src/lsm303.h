@@ -12,6 +12,11 @@
 
 //! @name Public Data Structures
 //! @{
+	
+typedef enum {
+	LSM_DISABLE = 0,
+	LSM_ENABLE
+} lsm_func_state_t;
 
 //! Interrupt sources
 typedef enum {
@@ -84,19 +89,25 @@ typedef enum {
 	LSM_MAG_FS_8_1   = 7
 } lsm_mag_fs_t;
 
+typedef enum {
+	LSM_HP_0 = 0,
+	LSM_HP_1 = 1,
+	LSM_HP_2 = 2,
+	LSM_HP_3 = 3
+} lsm_hp_cutoff_t;
+
+//! A callback to receive interrupts
 typedef void (*lsm_callback_t)(void *);
 
 typedef struct {
 	//! The GPIO pin to use
 	af_gpio_pin_t const gpio;
-	enum {
-		ENABLED,
-		DISABLED
-	} state;
+	lsm_func_state_t state;
 	uint8_t src;
 	lsm_intmode_t mode;
 	uint8_t threshold;
 	uint8_t duration;
+	lsm_func_state_t highpass;
 	lsm_callback_t cb;
 	void *arg;
 } lsm_int_t;
@@ -108,6 +119,7 @@ typedef struct {
 	lsm_intmode_t mode;
 	uint8_t threshold;
 	uint8_t duration;
+	lsm_func_state_t highpass;
 	lsm_callback_t cb;
 	void *arg;
 } lsm_int_config_t;
@@ -115,30 +127,32 @@ typedef struct {
 //! Configuration and state information for an LSM303DLH
 typedef struct {
 	//! The current magnetometer reading
-	euclidean3_t   mag;
+	euclidean3_t     mag;
 	//! The current accelerometer reading
-	euclidean3_t   acc;
+	euclidean3_t     acc;
 	//! The I2C device to use
-	i2c_t *const   i2c;
-	lsm_int_t      interrupt[2];
+	i2c_t *const     i2c;
+	lsm_int_t        interrupt[2];
 	//! The accelerometer output rate
-	lsm_acc_rate_t acc_rate;
+	lsm_acc_rate_t   acc_rate;
 	//! The magnetometer output rate
-	lsm_mag_rate_t mag_rate;
+	lsm_mag_rate_t   mag_rate;
 	//! The accelerometer full-scale output range
-	lsm_acc_fs_t   acc_fs;
+	lsm_acc_fs_t     acc_fs;
 	//! The magnetometer full-scale output range
-	lsm_mag_fs_t   mag_fs;
+	lsm_mag_fs_t     mag_fs;
 	//! The power mode of the device
-	lsm_pm_t       pow_mode;
+	lsm_pm_t         pow_mode;
+	lsm_hp_cutoff_t  hp_cuttoff;
+	lsm_func_state_t hp_enable;
 	//! Transfer structures for asynchronous accelerometer reads
-	i2c_transfer_t acc_xfer;
+	i2c_transfer_t   acc_xfer;
 	//! Transfer structure for asynchronous magnetometer reads
-	i2c_transfer_t mag_xfer;
+	i2c_transfer_t   mag_xfer;
 	//! Transfer buffers for asynchronous magnetometer reads
-	uint8_t        acc_buff[6];
+	uint8_t          acc_buff[6];
 	//! Transfer buffers for asynchronous magnetometer reads
-	uint8_t        mag_buff[6];
+	uint8_t          mag_buff[6];
 } lsm303_t;
 
 //! @}
@@ -149,7 +163,64 @@ typedef struct {
 /*!
  @brief Initialize the LSM303 hardware and associated peripherals
  */
-void lsm303_init(void);
+void lsm303_init_all(void);
+
+/*!
+ @brief Poll the state of the current transfer. When this returns 1, it is
+ fair to call lsm303_update_acc()
+ @return 1 if complete; otherwise 0
+ 
+ @pre lsm303_read_mag was called
+ @post lsm303_update_mag may be called if return is 1
+ */
+int lsm303_mag_xfer_complete(lsm303_t *lsm);
+
+/*!
+ @brief Poll the state of the current transfer. When this returns 1, it is
+ fair to call lsm303_update_acc()
+ @return 1 if complete; otherwise 0
+
+ @pre lsm303_read_acc was called
+ @post lsm303_update_acc may be called if return is 1
+ */
+int lsm303_acc_xfer_complete(lsm303_t *lsm);
+
+/*!
+ @brief Begin a read of the LSM303 accelerometer output
+ @param lsm The LSM303 instance to use
+ This only starts the read. The read is complete when lsm303_acc_xfer_complete()
+ returns 1.
+*/
+void lsm303_read_acc(lsm303_t *lsm);
+
+/*!
+ @brief Begin a read of the LSM303 magnetometer output
+ @param lsm The LSM303 instance to use
+ This only starts the read. The read is complete when lsm303_mag_xfer_complete()
+ returns 1.
+*/
+void lsm303_read_mag(lsm303_t *lsm);
+
+/*!
+ @brief Format the accelerometer data from lsm303_read_mag
+ @param lsm The LSM303 isntance to use
+ @pre lsm303_acc_xfer_complete returns 1
+ */
+void lsm303_update_acc(lsm303_t *lsm);
+
+
+/*!
+ @brief Format the magnetometer data from lsm303_read_mag
+ @param lsm The LSM303 isntance to use
+ @pre lsm303_mag_xfer_complete returns 1
+ */
+void lsm303_update_mag(lsm303_t *lsm);
+
+/*!
+ @brief Initialize an LSM303 istance
+ @param lsm The LSM303 isntance to initialize
+ */
+void lsm303_init(lsm303_t *lsm);
 
 /*!
  @brief Change the accelerometer full-scale output range
@@ -167,13 +238,16 @@ void lsm303_set_acc_rate(lsm303_t *lsm, lsm_acc_rate_t acc_rate);
 
 void lsm303_set_pm(lsm303_t *lsm, lsm_pm_t pm);
 
+//! @name Batch Operations
+//! @{
+
 /*!
  @brief Begin a read of the LSM303 output data
  
  This only starts the read. The read is complete when lsm303_xfer_complete()
  returns 1.
  */
-void lsm303_read(void);
+void lsm303_read_all(void);
 
 /*!
  @brief Begin a read of the magnetometer output data
@@ -181,7 +255,7 @@ void lsm303_read(void);
  This only starts the read. The read is complete when lsm303_mag_xfer_complete()
  returns 1.
  */
-void lsm303_read_mag(void);
+void lsm303_read_mag_all(void);
 
 /*!
  @brief Begin a read of the accelerometer output data
@@ -189,7 +263,7 @@ void lsm303_read_mag(void);
  This only starts the read. The read is complete when lsm303_acc_xfer_complete()
  returns 1.
  */
-void lsm303_read_acc(void);
+void lsm303_read_acc_all(void);
 
 /*!
  @brief Poll the state of the current transfer
@@ -197,52 +271,71 @@ void lsm303_read_acc(void);
  
  @return 1 if complete
  
- @pre lsm303_read was called
- @post lsm303_update may be called if return is 1
+ @pre lsm303_read_all was called
+ @post lsm303_update_all may be called if return is 1
  */
-int lsm303_xfer_complete(void);
+int lsm303_xfer_complete_all(void);
 
 /*!
  @brief Check to see if the magnetometer transfer is complete
  @return 1 if complete
  */
-int lsm303_mag_xfer_complete(void);
+int lsm303_mag_xfer_complete_all(void);
 
 /*!
  @brief Check to see if the accelerometer transfer is complete
  @return 1 if complete
  */
-int lsm303_acc_xfer_complete(void);
+int lsm303_acc_xfer_complete_all(void);
 
 /*!
  @brief Format the data received from the lsm303_read and store in data
  structures
- @pre lsm303_xfer_complete() returns 1
+ @pre lsm303_xfer_complete_all() returns 1
  */
-void lsm303_update(void);
+void lsm303_update_all(void);
 
 /*!
  @brief Format the accelerometer data from lsm303_read_acc
- @pre lsm303_xfer_complete() returns 1
+ @pre lsm303_xfer_complete_acc_all() returns 1
  */
-void lsm303_update_acc(void);
+void lsm303_update_acc_all(void);
 
 /*!
  @brief Format the magnetometer data from lsm303_read_mag
- @pre lsm303_xfer_complete() returns 1
+ @pre lsm303_xfer_complete_all() returns 1
  */
-void lsm303_update_mag(void);
+void lsm303_update_mag_all(void);
 
 /*!
  @brief Shortcut to perform a full read, block until complete, and update
  structures
  */
-void lsm303_read_sync(void);
+void lsm303_read_sync_all(void);
 
+//! @}
+
+/*!
+ @brief Configure an interrupt channel
+ @param lsm The LSM303 instance to use
+ @param config The configuration structure to load (can be on stack)
+ @return 1 if successful; 0 otherwise
+ @note The channel must still be enabled to receive interrupts
+ */
 int lsm303_int_config(lsm303_t *lsm, lsm_int_config_t const *config);
 
+/*!
+ @brief Enable an interrupt channel
+ @param lsm The LSM303 instance to use
+ @param index The interrupt channel to enable
+ */
 void lsm303_int_enable(lsm303_t *lsm, lsm_int_index_t index);
 
+/*!
+ @brief Disable an interrupt channel
+ @param lsm The LSM303 instance to use
+ @param index The interrupt channel to disable
+ */
 void lsm303_int_disable(lsm303_t *lsm, lsm_int_index_t index);
 
 //! @}

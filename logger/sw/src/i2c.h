@@ -137,6 +137,10 @@ void i2c_mk_transfer(i2c_transfer_t *xfer,
 void i2c_transfer(i2c_t *i2c, i2c_transfer_t *xfer);
 
 
+uint8_t i2c_read_buffer(i2c_t *i2c, uint8_t devaddr, uint8_t addr, uint8_t *buffer, uint8_t count);
+
+uint8_t i2c_write_buffer(i2c_t *i2c, uint8_t devaddr, uint8_t addr, uint8_t *buffer, uint8_t count);
+
 //! @}
 
 #if USE_I2C1

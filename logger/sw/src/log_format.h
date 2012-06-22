@@ -15,7 +15,7 @@
 #define LOG_VERSION 1
 
 #define LOG_KEY 0xDEFEC8ED
-#define LOG_PAGE_LEN 16384
+#define LOG_PAGE_LEN (32768)
 
 #define LOG_MAX_SENSORS  16
 

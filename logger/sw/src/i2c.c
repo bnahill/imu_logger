@@ -213,31 +213,41 @@ INLINE void i2c_mk_transfer(i2c_transfer_t *xfer,
 	xfer->busy = 0;
 }
 
-void i2c_write_byte(i2c_t *i2c, uint8_t devaddr, uint8_t addr, uint8_t value){
-	i2c_transfer_t xfer;
-	i2c_mk_transfer(&xfer,
-	                I2C_OP_WRITE,
-	                devaddr,
-	                addr,
-	                &value,
-	                1
-	);
-	i2c_transfer(i2c, &xfer);
-	while(!xfer.done);
-}
-
-uint8_t i2c_read_byte(i2c_t *i2c, uint8_t devaddr, uint8_t addr){
-	uint8_t result;
+uint8_t i2c_read_buffer(i2c_t *i2c, uint8_t devaddr, uint8_t addr, uint8_t *buffer, uint8_t count){
 	i2c_transfer_t xfer;
 	i2c_mk_transfer(&xfer,
 	                I2C_OP_READ,
 	                devaddr,
 	                addr,
-	                &result,
-	                1
+	                buffer,
+	                count
 	);
 	i2c_transfer(i2c, &xfer);
 	while(!xfer.done);
+	return xfer.done;
+}
+
+uint8_t i2c_write_buffer(i2c_t *i2c, uint8_t devaddr, uint8_t addr, uint8_t *buffer, uint8_t count){
+	i2c_transfer_t xfer;
+	i2c_mk_transfer(&xfer,
+	                I2C_OP_WRITE,
+	                devaddr,
+	                addr,
+	                buffer,
+	                count
+	);
+	i2c_transfer(i2c, &xfer);
+	while(!xfer.done);	
+	return xfer.done;
+}
+
+void i2c_write_byte(i2c_t *i2c, uint8_t devaddr, uint8_t addr, uint8_t value){
+	i2c_write_buffer(i2c, devaddr, addr, &value, 1);
+}
+
+uint8_t i2c_read_byte(i2c_t *i2c, uint8_t devaddr, uint8_t addr){
+	uint8_t result;
+	i2c_read_buffer(i2c, devaddr, addr, &result, 1);
 	return result;
 }
 

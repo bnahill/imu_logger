@@ -24,4 +24,16 @@ int exti_register_handler(GPIO_TypeDef const * gpio,
 int exti_unregister_handler(GPIO_TypeDef const * gpio,
                             uint8_t pin_num);
 
+static INLINE void exti_mask(uint32_t mask){
+	EXTI->IMR &= ~mask;
+}
+
+static INLINE void exti_unmask(uint32_t mask){
+	EXTI->IMR |= mask;	
+}
+
+static INLINE void exti_clear(uint32_t mask){
+	EXTI->PR = mask;
+}
+
 #endif

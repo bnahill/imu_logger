@@ -15,6 +15,7 @@
 #include "logger.h"
 #include "button.h"
 #include "jitter_buffer.h"
+#include "activity_detect.h"
 
 #define LED_GPIO GPIOB
 #define LED_PIN  BIT(9)
@@ -28,17 +29,32 @@
  */
 
 //! Flag for debugging to not log any data
-#define DO_LOG 0
+#define DO_LOG 1
 
-//! Flag to enable stop mode when not recording (core debug doesn't work when
-//! stopped)
-#define DO_LOPWR 0
+/*!
+ @brief Flag to enable stop mode when not recording (core debug doesn't work
+ when stopped)
+ */
+#define DO_LOPWR 1
 
-//! Flag to enable the internal RC oscillator to drive debug circuitry in
-//! stop mode
+/*!
+ @brief Flag to enable the internal RC oscillator to drive debug circuitry in
+ stop mode
+ */
 #define DO_LP_DEBUG 1
 
+//! Flag to enable use of accelerometer to wake up
+#define DO_LSM_INTERRUPT 0
+
+//! Flag to enable activity detection to put back to sleep
+#define DO_ACTIVITY_DETECT 0
+
 //! @} @} Configuration flags
+
+#if !DO_LOPWR
+#undef DO_LP_DEBUG
+#define DO_LP_DEBUG 0
+#endif
 
 static volatile uint32_t tick = 0;
 static volatile uint32_t frame_count;
@@ -52,6 +68,7 @@ void led_init(void);
 void led_set(void);
 void led_clr(void);
 
+//! The current operating mode
 static enum {
 	MODE_INIT,
 	MODE_STOPPED,
@@ -110,9 +127,18 @@ static INLINE void do_run(void);
 
 //! @}
 
+#if DO_LSM_INTERRUPT
+//! A callback for interrupts from the accelerometer
 static void lsm_wakeup(void *_);
 
+/*!
+ @brief Configure accelerometer interrupt
+ 
+ The configuration is to detect acceration exceeding a threshold value. 
+ The high-pass filter is enabled so as to minimize the effects of gravity.
+ */
 static void config_lsm_interrupts(void);
+#endif
 
 //! @}
 
@@ -128,7 +154,7 @@ int main(void){
 	
 	// Initialize sensors and peripherals
 	rtc_init();
-	lsm303_init();
+	lsm303_init(&magacc);
 	lpry_init();
 	led_init();
 	button_init();
@@ -136,7 +162,9 @@ int main(void){
 	
 	mode = MODE_INIT;
 
+#if DO_LSM_INTERRUPT
 	config_lsm_interrupts();
+#endif
 	
 #if DO_LP_DEBUG
 	DBGMCU_Config(DBGMCU_STOP, ENABLE);
@@ -144,9 +172,11 @@ int main(void){
 	
 	while(1){
 		lpry_power_off();
-		//lsm303_set_pm(&magacc, LSM_PM_LP_1);
+		lsm303_set_pm(&magacc, LSM_PM_LP_5);
 		lps_set_pm(LPS_PM_OFF);
+#if DO_LSM_INTERRUPT
 		lsm303_int_enable(&magacc, LSM_INT_1);
+#endif
 		switch(mode){
 		case MODE_INIT:
 			do_init();
@@ -218,12 +248,19 @@ static INLINE void do_error(void){
 static INLINE void do_run(void){
 	int i;
 	jb_frame_t frame;
-	
+#if DO_ACTIVITY_DETECT
+	ac_result_t ac_result;
+	int since_active = -1;
+#endif
+
 	frame_count = 0;
 	
 	lps_set_pm(LPS_PM_NORMAL);
 	lsm303_set_pm(&magacc, LSM_PM_NORM);
 	lpry_power_on();
+#if DO_ACTIVITY_DETECT
+	ac_init();
+#endif
 	
 #if DO_LOG
 	if(logger_init("test") == NULL){
@@ -249,7 +286,7 @@ static INLINE void do_run(void){
 		tick -= 1;
 		if(++i == 2){
 			led_clr();
-		} else if(i == 50){
+		} else if(i == 100){
 			i = 0;
 			led_set();
 		}
@@ -258,12 +295,36 @@ static INLINE void do_run(void){
 		// Check for new data frames
 		//////////////////////////////////////
 		if(jb_pop(&jitter_buffer, &frame)){
+#if DO_ACTIVITY_DETECT
+			ac_result = ac_add_frame(&frame);
+			switch(ac_result){
+				case AC_RES_INCOMPLETE:
+					break;
+				case AC_RES_ACTIVE:
+					// Just another active frame
+					since_active = 0;
+					ac_init();
+					break;
+				case AC_RES_INACTIVE:
+					if(since_active < 0){
+						// This was the first period after waking up.
+						// Go back to sleep.
+						mode = MODE_STOPPED;
+						break;
+					}
+					since_active += 1;
+					if(since_active == 2){
+						// Been idle too long
+						mode = MODE_STOPPED;
+					}
+					break;
+			}
+#endif
 #if DO_LOG	
 			// And commit them to the log
 			logger_update(&frame);
 #endif
 		}
-
 
 		// Check for escape triggers
 		if(button_check_press()){
@@ -276,18 +337,24 @@ static INLINE void do_run(void){
 	}
 	
 	led_clr();
+	
+	// Delay here to allow all sensor reads to finish
+	tick = 0;
+	while(tick < 2);
 
 	// Disable SysTick
 	SysTick_Config(0);
-#if DO_LOG	
+	#if DO_LOG	
 	logger_sync();
 	logger_close();
 #endif
 }
 
+#if DO_LSM_INTERRUPT
+
 static void lsm_wakeup(void *_){
 	lsm303_int_disable(&magacc, LSM_INT_1);
-	if(mode != MODE_ERROR){
+	if(mode == MODE_STOPPED){
 		mode = MODE_RUNNING;
 	}
 }
@@ -296,17 +363,18 @@ static void config_lsm_interrupts(void){
 	lsm_int_config_t conf;
 	conf.arg = NULL;
 	conf.cb = lsm_wakeup;
-	conf.threshold = 10;
-	conf.duration = 1;
+	conf.threshold = 7;
+	conf.duration = 4;
+	conf.highpass = LSM_ENABLE;
 	conf.index = LSM_INT_1;
 	conf.mode = LSM_INTMODE_OR;
-	conf.src = LSM_INTSRC_XHI | LSM_INTSRC_YHI | LSM_INTSRC_ZHI;
+	conf.src = LSM_INTSRC_XHI | LSM_INTSRC_YHI | LSM_INTSRC_ZHI; //| LSM_INTSRC_XLO | LSM_INTSRC_YLO | LSM_INTSRC_ZLO;
 	
 	if(!lsm303_int_config(&magacc, &conf))
 		while(1);
 }
 
-
+#endif
 
 void led_init(void){
 	GPIO_InitTypeDef gpio_init_s;
@@ -362,13 +430,13 @@ void SysTick_Handler(void){
 		// First check if any sensors are done
 		//////////////////////////////////////
 		
-		if(lsm303_acc_xfer_complete()){
-			lsm303_update_acc();
+		if(lsm303_acc_xfer_complete(&magacc)){
+			lsm303_update_acc(&magacc);
 			do_update = 1;
 		}
 		
-		if(lsm303_mag_xfer_complete()){
-			lsm303_update_mag();
+		if(lsm303_mag_xfer_complete(&magacc)){
+			lsm303_update_mag(&magacc);
 			do_update = 1;
 		}
 		
@@ -394,9 +462,9 @@ void SysTick_Handler(void){
 		//////////////////////////////////////
 		
 		// Start mag/acc readings
-		lsm303_read_acc();
+		lsm303_read_acc(&magacc);
 		if(!(frame_count & 1))
-			lsm303_read_mag();
+			lsm303_read_mag(&magacc);
 		// Start pressure reading
 		if(!(frame_count & 3))	
 			lps_read();

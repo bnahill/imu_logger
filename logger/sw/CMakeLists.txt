@@ -36,7 +36,7 @@ set(ST_USB_OTG_DIR usb_otg)
 # Path to the USB application driver
 set(ST_USB_APP_DIR usb_cdc)
 # Path to CMSIS
-set(CMSIS_DIR STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS)
+set(CMSIS_DIR CMSIS)
 # Path to IMU library drivers
 set(MCU cortex-m3)
 
@@ -44,7 +44,7 @@ set(MCU cortex-m3)
 set(MCFLAGS "-mcpu=${MCU} -mthumb")
 
 add_definitions(${MCFLAGS})
-add_definitions(-g -ffunction-sections  -fdata-sections -Wredundant-decls -Wshadow -Wcast-qual -Wcast-align)
+add_definitions(-g -ffunction-sections  -fdata-sections -Wredundant-decls -Wshadow -Wcast-qual)
 add_definitions(-DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD -DHSE_VALUE=8000000 -DARM_MATH_CM3)
 
 # Eliminate the need for a bunch of extra support code that may not work on the chip anyways
@@ -56,6 +56,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-Tlink.ld -flto  -Wl,-Map=${TARGET}.map,--cref,--gc-
 set(STD_PERIPH_SRC_DIR ${STD_PERIPH_DIR}/src)
 set(APP_DIR src)
 set(FATFS_DIR fatfs/src)
+set(DSP_DIR ${CMSIS_DIR}/DSP_Lib/Source)
 
 set(STM_SOURCES
 	${STD_PERIPH_SRC_DIR}/misc.c
@@ -83,10 +84,248 @@ set(STM_SOURCES
 	${STD_PERIPH_SRC_DIR}/stm32f10x_rtc.c
 )
 
+set(CMSIS_DSP_SOURCES
+    ${DSP_DIR}/SupportFunctions/arm_fill_q7.c
+    ${DSP_DIR}/SupportFunctions/arm_q7_to_float.c
+    ${DSP_DIR}/SupportFunctions/arm_q7_to_q31.c
+    ${DSP_DIR}/SupportFunctions/arm_float_to_q31.c
+    ${DSP_DIR}/SupportFunctions/arm_q7_to_q15.c
+    ${DSP_DIR}/SupportFunctions/arm_q31_to_q7.c
+    ${DSP_DIR}/SupportFunctions/arm_q15_to_q31.c
+    ${DSP_DIR}/SupportFunctions/arm_q15_to_float.c
+    ${DSP_DIR}/SupportFunctions/arm_copy_q15.c
+    ${DSP_DIR}/SupportFunctions/arm_copy_q7.c
+    ${DSP_DIR}/SupportFunctions/arm_q31_to_float.c
+    ${DSP_DIR}/SupportFunctions/arm_float_to_q7.c
+    ${DSP_DIR}/SupportFunctions/arm_q15_to_q7.c
+    ${DSP_DIR}/SupportFunctions/arm_fill_f32.c
+    ${DSP_DIR}/SupportFunctions/arm_copy_q31.c
+    ${DSP_DIR}/SupportFunctions/arm_q31_to_q15.c
+    ${DSP_DIR}/SupportFunctions/arm_copy_f32.c
+    ${DSP_DIR}/SupportFunctions/arm_fill_q31.c
+    ${DSP_DIR}/SupportFunctions/arm_float_to_q15.c
+    ${DSP_DIR}/SupportFunctions/arm_fill_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_correlate_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df1_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_decimate_init_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_init_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_init_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_interpolate_init_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_decimate_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_decimate_init_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_q7.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df1_init_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_partial_fast_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_sparse_init_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_iir_lattice_init_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df2T_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_norm_init_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_decimate_init_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_fast_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_fast_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_partial_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_q7.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_interpolate_init_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_partial_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_decimate_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df2T_init_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_norm_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_lattice_init_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_norm_init_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_lattice_init_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_partial_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_sparse_q7.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_sparse_init_q7.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_sparse_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_iir_lattice_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df1_32x64_init_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_fast_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_init_q7.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df1_fast_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_interpolate_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_fast_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df1_init_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_sparse_init_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_correlate_fast_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_lattice_init_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_decimate_fast_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_lattice_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_init_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_interpolate_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_iir_lattice_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_norm_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_decimate_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_norm_init_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df1_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_correlate_q7.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_correlate_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df1_init_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_iir_lattice_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_correlate_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df1_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_init_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_lattice_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_sparse_init_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_biquad_cascade_df1_32x64_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_norm_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_lattice_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_sparse_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_correlate_fast_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_sparse_f32.c
+    ${DSP_DIR}/FilteringFunctions/arm_iir_lattice_init_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_fir_decimate_fast_q31.c
+    ${DSP_DIR}/FilteringFunctions/arm_conv_partial_fast_q15.c
+    ${DSP_DIR}/FilteringFunctions/arm_lms_init_q31.c
+    ${DSP_DIR}/CommonTables/arm_common_tables.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_mult_f32.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_mult_fast_q31.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_add_q31.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_init_q31.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_add_f32.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_init_f32.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_trans_f32.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_init_q15.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_trans_q31.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_scale_q31.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_add_q15.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_mult_q31.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_mult_q15.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_sub_q31.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_scale_q15.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_inverse_f32.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_mult_fast_q15.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_sub_f32.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_sub_q15.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_scale_f32.c
+    ${DSP_DIR}/MatrixFunctions/arm_mat_trans_q15.c
+    ${DSP_DIR}/FastMathFunctions/arm_cos_f32.c
+    ${DSP_DIR}/FastMathFunctions/arm_cos_q15.c
+    ${DSP_DIR}/FastMathFunctions/arm_sqrt_q31.c
+    ${DSP_DIR}/FastMathFunctions/arm_cos_q31.c
+    ${DSP_DIR}/FastMathFunctions/arm_sin_f32.c
+    ${DSP_DIR}/FastMathFunctions/arm_sin_q15.c
+    ${DSP_DIR}/FastMathFunctions/arm_sqrt_q15.c
+    ${DSP_DIR}/FastMathFunctions/arm_sin_q31.c
+    ${DSP_DIR}/TransformFunctions/arm_rfft_q15.c
+    ${DSP_DIR}/TransformFunctions/arm_rfft_init_q31.c
+    ${DSP_DIR}/TransformFunctions/arm_cfft_radix4_init_q15.c
+    ${DSP_DIR}/TransformFunctions/arm_cfft_radix4_q15.c
+    ${DSP_DIR}/TransformFunctions/arm_dct4_init_q15.c
+    ${DSP_DIR}/TransformFunctions/arm_rfft_init_f32.c
+    ${DSP_DIR}/TransformFunctions/arm_dct4_q31.c
+    ${DSP_DIR}/TransformFunctions/arm_cfft_radix4_init_q31.c
+    ${DSP_DIR}/TransformFunctions/arm_rfft_f32.c
+    ${DSP_DIR}/TransformFunctions/arm_dct4_q15.c
+    ${DSP_DIR}/TransformFunctions/arm_dct4_f32.c
+    ${DSP_DIR}/TransformFunctions/arm_cfft_radix4_init_f32.c
+    ${DSP_DIR}/TransformFunctions/arm_cfft_radix4_q31.c
+    ${DSP_DIR}/TransformFunctions/arm_dct4_init_f32.c
+    ${DSP_DIR}/TransformFunctions/arm_rfft_init_q15.c
+    ${DSP_DIR}/TransformFunctions/arm_dct4_init_q31.c
+    ${DSP_DIR}/TransformFunctions/arm_rfft_q31.c
+    ${DSP_DIR}/TransformFunctions/arm_cfft_radix4_f32.c
+    ${DSP_DIR}/BasicMathFunctions/arm_scale_q7.c
+    ${DSP_DIR}/BasicMathFunctions/arm_abs_f32.c
+    ${DSP_DIR}/BasicMathFunctions/arm_abs_q15.c
+    ${DSP_DIR}/BasicMathFunctions/arm_shift_q15.c
+    ${DSP_DIR}/BasicMathFunctions/arm_dot_prod_q15.c
+    ${DSP_DIR}/BasicMathFunctions/arm_negate_q7.c
+    ${DSP_DIR}/BasicMathFunctions/arm_scale_q15.c
+    ${DSP_DIR}/BasicMathFunctions/arm_mult_q15.c
+    ${DSP_DIR}/BasicMathFunctions/arm_dot_prod_f32.c
+    ${DSP_DIR}/BasicMathFunctions/arm_offset_q31.c
+    ${DSP_DIR}/BasicMathFunctions/arm_add_q31.c
+    ${DSP_DIR}/BasicMathFunctions/arm_abs_q7.c
+    ${DSP_DIR}/BasicMathFunctions/arm_scale_f32.c
+    ${DSP_DIR}/BasicMathFunctions/arm_shift_q7.c
+    ${DSP_DIR}/BasicMathFunctions/arm_sub_q7.c
+    ${DSP_DIR}/BasicMathFunctions/arm_add_q7.c
+    ${DSP_DIR}/BasicMathFunctions/arm_mult_f32.c
+    ${DSP_DIR}/BasicMathFunctions/arm_add_q15.c
+    ${DSP_DIR}/BasicMathFunctions/arm_abs_q31.c
+    ${DSP_DIR}/BasicMathFunctions/arm_sub_f32.c
+    ${DSP_DIR}/BasicMathFunctions/arm_negate_q31.c
+    ${DSP_DIR}/BasicMathFunctions/arm_offset_q15.c
+    ${DSP_DIR}/BasicMathFunctions/arm_shift_q31.c
+    ${DSP_DIR}/BasicMathFunctions/arm_offset_q7.c
+    ${DSP_DIR}/BasicMathFunctions/arm_add_f32.c
+    ${DSP_DIR}/BasicMathFunctions/arm_dot_prod_q7.c
+    ${DSP_DIR}/BasicMathFunctions/arm_negate_f32.c
+    ${DSP_DIR}/BasicMathFunctions/arm_negate_q15.c
+    ${DSP_DIR}/BasicMathFunctions/arm_dot_prod_q31.c
+    ${DSP_DIR}/BasicMathFunctions/arm_scale_q31.c
+    ${DSP_DIR}/BasicMathFunctions/arm_offset_f32.c
+    ${DSP_DIR}/BasicMathFunctions/arm_sub_q15.c
+    ${DSP_DIR}/BasicMathFunctions/arm_sub_q31.c
+    ${DSP_DIR}/BasicMathFunctions/arm_mult_q7.c
+    ${DSP_DIR}/BasicMathFunctions/arm_mult_q31.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mag_f32.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mag_squared_q31.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mult_cmplx_q31.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_conj_q15.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mult_real_q31.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mult_real_q15.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mult_cmplx_q15.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mag_q15.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mult_cmplx_f32.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_conj_q31.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_conj_f32.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mag_q31.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_dot_prod_q15.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mult_real_f32.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_dot_prod_q31.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_dot_prod_f32.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mag_squared_q15.c
+    ${DSP_DIR}/ComplexMathFunctions/arm_cmplx_mag_squared_f32.c
+    ${DSP_DIR}/ControllerFunctions/arm_pid_init_q15.c
+    ${DSP_DIR}/ControllerFunctions/arm_pid_init_q31.c
+    ${DSP_DIR}/ControllerFunctions/arm_sin_cos_f32.c
+    ${DSP_DIR}/ControllerFunctions/arm_pid_reset_q15.c
+    ${DSP_DIR}/ControllerFunctions/arm_sin_cos_q31.c
+    ${DSP_DIR}/ControllerFunctions/arm_pid_init_f32.c
+    ${DSP_DIR}/ControllerFunctions/arm_pid_reset_q31.c
+    ${DSP_DIR}/ControllerFunctions/arm_pid_reset_f32.c
+    ${DSP_DIR}/StatisticsFunctions/arm_mean_q31.c
+    ${DSP_DIR}/StatisticsFunctions/arm_min_f32.c
+    ${DSP_DIR}/StatisticsFunctions/arm_var_q15.c
+    ${DSP_DIR}/StatisticsFunctions/arm_power_q7.c
+    ${DSP_DIR}/StatisticsFunctions/arm_max_f32.c
+    ${DSP_DIR}/StatisticsFunctions/arm_rms_f32.c
+    ${DSP_DIR}/StatisticsFunctions/arm_mean_q15.c
+    ${DSP_DIR}/StatisticsFunctions/arm_mean_q7.c
+    ${DSP_DIR}/StatisticsFunctions/arm_max_q15.c
+    ${DSP_DIR}/StatisticsFunctions/arm_min_q31.c
+    ${DSP_DIR}/StatisticsFunctions/arm_max_q31.c
+    ${DSP_DIR}/StatisticsFunctions/arm_std_q31.c
+    ${DSP_DIR}/StatisticsFunctions/arm_power_f32.c
+    ${DSP_DIR}/StatisticsFunctions/arm_var_q31.c
+    ${DSP_DIR}/StatisticsFunctions/arm_std_q15.c
+    ${DSP_DIR}/StatisticsFunctions/arm_power_q31.c
+    ${DSP_DIR}/StatisticsFunctions/arm_std_f32.c
+    ${DSP_DIR}/StatisticsFunctions/arm_mean_f32.c
+    ${DSP_DIR}/StatisticsFunctions/arm_rms_q31.c
+    ${DSP_DIR}/StatisticsFunctions/arm_min_q15.c
+    ${DSP_DIR}/StatisticsFunctions/arm_min_q7.c
+    ${DSP_DIR}/StatisticsFunctions/arm_power_q15.c
+    ${DSP_DIR}/StatisticsFunctions/arm_var_f32.c
+    ${DSP_DIR}/StatisticsFunctions/arm_rms_q15.c
+    ${DSP_DIR}/StatisticsFunctions/arm_max_q7.c
+)
+
 set(APP_SOURCES
 	${APP_DIR}/button.c
 	${APP_DIR}/logger.c
 	${APP_DIR}/lsm303.c
+	${APP_DIR}/activity_detect.c
 	${APP_DIR}/sdio.c
 	${APP_DIR}/jitter_buffer.c
 	${APP_DIR}/system_stm32f10x.c
@@ -121,14 +360,18 @@ set_property(SOURCE ${APP_DIR}/startup_stm32f10x_hd.s PROPERTY LANGUAGE C)
 include_directories(
 	.
 	src
+	${CMSIS_DIR}/Include
 	${CMSIS_DIR}/CM3/CoreSupport
-	${CMSIS_DIR}/CM3/DeviceSupport/ST/STM32F10x
+	${CMSIS_DIR}/Device/ST/STM32F10x
 	${STD_PERIPH_DIR}/inc
 	${FATFS_DIR}
 )
 
 add_library(std_periph STATIC ${STM_SOURCES})
 set(LIBS ${LIBS} std_periph)
+
+add_library(cmsis_dsp STATIC ${CMSIS_DSP_SOURCES})
+set(LIBS ${LIBS} cmsis_dsp)
 
 add_library(fatfs STATIC ${FATFS_SOURCES})
 set(LIBS ${LIBS} fatfs)
@@ -142,8 +385,9 @@ add_custom_target(linker_script DEPENDS link.ld)
 add_dependencies(${OUTFILE} linker_script)
 
 # Warnings only for application code -- Optimizations only on ST/ARM code
-set_target_properties(${OUTFILE} PROPERTIES COMPILE_FLAGS "-Wall -Wclobbered -Wempty-body -Wignored-qualifiers -Woverride-init -Wsign-compare -Wtype-limits -Wuninitialized -O0")
+set_target_properties(${OUTFILE} PROPERTIES COMPILE_FLAGS "-Wall -Wclobbered -Wempty-body -Wignored-qualifiers -Woverride-init -Wtype-limits -Wuninitialized -O0")
 set_target_properties(std_periph PROPERTIES COMPILE_FLAGS "-Wall -O0")
+set_target_properties(cmsis_dsp PROPERTIES COMPILE_FLAGS "-w -O2")
 
 ##############################################################
 # Ctags

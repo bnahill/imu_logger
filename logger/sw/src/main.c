@@ -29,7 +29,7 @@
  */
 
 //! Flag for debugging to not log any data
-#define DO_LOG 1
+#define DO_LOG 0
 
 /*!
  @brief Flag to enable stop mode when not recording (core debug doesn't work
@@ -44,10 +44,10 @@
 #define DO_LP_DEBUG 1
 
 //! Flag to enable use of accelerometer to wake up
-#define DO_LSM_INTERRUPT 0
+#define DO_LSM_INTERRUPT 1
 
 //! Flag to enable activity detection to put back to sleep
-#define DO_ACTIVITY_DETECT 0
+#define DO_ACTIVITY_DETECT 1
 
 //! @} @} Configuration flags
 

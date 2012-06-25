@@ -1,6 +1,6 @@
 import struct
 import pylab
-
+import numpy as np
 frame_len = 8192
 
 def get_float(arr):
@@ -49,5 +49,5 @@ def parse(fname):
 			b = b[4:]
 			
 	f.close()
-	return ((accx, accy, accz), (gyrp, gyrr,gyry), (magx, magy, magz), pressure)
+	return ((np.array(accx)/16, np.array(accy)/16, np.array(accz)/16), (gyrp, gyrr,gyry), (magx, magy, magz), pressure)
 

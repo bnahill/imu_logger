@@ -361,7 +361,6 @@ include_directories(
 	.
 	src
 	${CMSIS_DIR}/Include
-	${CMSIS_DIR}/CM3/CoreSupport
 	${CMSIS_DIR}/Device/ST/STM32F10x
 	${STD_PERIPH_DIR}/inc
 	${FATFS_DIR}
@@ -428,7 +427,7 @@ add_dependencies(gdbtui gdb_script)
 add_dependencies(ddd gdb_script)
 
 add_custom_command(OUTPUT start.gdb COMMAND cat ${CMAKE_SOURCE_DIR}/start.gdb > start.gdb DEPENDS ${CMAKE_SOURCE_DIR}/start.gdb)
-add_custom_target(gdb_script DEPENDS start.gdb)
+add_custom_target(gdb_script ALL DEPENDS start.gdb)
 
 ##############################################################
 # Configuration for OpenOCD

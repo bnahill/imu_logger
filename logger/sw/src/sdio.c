@@ -1448,7 +1448,6 @@ SD_Error SD_WriteBlock(const uint32_t *writebuff, uint32_t WriteAddr, uint16_t B
 SD_Error SD_WriteMultiBlocks(const uint32_t *writebuff, uint32_t WriteAddr, uint16_t BlockSize, uint32_t NumberOfBlocks)
 {
   SD_Error errorstatus = SD_OK;
-  __IO uint32_t count = 0;
 
   TransferError = SD_OK;
   TransferEnd = 0;

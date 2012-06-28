@@ -7,5 +7,6 @@
 void button_init(void);
 
 int button_check_press(void);
+int button_is_pressed(void);
 
 #endif

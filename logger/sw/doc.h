@@ -2,7 +2,6 @@
  @mainpage
  
  @section mp_intro Introduction
- @p
  The IMU logger device is intended to provide a long-running logging device
  for inertial measurements. It does so using ST's
  @ref lsm "LSM303DLH accelerometer and magnetometer",
@@ -12,6 +11,25 @@
  implementation.
  
  @section mp_operation Operation
+ Upon reset, the device will initialize sensors and go to sleep until the
+ button is pressed. Once activated, the device will flash 4 times and then be
+ idle, waiting to be started by either pressing the button or an accelerometer
+ interrupt (motion). Once started, the LED will flash once every two seconds
+ while it records. An activity measurement is kept on 8 second frames to
+ shut off the device when idle. When recording first starts, a single 8 second
+ inactive frame is enough to cancel recording. After this initial period
+ passes, it will require three 8 second periods of being idle to shut off.
+ If cancelled on the first 8 second period, no data will be recorded to the SD
+ card.
+ 
+ @subsection mp_card_removal SD Card Removal
+ You may safely remove the SD card any time the device is not recording.
+ In addition to being stopped by inactivity, you can stop the device by
+ pressing the button once. For extra safety, you may reset the device as soon
+ as you stop recording to prevent the inertial sensor from waking the device
+ due to activity in removing the card.
+ 
+ 
  @sa application
  @sa main.c
  
@@ -22,12 +40,12 @@
  
  */
 
+
 /*!
  @addtogroup sensors Sensors
  @{
 	 @defgroup lsm
 	 @defgroup lpry
 	 @defgroup lps
-
  @}
  */

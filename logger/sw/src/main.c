@@ -16,6 +16,7 @@
 #include "button.h"
 #include "jitter_buffer.h"
 #include "activity_detect.h"
+#include "sensor_config.h"
 
 #define LED_GPIO GPIOB
 #define LED_PIN  BIT(9)
@@ -29,7 +30,7 @@
  */
 
 //! Flag for debugging to not log any data
-#define DO_LOG 0
+#define DO_LOG 1
 
 /*!
  @brief Flag to enable stop mode when not recording (core debug doesn't work
@@ -89,7 +90,7 @@ static enum {
  checked to see if they have new data. If they do, a frame is assembled and
  pushed onto the jitter buffer. Then new sensor readings are started according
  to each sensor's schedule. main() then checks (loosely synchronized with
- SysTick) the jitter buffer and writes to the log accordingly.
+ SysTick) the jitter buffer and writes to the log accordingly.W
  
  @{
  */
@@ -151,24 +152,37 @@ int main(void){
 #endif
 	
 	exti_init();
+	button_init();
 	
 	// Initialize sensors and peripherals
 	rtc_init();
 	lsm303_init(&magacc);
 	lpry_init();
 	led_init();
-	button_init();
 	lps_init();
+	
+#if DO_LP_DEBUG
+		DBGMCU_Config(DBGMCU_STOP, ENABLE);
+#endif
+	
+	// Go to low power and wait for button press
+	lpry_power_off();
+	lps_set_pm(LPS_PM_OFF);
+	while(!button_check_press()){
+#if DO_LOPWR
+		PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
+#endif
+	}
+	
+	SystemCoreClockUpdate();
+
 	
 	mode = MODE_INIT;
 
 #if DO_LSM_INTERRUPT
 	config_lsm_interrupts();
 #endif
-	
-#if DO_LP_DEBUG
-	DBGMCU_Config(DBGMCU_STOP, ENABLE);
-#endif
+
 	
 	while(1){
 		lpry_power_off();
@@ -309,13 +323,13 @@ static INLINE void do_run(void){
 					if(since_active < 0){
 						// This was the first period after waking up.
 						// Go back to sleep.
-						mode = MODE_STOPPED;
+						mode = MODE_INIT;
 						break;
 					}
 					since_active += 1;
-					if(since_active == 2){
+					if(since_active == activity_num_frames){
 						// Been idle too long
-						mode = MODE_STOPPED;
+						mode = MODE_INIT;
 					}
 					break;
 			}
@@ -344,7 +358,7 @@ static INLINE void do_run(void){
 
 	// Disable SysTick
 	SysTick_Config(0);
-	#if DO_LOG	
+#if DO_LOG	
 	logger_sync();
 	logger_close();
 #endif

@@ -10,6 +10,26 @@
 
 #include "toolchain.h"
 
+/*!
+ @addtogroup application
+ @{
+ @name Configuration Values
+ @{
+ */
+
+/*!
+ @brief Threshold for average power threshold for signal comprised of the sum
+ of diffentiated accelerometer values to identify as active
+ */
+static const float activity_threshold = 0.017;
+
+/*!
+ @brief The number of consecutive inactive frames required to shut device off
+ @sa NFRAMES
+ */
+static const int32_t activity_num_frames = 3;
+
+//! @} @} Configuration Values
 
 
 #ifndef BIT

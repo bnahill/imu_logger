@@ -104,6 +104,7 @@ static FIL file;
 static FRESULT res;
 static uint32_t cycle_len;
 static uint32_t cycle_lcm;
+static uint32_t num_pages;
 
 //! @}
 //! @name Private methods
@@ -163,6 +164,9 @@ static uint32_t logger_calc_cycle_len(void){
 			break;
 		}
 	}
+	
+	num_pages = 0;
+	
 	return cycle_bytes;
 }
 
@@ -294,6 +298,7 @@ void logger_insert_silence(uint32_t duration){
 		if(f_write(&file, (uint8_t *)&write_buffer, LOG_PAGE_LEN, &write_len) != FR_OK){
 			while(1);
 		}
+		num_pages += 1;
 
 		// There's enough room for this -- indicate no more framesets in this page
 		*frameset_header = 0;
@@ -357,6 +362,7 @@ void logger_update(jb_frame_t const * frame){
 		if(f_write(&file, (uint8_t *)&write_buffer, LOG_PAGE_LEN, &write_len) != FR_OK){
 			while(1);
 		}
+		num_pages += 1;
 		
 		frameset_header = write_buffer;
 		write_ptr.u = write_buffer + 1;
@@ -366,6 +372,11 @@ void logger_update(jb_frame_t const * frame){
 }
 
 void logger_sync(void){
+	if(num_pages == 0){
+		// Don't sync for only a single page
+		return;
+	}
+	
 	if(write_ptr.u == write_buffer + 1){
 		// Nothing has been written to the new page
 		f_sync(&file);
@@ -403,6 +414,9 @@ void logger_sync(void){
 
 void logger_close(void){
 	f_close(&file);
+	// Just delete it if it's empty
+	if(num_pages == 0)
+		f_unlink(filename);	
 	f_mount(0, NULL);
 }
 

@@ -1,5 +1,6 @@
 #include "rtc.h"
 
+/*
 static const datetime_t initial_datetime = {
 	1985,
 	10,
@@ -8,6 +9,25 @@ static const datetime_t initial_datetime = {
 	15,
 	0
 };
+*/
+
+/*!
+ @addtogroup rtc Real-Time Clock
+ @brief Keep track of time even when the CPU is off
+ @{
+ */
+
+//! The date and time to initialize in the RTC
+static const datetime_t initial_datetime = {
+	2012,
+	1,
+	1,
+	0,
+	0,
+	0
+};
+
+//! @}
 
 static uint8_t days_in_month[12] = {
 	// Jan

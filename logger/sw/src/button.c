@@ -18,6 +18,10 @@ static int has_been_pressed = 0;
 
 static void button_isr(void *);
 
+int button_is_pressed(void){
+	return ((BUTTON_GPIO->IDR & BUTTON_PIN) == 0) ? 1 : 0;
+}
+
 static void button_set_off(void){
 	button_state = BUTTON_OFF;
 	// Detect only falling

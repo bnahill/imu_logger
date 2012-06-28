@@ -1,6 +1,11 @@
 #include "activity_detect.h"
+#include "sensor_config.h"
 #include "arm_math.h"
 
+/*!
+ @brief The number of accelerometer frames to use for detection
+ @sa LOG_PAGE_LEN
+ */
 #define NFRAMES 400
 
 static struct {
@@ -44,16 +49,17 @@ ac_result_t ac_add_frame(jb_frame_t *frame){
 		euclidean3_sub(&tmp, &ac.last, &tmp);
 		
 		ac.activity_per_frame[ac.frame_count - 1] = euclidean3_measure(&tmp);
+		
 	}
 	ac.frame_count += 1;
 	if(ac.frame_count == NFRAMES - 1){
 		arm_power_f32(ac.activity_per_frame, NFRAMES - 1, &result);
-		// Make that energy
+		// Convert to average power
 		result /= (NFRAMES - 1);
 		
 		ac_init();
 		
-		if(result < 0.02){
+		if(result < activity_threshold){
 			return AC_RES_INACTIVE;
 		}
 		return AC_RES_ACTIVE;

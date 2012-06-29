@@ -25,9 +25,9 @@
  @subsection mp_card_removal SD Card Removal
  You may safely remove the SD card any time the device is not recording.
  In addition to being stopped by inactivity, you can stop the device by
- pressing the button once. For extra safety, you may reset the device as soon
- as you stop recording to prevent the inertial sensor from waking the device
- due to activity in removing the card.
+ pressing the button once. For extra safety, hold down the button and remove
+ the card while the light is solid. As soon as the LED lights up, all writes
+ are complete and nothing new can start.
  
  
  @sa application

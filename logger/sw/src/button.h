@@ -9,4 +9,7 @@ void button_init(void);
 int button_check_press(void);
 int button_is_pressed(void);
 
+void wait_for_press(void);
+void wait_for_release(void);
+
 #endif

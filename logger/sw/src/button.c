@@ -22,6 +22,14 @@ int button_is_pressed(void){
 	return ((BUTTON_GPIO->IDR & BUTTON_PIN) == 0) ? 1 : 0;
 }
 
+void wait_for_press(void){
+	while(button_state == BUTTON_OFF);
+}
+
+void wait_for_release(void){
+	while(button_state == BUTTON_ON);
+}
+
 static void button_set_off(void){
 	button_state = BUTTON_OFF;
 	// Detect only falling

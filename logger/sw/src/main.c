@@ -188,6 +188,12 @@ int main(void){
 		lpry_power_off();
 		lsm303_set_pm(&magacc, LSM_PM_LP_5);
 		lps_set_pm(LPS_PM_OFF);
+		
+		led_set();
+		// If there was a button press, wait for release before actually starting
+		wait_for_release();
+		led_clr();
+		
 #if DO_LSM_INTERRUPT
 		lsm303_int_enable(&magacc, LSM_INT_1);
 #endif

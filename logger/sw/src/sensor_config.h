@@ -19,7 +19,7 @@
 
 /*!
  @brief Threshold for average power threshold for signal comprised of the sum
- of diffentiated accelerometer values to identify as active
+ of differentiated accelerometer values to identify as active
  */
 static const float activity_threshold = 0.017;
 

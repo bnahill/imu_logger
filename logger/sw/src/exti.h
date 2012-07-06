@@ -15,11 +15,13 @@ typedef struct _exti_handler{
 
 void exti_init(void);
 
-int exti_register_handler(GPIO_TypeDef const * gpio,
-                          uint8_t pin_num,
-                          EXTITrigger_TypeDef direction,
-                          exti_callback_t cb,
-                          void *arg);
+int exti_config(GPIO_TypeDef const * gpio,
+                uint8_t pin_num,
+                EXTITrigger_TypeDef direction);
+
+void exti_register_handler(uint8_t pin_num,
+                           exti_callback_t cb,
+                           void *arg);
 
 int exti_unregister_handler(GPIO_TypeDef const * gpio,
                             uint8_t pin_num);

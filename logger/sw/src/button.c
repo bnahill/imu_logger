@@ -70,12 +70,10 @@ void button_init(void){
 	gpio_init_s.GPIO_Pin = BUTTON_PIN;
 	GPIO_Init(BUTTON_GPIO, &gpio_init_s);
 
-	exti_register_handler(BUTTON_GPIO,
-	                      BUTTON_PIN_SRC,
-	                      EXTI_Trigger_Falling,
-	                      button_isr,
-	                      NULL);
-
+	exti_config(BUTTON_GPIO, BUTTON_PIN_SRC, EXTI_Trigger_Falling);
+	
+	exti_register_handler(BUTTON_PIN_SRC, button_isr, NULL);	
+	
 	timebase_s.TIM_Period = 65535;
 	timebase_s.TIM_Prescaler = 0;
 	timebase_s.TIM_ClockDivision = 0;

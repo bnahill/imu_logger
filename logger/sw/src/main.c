@@ -30,13 +30,13 @@
  */
 
 //! Flag for debugging to not log any data
-#define DO_LOG 1
+#define DO_LOG 0
 
 /*!
  @brief Flag to enable stop mode when not recording (core debug doesn't work
  when stopped)
  */
-#define DO_LOPWR 1
+#define DO_LOPWR 0
 
 /*!
  @brief Flag to enable the internal RC oscillator to drive debug circuitry in
@@ -49,6 +49,9 @@
 
 //! Flag to enable activity detection to put back to sleep
 #define DO_ACTIVITY_DETECT 1
+
+//! Flag to enable clean shutdown on low voltage
+#define DO_LV_SHUTDOWN 0
 
 //! @} @} Configuration flags
 
@@ -162,7 +165,12 @@ int main(void){
 	lps_init();
 	
 #if DO_LP_DEBUG
-		DBGMCU_Config(DBGMCU_STOP, ENABLE);
+	DBGMCU_Config(DBGMCU_STOP, ENABLE);
+#endif
+		
+#if DO_LV_SHUTDOWN
+	PWR_PVDLevelConfig(PWR_PVDLevel_2V7);
+	PWR_PVDCmd(ENABLE);
 #endif
 	
 	// Go to low power and wait for button press
@@ -194,9 +202,6 @@ int main(void){
 		wait_for_release();
 		led_clr();
 		
-#if DO_LSM_INTERRUPT
-		lsm303_int_enable(&magacc, LSM_INT_1);
-#endif
 		switch(mode){
 		case MODE_INIT:
 			do_init();
@@ -205,6 +210,9 @@ int main(void){
 			do_error();
 			break;
 		case MODE_STOPPED:
+#if DO_LSM_INTERRUPT
+			lsm303_int_enable(&magacc, LSM_INT_1);
+#endif
 			while(1){
 				// Wait for button press or change of modes
 #if DO_LOPWR

@@ -105,6 +105,7 @@ static FRESULT res;
 static uint32_t cycle_len;
 static uint32_t cycle_lcm;
 static uint32_t num_pages;
+static int is_open = 0;
 
 //! @}
 //! @name Private methods
@@ -282,6 +283,8 @@ const char *logger_init(const char *prefix){
 	frame_count = 0;
 	frame_cycle_count = 0;
 	
+	is_open = 1;
+	
 	return filename;
 }
 
@@ -418,5 +421,10 @@ void logger_close(void){
 	if(num_pages == 0)
 		f_unlink(filename);	
 	f_mount(0, NULL);
+	is_open = 0;
+}
+
+int logger_is_open(void){
+	return is_open;
 }
 

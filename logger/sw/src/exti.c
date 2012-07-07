@@ -1,6 +1,6 @@
 #include "exti.h"
 
-#define NUM_HANDLERS 16
+#define NUM_HANDLERS 19
 
 static exti_handler_t handlers[NUM_HANDLERS];
 
@@ -29,6 +29,12 @@ void exti_init(void){
 	nvic_init_s.NVIC_IRQChannel = EXTI1_IRQn;
 	NVIC_Init(&nvic_init_s);
 	nvic_init_s.NVIC_IRQChannel = EXTI0_IRQn;
+	NVIC_Init(&nvic_init_s);
+	//nvic_init_s.NVIC_IRQChannel = RTC_IRQn;
+	//NVIC_Init(&nvic_init_s);
+	nvic_init_s.NVIC_IRQChannel = PVD_IRQn;
+	NVIC_Init(&nvic_init_s);
+	nvic_init_s.NVIC_IRQChannel = USBWakeUp_IRQn;
 	NVIC_Init(&nvic_init_s);
 }
 
@@ -194,4 +200,6 @@ void EXTI1_IRQHandler(void){exti_run_isr(1);}
 void EXTI2_IRQHandler(void){exti_run_isr(2);}
 void EXTI3_IRQHandler(void){exti_run_isr(3);}
 void EXTI4_IRQHandler(void){exti_run_isr(4);}
-
+void PVD_IRQHandler(void){exti_run_isr(16);}
+void RTC_IRQHandler(void){exti_run_isr(17);}
+void USBWakeUp_IRQHandler(void){exti_run_isr(18);}

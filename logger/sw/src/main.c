@@ -30,13 +30,13 @@
  */
 
 //! Flag for debugging to not log any data
-#define DO_LOG 0
+#define DO_LOG 1
 
 /*!
  @brief Flag to enable stop mode when not recording (core debug doesn't work
  when stopped)
  */
-#define DO_LOPWR 0
+#define DO_LOPWR 1
 
 /*!
  @brief Flag to enable the internal RC oscillator to drive debug circuitry in
@@ -51,7 +51,7 @@
 #define DO_ACTIVITY_DETECT 1
 
 //! Flag to enable clean shutdown on low voltage
-#define DO_LV_SHUTDOWN 0
+#define DO_LV_SHUTDOWN 1
 
 //! @} @} Configuration flags
 
@@ -74,11 +74,18 @@ void led_clr(void);
 
 //! The current operating mode
 static enum {
+	//! Brief startup routine
 	MODE_INIT,
+	//! Waiting for action
 	MODE_STOPPED,
+	//! No activity detected
 	MODE_IDLE,
+	//! Currently recording data
 	MODE_RUNNING,
-	MODE_ERROR
+	//! An error has occurred
+	MODE_ERROR,
+	//! System has shut down for a critical error
+	MODE_SHUTDOWN
 } mode;
 
 /*!
@@ -144,13 +151,20 @@ static void lsm_wakeup(void *_);
 static void config_lsm_interrupts(void);
 #endif
 
+
+#if DO_LV_SHUTDOWN
+
+static void lv_shutdown(void *_);
+
+#endif
+
 //! @}
 
-
+ 
 //! @callgraph
 int main(void){	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
-#if DO_LOPWR
+#if (DO_LOPWR | DO_LV_SHUTDOWN)
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
 #endif
 	
@@ -167,11 +181,6 @@ int main(void){
 #if DO_LP_DEBUG
 	DBGMCU_Config(DBGMCU_STOP, ENABLE);
 #endif
-		
-#if DO_LV_SHUTDOWN
-	PWR_PVDLevelConfig(PWR_PVDLevel_2V7);
-	PWR_PVDCmd(ENABLE);
-#endif
 	
 	// Go to low power and wait for button press
 	lpry_power_off();
@@ -184,8 +193,14 @@ int main(void){
 	
 	SystemCoreClockUpdate();
 
-	
 	mode = MODE_INIT;
+
+#if DO_LV_SHUTDOWN
+	PWR_PVDLevelConfig(PWR_PVDLevel_2V7);
+	PWR_PVDCmd(ENABLE);
+	exti_config(NULL, 16, EXTI_Trigger_Rising);
+	exti_register_handler(16, lv_shutdown, NULL);
+#endif
 
 #if DO_LSM_INTERRUPT
 	config_lsm_interrupts();
@@ -208,6 +223,21 @@ int main(void){
 			break;
 		case MODE_ERROR:
 			do_error();
+			break;
+		case MODE_SHUTDOWN:
+#if DO_LOG
+			if(logger_is_open()){
+				logger_close();
+			}
+#endif
+			lsm303_int_disable(&magacc, LSM_INT_1);
+			lsm303_set_pm(&magacc, LSM_PM_OFF);
+			lpry_power_off();
+			while(1){
+#if DO_LOPWR
+				PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
+#endif
+			}
 			break;
 		case MODE_STOPPED:
 #if DO_LSM_INTERRUPT
@@ -377,6 +407,14 @@ static INLINE void do_run(void){
 	logger_close();
 #endif
 }
+
+#if DO_LV_SHUTDOWN
+
+static void lv_shutdown(void *_){
+	mode = MODE_SHUTDOWN;
+}
+
+#endif
 
 #if DO_LSM_INTERRUPT
 

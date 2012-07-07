@@ -36,6 +36,8 @@ void logger_sync(void);
  */
 void logger_close(void);
 
+int logger_is_open(void);
+
 
 //! @}
 //! @}

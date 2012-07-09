@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC   "-//W3C//DTD XHTML 1.0 Traditional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+{% block head %}
+	<link rel=stylesheet type=text/css href="/static/style.css">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+{% endblock %}
+</head>
+<body unload="">
+
+<div id="container">
+<div id="header">
+
+</div>
+<div id="content">
+{% if debugmsg %}
+<div style="border:1px dotted black;">
+	<h3>Debug:</h3>
+	{{ debugmsg }}
+</div>
+{% endif %}
+{% block body %}
+{% endblock %}
+</div>
+
+</div>
+
+</body>
+</html>

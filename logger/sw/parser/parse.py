@@ -27,6 +27,12 @@ LOG_SENSOR_TEMP1  = 8
 LOG_SENSOR_TEMP2  = 9
 ## @}
 
+def check_file(f):
+	f.seek(0)
+	dat = f.read(4)
+	f.seek(0)
+	return struct.unpack_from('<I', dat)[0] == 3741239533
+
 ## Parse a log file
 #  @param f The file-like object to read from
 #  @return A tuple of (header_dict, frameset_list)
@@ -38,7 +44,7 @@ def parse(f):
 	
 	# Check the key and make sure it is a valid file
 	key = struct.unpack_from('<I', f.read(4))[0]
-	assert key == 0xDEFEC8ED, "This is not a valid log file: Key = 0x%08X" % key
+	assert key == 3741239533, "This is not a valid log file: Key = 0x%08X" % key
 	print("Key: 0x%08X" % key)
 	
 	# Check the log file version

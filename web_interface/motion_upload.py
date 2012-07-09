@@ -16,15 +16,12 @@ USERNAME = 'admin'
 PASSWORD = 'flipper'
 
 
-#APP_ROOT = '/home/bnahill/webapps/motion_upload'
 APP_ROOT = os.path.realpath(__file__).rpartition('/')[0]
 
 UPLOAD_DIR = os.path.join(APP_ROOT, 'uploads')
 STATIC_DIR = os.path.join(APP_ROOT, 'htdocs/static')
 
-# create our little application :)
 app = Flask(__name__)
-#app.config.from_object(__name__)
 
 @app.route('/')
 def default():
@@ -43,9 +40,12 @@ def chunk_handler(fname):
 
 @app.route('/upload_complete')
 def upload_complete():
-	files = filter(lambda x: x.partition('-')[0] == session['file_key'], os.listdir(UPLOAD_DIR))
+
 	from parse import parse, check_file
 	from mkmat import mkmat
+
+	files = os.listdir(UPLOAD_DIR)
+	files = filter(lambda x: x.rpartition('-')[0] == session['file_key'], files)
 
 	file_list = []	
 	for fname in files:
@@ -58,8 +58,8 @@ def upload_complete():
 			else:
 				matfile = 'mat/{}.mat'.format(fname)
 				message = "This file has been uploaded and converted"
-				link = url_for('static', filename=matfile)
-				mkmat(path, os.path.join(STATIC_DIR, matfile))
+				link = matfile
+				mkmat(path, os.path.join(APP_ROOT, matfile))
 			os.unlink(path)
 			file_list.append((fname, res, message, link))
 

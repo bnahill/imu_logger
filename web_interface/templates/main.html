@@ -15,7 +15,7 @@
 // Convert divs to queue widgets when the DOM is ready
 $(function() {
 	var handler_script = '/chunk_handler';
-
+	
 	$("#uploader").pluploadQueue({
 		// General settings
 		runtimes : 'html5,gears,flash,silverlight,browserplus',
@@ -47,6 +47,7 @@ $(function() {
 	        return true;});
 
 	uploader.bind('UploadComplete', function() {
+		$('#complete_msg').show();
 		$('form')[0].submit();
 	});
 });
@@ -64,6 +65,10 @@ $(function() {
 <form action="/upload_complete" method="get">
 <div id="uploader">
 	<p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+</div>
+<div style="display:none; text-align:center;" id="complete_msg">
+	<img src="/static/busy.gif" />
+	<p>Your files have been uploaded and are being parsed. Please wait...</p>
 </div>
 </form>
 {% endblock %}

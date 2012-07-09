@@ -1,0 +1,35 @@
+{% extends "default.html" %}
+{% block head %}
+{{ super() }}
+	<title>Upload Complete</title>
+	<style type="text/css">
+		div.file {margin: 3px auto; border: 1px solid #AAA;}
+		div.file img{vertical-align:middle;}
+		div.file span{display:inline-block; vertical-align:middle;}
+	</style>
+{% endblock %}
+
+{% block body %}
+
+<h1>Upload Complete</h1>
+
+<h3>Received Files:</h3>
+{% for f in files %}
+<div class="file">
+{% if f[1] %}
+	<img src="{{ url_for('static', filename='icons/checkmark.png') }}" title="{{ f[2] }}" />
+	<span><a href="{{ f[3] }}">{{ f[0] }}</a></span>
+{% else %}
+	<img src="{{ url_for('static', filename='icons/error.png') }}" title="{{ f[2] }}" />
+	<span>{{ f[0] }}</span>
+{% endif %}
+</div>
+{% endfor %}
+<div class="center">
+	<a href="/">
+		<img src="{{ url_for('static', filename='icons/arrow-left.png') }}" /><br />
+		Upload More
+	</a>
+</div>
+
+{% endblock %}

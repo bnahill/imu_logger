@@ -1,0 +1,69 @@
+{% extends "default.html" %}
+{% block head %}
+{{ super() }}
+	<title>Motion Recording Upload</title>
+	<!-- Load Queue widget CSS and jQuery -->
+	<style type="text/css">@import url(/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+	<!-- Third party script for BrowserPlus runtime (Google Gears included in Gears runtime now) -->
+	<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+	<!-- Load plupload and all it's runtimes and finally the jQuery queue widget -->
+	<script type="text/javascript" src="/plupload/js/plupload.full.js"></script>
+	<script type="text/javascript" src="/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+
+	<script type="text/javascript">
+// Convert divs to queue widgets when the DOM is ready
+$(function() {
+	var handler_script = '/chunk_handler';
+
+	$("#uploader").pluploadQueue({
+		// General settings
+		runtimes : 'html5,gears,flash,silverlight,browserplus',
+		url : 'gravy______GRAVY______gravy',
+		max_file_size : '1000mb',
+		chunk_size : '5mb',
+		unique_names : true,
+
+		// Resize images on clientside if we can
+		//resize : {width : 320, height : 240, quality : 90},
+
+		// Specify what files to browse for
+		filters : [
+			// {title : "Image files", extensions : "jpg,gif,png"},
+			// {title : "Zip files", extensions : "zip"}
+		],
+
+		// Flash settings
+		flash_swf_url : '/plupload/js/plupload.flash.swf',
+
+		// Silverlight settings
+		silverlight_xap_url : '/plupload/js/plupload.silverlight.xap'
+	});
+
+	var uploader = $("#uploader").pluploadQueue();
+
+	uploader.bind('BeforeUpload', function(up, file){
+	        up.settings.url = handler_script + '/' + file.name;
+	        return true;});
+
+	uploader.bind('UploadComplete', function() {
+		$('form')[0].submit();
+	});
+});
+	</script>
+
+{% endblock %}
+{% block body %}
+
+<h1>Motion Recording Uploader</h1>
+
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
+
+<form action="/upload_complete" method="get">
+<div id="uploader">
+	<p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+</div>
+</form>
+{% endblock %}

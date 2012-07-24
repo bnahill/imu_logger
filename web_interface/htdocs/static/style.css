@@ -4,5 +4,7 @@
 	padding:10px;
 	border:1px solid #555;
 }
-.center {text-align:center;}
+.inline{display:inline-block}
+.center{text-align:center;}
 h1{text-align:center;}
+.error{color:red;}

@@ -187,7 +187,8 @@ def parse(f):
 				temp2 = []
 
 			# Check if the frameset size is absurdly large
-			assert int(frameset_header & 0x7FFFFFFF) < 10000
+			assert (int(frameset_header & 0x7FFFFFFF) < 10000),("Invalid frameset "
+				"header")
 			
 			# Read each sample
 			for sample in range(frameset_header & 0x7FFFFFFF):

@@ -42,7 +42,8 @@ _Min_Stack_Size = 0x200; /* required amount of stack */
 /* Specify the memory areas */
 MEMORY
 {
-  FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 512K
+  FLASH (rx)      : ORIGIN = @LD_FLASH_BASE@, LENGTH = @LD_FLASH_SIZE@ - @LD_FLASH_RES_SIZE@
+  FLASH_RES (r)   : ORIGIN = @LD_FLASH_RES_BASE@, LENGTH = @LD_FLASH_RES_SIZE@
   RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 64K
   MEMORY_B1 (rx)  : ORIGIN = 0x60000000, LENGTH = 0K
 }
@@ -58,10 +59,13 @@ SECTIONS
     . = ALIGN(4);
   } >FLASH
 
+
+
   /* The program code and other data goes into FLASH */
   .text :
   {
     . = ALIGN(4);
+    _sflash = .;
     *(.text)           /* .text sections (code) */
     *(.text*)          /* .text* sections (code) */
     *(.rodata)         /* .rodata sections (constants, strings, etc.) */
@@ -75,7 +79,6 @@ SECTIONS
     . = ALIGN(4);
     _etext = .;        /* define a global symbols at end of code */
   } >FLASH
-
 
    .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >FLASH
     .ARM : {
@@ -109,6 +112,13 @@ SECTIONS
 
   /* used by the startup to initialize data */
   _sidata = .;
+
+	/* Create the reserved region of flash to be used by applications */
+	. = @LD_FLASH_RES_BASE@;
+	reserved  BLOCK(@LD_FLASH_PAGE_SIZE@) (NOLOAD): AT(@LD_FLASH_RES_BASE@)
+	{  
+		*(reserved)
+	} >FLASH_RES
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
   .data : AT ( _sidata )
@@ -167,4 +177,5 @@ SECTIONS
     libm.a ( * )
     libgcc.a ( * )
   }
+  
 }

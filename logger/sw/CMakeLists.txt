@@ -40,6 +40,13 @@ set(CMSIS_DIR CMSIS)
 # Path to IMU library drivers
 set(MCU cortex-m3)
 
+# Memory configuration
+set(LD_FLASH_BASE 0x8000000)
+set(LD_FLASH_SIZE 512K)
+set(LD_FLASH_PAGE_SIZE 2K)
+set(LD_FLASH_RES_NUM_PAGES 1)
+set(LD_FLASH_RES_SIZE "(${LD_FLASH_PAGE_SIZE} * ${LD_FLASH_RES_NUM_PAGES})")
+set(LD_FLASH_RES_BASE "${LD_FLASH_BASE} + ${LD_FLASH_SIZE} - ${LD_FLASH_RES_SIZE}")
 
 set(MCFLAGS "-mcpu=${MCU} -mthumb")
 
@@ -379,14 +386,21 @@ add_executable(${OUTFILE} ${APP_SOURCES})
 target_link_libraries(${OUTFILE} ${LIBS})
 
 # Funky workaround to make target dependent on linker script
-add_custom_command(OUTPUT link.ld COMMAND cat ${CMAKE_SOURCE_DIR}/stm32_flash.ld > link.ld DEPENDS ${CMAKE_SOURCE_DIR}/stm32_flash.ld)
-add_custom_target(linker_script DEPENDS link.ld)
-add_dependencies(${OUTFILE} linker_script)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/stm32_flash.ld ${CMAKE_CURRENT_BINARY_DIR}/link.ld @ONLY)
+#add_custom_command(OUTPUT link.ld COMMAND cat ${CMAKE_SOURCE_DIR}/stm32_flash.ld > link.ld DEPENDS ${CMAKE_SOURCE_DIR}/stm32_flash.ld)
+#	add_custom_target(doc
+#		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+#		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#		COMMENT "Generating documentation with Doxygen" VERBATIM
+#	)
+add_custom_target(linker_script DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/link.ld)
 
 # Warnings only for application code -- Optimizations only on ST/ARM code
 set_target_properties(${OUTFILE} PROPERTIES COMPILE_FLAGS "-Wall -Wclobbered -Wempty-body -Wignored-qualifiers -Woverride-init -Wtype-limits -Wuninitialized -O0")
 set_target_properties(std_periph PROPERTIES COMPILE_FLAGS "-Wall -O0")
 set_target_properties(cmsis_dsp PROPERTIES COMPILE_FLAGS "-w -O2")
+
+add_dependencies(${OUTFILE} linker_script)
 
 ##############################################################
 # Ctags

@@ -115,6 +115,22 @@ static INLINE uint32_t logger_space_left(void);
 
 //! @}
 
+void logger_read_devid(uint8_t *dst){
+	const uint8_t *u_id = (uint8_t *)0x1FFFF7E8;
+	dst[11] = u_id[1];
+	dst[10] = u_id[0];
+	dst[9] = u_id[3];
+	dst[8] = u_id[2];
+	dst[7] = u_id[7];
+	dst[6] = u_id[6];
+	dst[5] = u_id[5];
+	dst[4] = u_id[4];
+	dst[3] = u_id[11];
+	dst[2] = u_id[10];
+	dst[1] = u_id[9];
+	dst[0] = u_id[8];
+}
+
 static uint32_t logger_calc_cycle_len(void){
 	uint32_t i, j, num_samples, cycle_bytes;
 	// Ghetto least-common-multiple calculation
@@ -192,11 +208,10 @@ static void led_off(void){
 	GPIOC->BRR = BIT(3);
 }
 	
-const char *logger_init(const char *prefix){
+const char *logger_init(const char *prefix, uint32_t calibrated){
 	char *ptr, *suffix;
 	int i, j, tmp;
 	FILINFO fi;
-	const uint8_t *u_id = (uint8_t *)0x1FFFF7E8;
 	
 	led_init();
 	
@@ -246,20 +261,18 @@ const char *logger_init(const char *prefix){
 		return NULL;
 	}
 	
+	for(i = 0; i < LOG_MAX_SENSORS; i++){
+		if(calibrated & 1){
+			log_header.is_calibrated[i] = 1;
+		} else {
+			log_header.is_calibrated[i] = 0;
+		}
+		calibrated >>= 1;
+	}
+	
 	// Copy the device ID in the order prescribed by the reference manual
-	// The MSB is at the index 0 (big endian)
-	log_header.device_id[11] = u_id[1];
-	log_header.device_id[10] = u_id[0];
-	log_header.device_id[9] = u_id[3];
-	log_header.device_id[8] = u_id[2];
-	log_header.device_id[7] = u_id[7];
-	log_header.device_id[6] = u_id[6];
-	log_header.device_id[5] = u_id[5];
-	log_header.device_id[4] = u_id[4];
-	log_header.device_id[3] = u_id[11];
-	log_header.device_id[2] = u_id[10];
-	log_header.device_id[1] = u_id[9];
-	log_header.device_id[0] = u_id[8];
+	// The MSB is at the index 0 (big endian)	
+	logger_read_devid(log_header.device_id);
 	
 	cycle_len = logger_calc_cycle_len();
 	

@@ -124,35 +124,41 @@ typedef struct {
 	void *arg;
 } lsm_int_config_t;
 
+typedef struct {
+	uint8_t id[12];
+	float calib[12];
+} lsm_calib_t;
+
 //! Configuration and state information for an LSM303DLH
 typedef struct {
 	//! The current magnetometer reading
-	euclidean3_t     mag;
+	euclidean3_t       mag;
 	//! The current accelerometer reading
-	euclidean3_t     acc;
+	euclidean3_t       acc;
 	//! The I2C device to use
-	i2c_t *const     i2c;
-	lsm_int_t        interrupt[2];
+	i2c_t *const       i2c;
+	lsm_int_t          interrupt[2];
 	//! The accelerometer output rate
-	lsm_acc_rate_t   acc_rate;
+	lsm_acc_rate_t     acc_rate;
 	//! The magnetometer output rate
-	lsm_mag_rate_t   mag_rate;
+	lsm_mag_rate_t     mag_rate;
 	//! The accelerometer full-scale output range
-	lsm_acc_fs_t     acc_fs;
+	lsm_acc_fs_t       acc_fs;
 	//! The magnetometer full-scale output range
-	lsm_mag_fs_t     mag_fs;
+	lsm_mag_fs_t       mag_fs;
 	//! The power mode of the device
-	lsm_pm_t         pow_mode;
-	lsm_hp_cutoff_t  hp_cuttoff;
-	lsm_func_state_t hp_enable;
+	lsm_pm_t           pow_mode;
+	lsm_hp_cutoff_t    hp_cuttoff;
+	lsm_func_state_t   hp_enable;
+	lsm_calib_t const* calib;
 	//! Transfer structures for asynchronous accelerometer reads
-	i2c_transfer_t   acc_xfer;
+	i2c_transfer_t     acc_xfer;
 	//! Transfer structure for asynchronous magnetometer reads
-	i2c_transfer_t   mag_xfer;
+	i2c_transfer_t     mag_xfer;
 	//! Transfer buffers for asynchronous magnetometer reads
-	uint8_t          acc_buff[6];
+	uint8_t            acc_buff[6];
 	//! Transfer buffers for asynchronous magnetometer reads
-	uint8_t          mag_buff[6];
+	uint8_t            mag_buff[6];
 } lsm303_t;
 
 //! @}

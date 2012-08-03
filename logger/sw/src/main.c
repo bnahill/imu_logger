@@ -36,7 +36,7 @@
  @brief Flag to enable stop mode when not recording (core debug doesn't work
  when stopped)
  */
-#define DO_LOPWR 1
+#define DO_LOPWR 0
 
 /*!
  @brief Flag to enable the internal RC oscillator to drive debug circuitry in
@@ -45,10 +45,10 @@
 #define DO_LP_DEBUG 1
 
 //! Flag to enable use of accelerometer to wake up
-#define DO_LSM_INTERRUPT 1
+#define DO_LSM_INTERRUPT 0
 
 //! Flag to enable activity detection to put back to sleep
-#define DO_ACTIVITY_DETECT 1
+#define DO_ACTIVITY_DETECT 0
 
 //! @} @} Configuration flags
 
@@ -268,6 +268,7 @@ static INLINE void do_error(void){
 static INLINE void do_run(void){
 	int i;
 	jb_frame_t frame;
+	uint32_t calib_count;
 #if DO_ACTIVITY_DETECT
 	ac_result_t ac_result;
 	int since_active = -1;
@@ -283,10 +284,17 @@ static INLINE void do_run(void){
 #endif
 	
 #if DO_LOG
-	if(logger_init("test") == NULL){
+	calib_count = 0;
+	
+	if(magacc.calib)
+		calib_count |= 1;
+	
+	if(logger_init("test", calib_count) == NULL){
 		mode = MODE_ERROR;
 		return;
 	}
+	
+		
 #endif
 	
 	led_set();

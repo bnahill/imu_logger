@@ -12,7 +12,7 @@
  @{
  */
 
-#define LOG_VERSION 1
+#define LOG_VERSION 2
 
 #define LOG_KEY 0xDEFEC8ED
 #define LOG_PAGE_LEN (32768)
@@ -50,6 +50,8 @@ typedef struct {
 	uint32_t sample_rate;
 	//! The sub-rate of each sensor -- 0 indicates unavailable
 	uint8_t sensor_sub_rate[LOG_MAX_SENSORS];
+	//! Non-zero for each calibrated sensor
+	uint8_t is_calibrated[LOG_MAX_SENSORS];
 } log_config_header_t;
 
 typedef struct {

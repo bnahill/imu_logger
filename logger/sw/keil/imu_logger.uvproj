@@ -162,9 +162,9 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4096</DriverSelection>
+            <DriverSelection>4105</DriverSelection>
           </Flash1>
-          <Flash2>BIN\UL2CM3.DLL</Flash2>
+          <Flash2>STLink\ST-LINKIII-KEIL_SWO.dll</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
         </Utilities>
@@ -1395,6 +1395,11 @@
               <FileType>1</FileType>
               <FilePath>..\CMSIS\DSP_Lib\Source\StatisticsFunctions\arm_power_f32.c</FilePath>
             </File>
+            <File>
+              <FileName>arm_mat_mult_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CMSIS\DSP_Lib\Source\MatrixFunctions\arm_mat_mult_f32.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -2363,6 +2368,11 @@
               <FileName>arm_power_f32.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CMSIS\DSP_Lib\Source\StatisticsFunctions\arm_power_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_mult_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CMSIS\DSP_Lib\Source\MatrixFunctions\arm_mat_mult_f32.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3333,6 +3343,11 @@
               <FileType>1</FileType>
               <FilePath>..\CMSIS\DSP_Lib\Source\StatisticsFunctions\arm_power_f32.c</FilePath>
             </File>
+            <File>
+              <FileName>arm_mat_mult_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CMSIS\DSP_Lib\Source\MatrixFunctions\arm_mat_mult_f32.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -4301,6 +4316,11 @@
               <FileName>arm_power_f32.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CMSIS\DSP_Lib\Source\StatisticsFunctions\arm_power_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_mult_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CMSIS\DSP_Lib\Source\MatrixFunctions\arm_mat_mult_f32.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -5271,6 +5291,11 @@
               <FileType>1</FileType>
               <FilePath>..\CMSIS\DSP_Lib\Source\StatisticsFunctions\arm_power_f32.c</FilePath>
             </File>
+            <File>
+              <FileName>arm_mat_mult_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CMSIS\DSP_Lib\Source\MatrixFunctions\arm_mat_mult_f32.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -6239,6 +6264,11 @@
               <FileName>arm_power_f32.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CMSIS\DSP_Lib\Source\StatisticsFunctions\arm_power_f32.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_mat_mult_f32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CMSIS\DSP_Lib\Source\MatrixFunctions\arm_mat_mult_f32.c</FilePath>
             </File>
           </Files>
         </Group>

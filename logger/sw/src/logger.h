@@ -15,7 +15,7 @@
  @param prefix The filename prefix
  @return The filename used or NULL if there is an error
  */
-const char *logger_init(const char *prefix);
+const char *logger_init(const char *prefix, uint32_t calibrated);
 
 /*!
  @brief Add data from a jitter buffer frame to the current log file
@@ -36,6 +36,7 @@ void logger_sync(void);
  */
 void logger_close(void);
 
+void logger_read_devid(uint8_t *dst);
 
 //! @}
 //! @}

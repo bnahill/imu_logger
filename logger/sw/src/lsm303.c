@@ -2,6 +2,8 @@
 #include "i2c.h"
 #include "lsm303.h"
 #include "exti.h"
+#include "logger.h"
+#include "arm_math.h"
 
 /*!
  @addtogroup lsm LSM303 Accelerometer + Magnetometer
@@ -69,6 +71,16 @@
 #define MAG_REG_TEMP_L    0x32
 //! @}
 
+static const lsm_calib_t inemos[] = {
+	{
+		{57, 98, 8, 67, 48, 84, 56, 57, 213, 5, 49, 255}, // iNEMO 2
+		{1.005140000000000,  0.028539090000000,     -0.014078770000000,
+		 -0.002604419000000, 0.980015600000000,     0.020194060000000,
+		 -0.033938110000000, 0.001764096000000,     0.996135500000000,
+		 -0.019923740000000, -0.007757963000000,    0.029542460000000}
+	}
+};
+
 //! Accelerometer scale to be indexed with lsm_acc_fs_t
 static const float acc_scale[] = {
 	1.0 / 1000.0,
@@ -101,6 +113,8 @@ static const float mag_scale_z[] = {
 };
 
 //! @}
+
+static arm_matrix_instance_f32 mat_a, mat_b, mat_c;
 
 #if HAS_MAGACC
 //! @ingroup lsm
@@ -207,6 +221,9 @@ void lsm303_set_acc_rate(lsm303_t *lsm, lsm_acc_rate_t acc_rate){
 
 void lsm303_init(lsm303_t *lsm){
 	GPIO_InitTypeDef gpio_init_s;
+	uint8_t devid[12];
+	lsm_calib_t const * calib;
+	int i;
 	
 	// Init CTRL1-5
 	uint8_t conf_buffer[5];
@@ -227,6 +244,31 @@ void lsm303_init(lsm303_t *lsm){
 	
 	lsm->interrupt[0].src = 0;
 	lsm->interrupt[1].src = 0;
+	
+	// Find the calibration constants
+	lsm->calib = NULL;
+	logger_read_devid(devid);
+	for(calib = &inemos[0]; calib < inemos + (sizeof(inemos) / sizeof(*calib)); calib++){
+		for(i = 0; i < 12; i++){
+			if(calib->id[i] != devid[i])
+				break;
+		}
+		if(i == 12){
+			// Success!
+			lsm->calib = calib;
+			// Matrix for raw data
+			mat_a.numCols = 4;
+			mat_a.numRows = 1;
+			// Matrix for calibration constants
+			mat_b.numCols = 3;
+			mat_b.numRows = 4;
+			// Matrix for output
+			mat_c.numCols = 3;
+			mat_c.numRows = 1;
+
+			break;
+		}
+	}
 	
 	conf_buffer[0] = (lsm->pow_mode << 5) | (lsm->acc_rate << 3) | 0x07;
 	conf_buffer[1] = lsm->hp_cuttoff | (lsm->hp_enable << 4);
@@ -324,17 +366,35 @@ void lsm303_read_sync_all(void){
 
 void lsm303_update_acc(lsm303_t *lsm){
 	int16_t tmp16;
+	float xyz[4];
+	float calibrated[3];
 	
 	lsm->acc_xfer.done = 0;
 	
 	// Read the raw sensor value
 	tmp16 = lsm->acc_buff[0] | (lsm->acc_buff[1] << 8);
 	// Scale it to match the sensitivity
-	lsm->acc.x = (tmp16 >> 4) * acc_scale[lsm->acc_fs];
+	xyz[0] = (tmp16 >> 4) * acc_scale[lsm->acc_fs];
 	tmp16 = lsm->acc_buff[2] | (lsm->acc_buff[3] << 8);
-	lsm->acc.y = (tmp16 >> 4) * acc_scale[lsm->acc_fs];
+	xyz[1] = (tmp16 >> 4) * acc_scale[lsm->acc_fs];
 	tmp16 = lsm->acc_buff[4] | (lsm->acc_buff[5] << 8);
-	lsm->acc.z = (tmp16 >> 4) * acc_scale[lsm->acc_fs];
+	xyz[2] = -(tmp16 >> 4) * acc_scale[lsm->acc_fs];
+	
+	if(lsm->calib){
+		// Perform calibration
+		mat_b.pData = (float32_t *)lsm->calib->calib;
+		mat_a.pData = xyz;
+		mat_c.pData = calibrated;
+		xyz[3] = 1;
+		arm_mat_mult_f32(&mat_a, &mat_b, &mat_c);
+		lsm->acc.x = calibrated[0];
+		lsm->acc.y = calibrated[1];
+		lsm->acc.z = calibrated[2];
+	} else {
+		lsm->acc.x = xyz[0];
+		lsm->acc.y = xyz[1];
+		lsm->acc.z = xyz[2];
+	}
 }
 
 void lsm303_update_mag(lsm303_t *lsm){

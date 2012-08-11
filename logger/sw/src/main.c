@@ -36,7 +36,7 @@
  @brief Flag to enable stop mode when not recording (core debug doesn't work
  when stopped)
  */
-#define DO_LOPWR 0
+#define DO_LOPWR 1
 
 /*!
  @brief Flag to enable the internal RC oscillator to drive debug circuitry in
@@ -436,8 +436,8 @@ void frame_to_jb(void){
 	frame.mag.y = magacc.mag.y;
 	frame.mag.z = magacc.mag.z;
 	
-	frame.gyro.pitch = gyro.reading.pitch;
 	frame.gyro.yaw = gyro.reading.yaw;
+	frame.gyro.pitch = gyro.reading.pitch;
 	frame.gyro.roll = gyro.reading.roll;
 	
 	frame.pressure = pressure.pressure;

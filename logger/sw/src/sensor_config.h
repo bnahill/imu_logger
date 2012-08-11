@@ -43,7 +43,7 @@ static const int32_t activity_num_frames = 3;
 #define NULL8 ((uint8_t *)0)
 
 //////////////////////////////////////////////////////////////////////////////
-// L3GD20
+// LPRY
 //////////////////////////////////////////////////////////////////////////////
 
 #define HAS_GYRO 1
@@ -88,8 +88,8 @@ typedef struct {
 
 //! Representation of 3-dimensional Euler angles
 typedef struct {
-	float pitch;
 	float roll;
+	float pitch;
 	float yaw;
 } euler3_t;
 

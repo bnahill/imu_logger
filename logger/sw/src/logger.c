@@ -261,6 +261,7 @@ const char *logger_init(const char *prefix, uint32_t calibrated){
 		return NULL;
 	}
 	
+	/*
 	for(i = 0; i < LOG_MAX_SENSORS; i++){
 		if(calibrated & 1){
 			log_header.is_calibrated[i] = 1;
@@ -269,6 +270,11 @@ const char *logger_init(const char *prefix, uint32_t calibrated){
 		}
 		calibrated >>= 1;
 	}
+	
+	// This is iNEMO!!!
+	log_header.model = DEVICE_INEMO;
+	log_header.model_minor = 0;
+	*/
 	
 	// Copy the device ID in the order prescribed by the reference manual
 	// The MSB is at the index 0 (big endian)	
@@ -328,8 +334,8 @@ void logger_update(jb_frame_t const * frame){
 			continue;
 		switch(i){
 		case LOG_SENSOR_GYR1:
-			*(write_ptr.f++) = frame->gyro.pitch;
 			*(write_ptr.f++) = frame->gyro.roll;
+			*(write_ptr.f++) = frame->gyro.pitch;
 			*(write_ptr.f++) = frame->gyro.yaw;
 			break;
 		case LOG_SENSOR_ACC1:

@@ -12,9 +12,9 @@
  @{
  */
 
-#define LOG_VERSION 2
+#define LOG_VERSION 1
 
-#define LOG_KEY 0xDEFEC8ED
+#define LOG_KEY ((uint32_t) 3741239533U)
 #define LOG_PAGE_LEN (32768)
 
 #define LOG_MAX_SENSORS  16
@@ -37,6 +37,26 @@
 #define LOG_SENSOR_TEMP2  9
 //! @}
 
+/*!
+ @name Device models
+ The various device models that may support this logging platform
+ @{
+ */
+#define DEVICE_INEMO     0
+#define DEVICE_XNEMO_R1  1
+#define DEVICE_XNEMO_R2  2
+//! @}
+
+
+/*!
+ @name Device orientations
+ @brief The sensor orientation of the device
+ @{
+ */
+#define COORD_INEMO     0
+#define COORD_AIRPLANE  1
+//! @}
+
 typedef struct {
 	//! An key to identifying valid files and byte order
 	uint32_t key;
@@ -50,16 +70,13 @@ typedef struct {
 	uint32_t sample_rate;
 	//! The sub-rate of each sensor -- 0 indicates unavailable
 	uint8_t sensor_sub_rate[LOG_MAX_SENSORS];
-	//! Non-zero for each calibrated sensor
-	uint8_t is_calibrated[LOG_MAX_SENSORS];
 } log_config_header_t;
 
 typedef struct {
 	//! This frame type is valid only if this is true
 	uint8_t is_active :1; 
 	//! Number of samples at master rate 
-	uint16_t run_length;
-	
+	uint16_t run_length;	
 } log_page_active_header_t;
 
 //! The header when sleeping is a run length in master samples

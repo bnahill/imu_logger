@@ -187,9 +187,12 @@ int lpry_xfer_complete(void){
 }
 
 void lpry_update(void){
-	gyro.reading.pitch =(gyro.dma_buffer[0] - gyro.dma_buffer[2]) / Gyro_SensitivityLSB_P_300dps;
-	gyro.reading.roll =(gyro.dma_buffer[1] - gyro.dma_buffer[2]) / Gyro_SensitivityLSB_R_300dps;
-	gyro.reading.yaw =(gyro.dma_buffer[3] - gyro.dma_buffer[4]) / Gyro_SensitivityLSB_Y_300dps;
+	gyro.reading.roll =  (gyro.dma_buffer[0] - gyro.dma_buffer[2]) /
+	                     Gyro_SensitivityLSB_R_300dps;
+	gyro.reading.pitch = (gyro.dma_buffer[1] - gyro.dma_buffer[2]) /
+	                     Gyro_SensitivityLSB_P_300dps;
+	gyro.reading.yaw =   (gyro.dma_buffer[3] - gyro.dma_buffer[4]) /
+	                     Gyro_SensitivityLSB_Y_300dps;
 	gyro.done = 0;
 }
 

@@ -186,15 +186,15 @@ int lsm303_int_config(lsm303_t *lsm, lsm_int_config_t const *config){
 	
 	i2c_write_buffer(lsm->i2c, ACC_ADDR, 0x80 + ACC_REG_INT1_CFG + 4*config->index, buffer, 4);
 	
-	if(!exti_register_handler(i->gpio.gpio,
-	                          i->gpio.pinsrc,
-	                          EXTI_Trigger_Rising,
-	                          config->cb,
-	                          config->arg))
+	
+	
+	if(!exti_config(i->gpio.gpio, i->gpio.pinsrc, EXTI_Trigger_Rising))
 		return 0;
 	
 	EXTI->RTSR &= ~i->gpio.pin;
 	EXTI->FTSR &= ~i->gpio.pin;
+	
+	exti_register_handler(i->gpio.pinsrc, config->cb, config->arg);
 	
 	i2c_write_byte(lsm->i2c, ACC_ADDR, ACC_REG_INT1_CFG + 4*config->index, (i->mode << 6) | i->src);
 	

@@ -38,6 +38,8 @@ void logger_close(void);
 
 void logger_read_devid(uint8_t *dst);
 
+int logger_is_open(void);
+
 //! @}
 //! @}
 

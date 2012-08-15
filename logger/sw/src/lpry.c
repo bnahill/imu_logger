@@ -11,7 +11,8 @@
 #define GYRO_DMA_Channel          DMA1_Channel1
 #define GYRO_DMA_IRQn             DMA1_Channel1_IRQn
 #define GYRO_DMA_ISR              DMA1_Channel1_IRQHandler
-#define GYRO_DMA_FLAG             DMA1_FLAG_TC1
+#define GYRO_DMA_FLAG(x)          (DMA1_FLAG_ ## x ## 1)
+
 
 //! GPIO for ST and PD/SLEEP pin
 #define GYRO_GPIO_Port2            GPIOB
@@ -146,6 +147,7 @@ void lpry_init(void){
 	NVIC_Init(&nvic_init_s);
 	
 	DMA_ITConfig(GYRO_DMA_Channel, DMA_IT_TC, ENABLE);
+	DMA_ITConfig(GYRO_DMA_Channel, DMA_IT_TE, ENABLE);
 	
 	lpry_power_on();
 	lpry_self_test_off();
@@ -203,10 +205,20 @@ void lpry_read_sync(void){
 }
 
 void GYRO_DMA_ISR(void){
-	if(DMA_GetFlagStatus(GYRO_DMA_FLAG)){
+	// Check for error
+	if(DMA_GetFlagStatus(GYRO_DMA_FLAG(TE))){
+		DMA_ClearFlag(GYRO_DMA_FLAG(TE));
+		
 		ADC_Cmd(GYRO_ADC, DISABLE);
 		ADC_SoftwareStartConvCmd(GYRO_ADC, DISABLE);
-		DMA_ClearFlag(GYRO_DMA_FLAG);
+		DMA_ClearFlag(GYRO_DMA_FLAG(TC));
+	
+		lpry_read();
+ 	}
+	if(DMA_GetFlagStatus(GYRO_DMA_FLAG(TC))){
+		ADC_Cmd(GYRO_ADC, DISABLE);
+		ADC_SoftwareStartConvCmd(GYRO_ADC, DISABLE);
+		DMA_ClearFlag(GYRO_DMA_FLAG(TC));
 		gyro.done = 1;
 	}
 }

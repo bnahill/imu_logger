@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Tue 21 Aug 2012 04:02:22 PM EDT
+EESchema Schematic File Version 2  date Tue 21 Aug 2012 04:28:32 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -43,6 +43,7 @@ LIBS:ind
 LIBS:swd_10pin
 LIBS:pushbutton
 LIBS:xtal
+LIBS:imu_logger-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
@@ -356,7 +357,7 @@ POW_HPWR
 Text HLabel 3700 3800 0    60   Output ~ 0
 POW_MODE
 Text HLabel 6400 1700 1    60   Input ~ 0
-EXTI5
+EXTI10
 Text HLabel 7200 4200 2    60   Output ~ 0
 FLASH_nHOLD
 Text HLabel 7200 4100 2    60   Output ~ 0

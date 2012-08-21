@@ -1,4 +1,4 @@
-update=Tue 21 Aug 2012 11:02:45 AM EDT
+update=Tue 21 Aug 2012 01:41:30 PM EDT
 version=1
 last_client=eeschema
 [cvpcb]
@@ -110,3 +110,7 @@ LibName37=l3gd20
 LibName38=mag3110
 LibName39=lps331ap
 LibName40=stm32f405rg
+LibName41=ind
+LibName42=swd_10pin
+LibName43=pushbutton
+LibName44=xtal

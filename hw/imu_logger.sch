@@ -1,0 +1,180 @@
+EESchema Schematic File Version 2  date Tue 21 Aug 2012 11:12:24 AM EDT
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:special
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:cap
+LIBS:ltc3559
+LIBS:mt29fxx01a
+LIBS:res
+LIBS:usbmicroconn
+LIBS:mma8452q
+LIBS:l3gd20
+LIBS:mag3110
+LIBS:lps331ap
+LIBS:stm32f405rg
+LIBS:imu_logger-cache
+EELAYER 25  0
+EELAYER END
+$Descr A4 11700 8267
+encoding utf-8
+Sheet 1 4
+Title ""
+Date "21 aug 2012"
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Sheet
+S 4300 4350 2200 2100
+U 50339999
+F0 "stm32f4" 60
+F1 "stm32f4.sch" 60
+$EndSheet
+$Sheet
+S 9000 2950 1850 1800
+U 5032F4FC
+F0 "sensors" 60
+F1 "sensors.sch" 60
+F2 "ACC_INT2" O L 9000 3800 60 
+F3 "ACC_INT1" O L 9000 3700 60 
+F4 "ACC_I2C_SCL" B L 9000 3500 60 
+F5 "ACC_I2C_SDA" B L 9000 3400 60 
+F6 "GYR_INT1" O L 9000 4550 60 
+F7 "GYR_DRDY/INT2" O L 9000 4650 60 
+F8 "GYR_SPI_CLK" I L 9000 4050 60 
+F9 "GYR_SPI_MOSI" I L 9000 4150 60 
+F10 "GYR_SPI_MISO" O L 9000 4250 60 
+F11 "GYR_SPI_nCS" I L 9000 4350 60 
+F12 "Vdd" I L 9000 3050 60 
+F13 "MAG_INT1" O R 10850 3700 60 
+F14 "MAG_I2C_SCL" B R 10850 3500 60 
+F15 "MAG_I2C_SDA" B R 10850 3400 60 
+F16 "PRS_INT2" O R 10850 4650 60 
+F17 "PRS_INT1" O R 10850 4550 60 
+F18 "PRS_SPI_CLK" I R 10850 4050 60 
+F19 "PRS_SPI_MOSI" I R 10850 4150 60 
+F20 "PRS_SPI_MISO" O R 10850 4250 60 
+F21 "PRS_SPI_nCS" I R 10850 4350 60 
+$EndSheet
+Connection ~ 2150 6350
+Wire Wire Line
+	2100 6350 2150 6350
+Wire Wire Line
+	2150 6350 2200 6350
+Wire Wire Line
+	2100 6350 2100 6300
+Wire Wire Line
+	2200 5500 2200 5400
+Wire Wire Line
+	2200 5400 2200 3400
+Wire Wire Line
+	2100 5500 2100 5400
+Wire Wire Line
+	2100 5400 2200 5400
+Wire Wire Line
+	2200 3400 5000 3400
+Connection ~ 5000 2650
+Wire Wire Line
+	5000 3400 5000 2650
+Wire Wire Line
+	3550 2350 2900 2350
+Wire Wire Line
+	2900 2350 2900 1700
+Wire Wire Line
+	2900 1700 1350 1700
+Wire Wire Line
+	1950 2200 1950 2100
+Wire Wire Line
+	1950 2100 1350 2100
+Wire Wire Line
+	4850 2650 5000 2650
+Wire Wire Line
+	5000 2650 8750 2650
+Wire Wire Line
+	8750 2650 8750 3050
+Wire Wire Line
+	8750 3050 9000 3050
+Connection ~ 2200 5400
+Wire Wire Line
+	2150 6350 2150 6400
+Wire Wire Line
+	2200 6350 2200 6300
+$Comp
+L GND #PWR?
+U 1 1 00000000
+P 2150 6400
+F 0 "#PWR?" H 2150 6400 30  0001 C CNN
+F 1 "GND" H 2150 6330 30  0001 C CNN
+	1    2150 6400
+	1    0    0    -1  
+$EndComp
+$Comp
+L MT29FXX01A U?
+U 1 1 00000000
+P 2150 5900
+F 0 "U?" H 2250 6250 60  0000 L BNN
+F 1 "MT29FXX01A" H 2250 5550 60  0000 L TNN
+	1    2150 5900
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 00000000
+P 1950 2200
+F 0 "#PWR?" H 1950 2200 30  0001 C CNN
+F 1 "GND" H 1950 2130 30  0001 C CNN
+	1    1950 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L USBMICROCONN U?
+U 1 1 00000000
+P 1100 1850
+F 0 "U?" H 1150 1450 60  0001 C CNN
+F 1 "USBMICROCONN" H 1150 1450 60  0000 C CNN
+	1    1100 1850
+	0    1    1    0   
+$EndComp
+$Sheet
+S 3550 1850 1300 1100
+U 5032B8A6
+F0 "power" 60
+F1 "power.sch" 60
+F2 "SUSP_EN" I R 4850 2100 60 
+F3 "nCHRG" O R 4850 2300 60 
+F4 "HPWR_EN" I R 4850 2200 60 
+F5 "Vbat" O R 4850 2550 60 
+F6 "Vreg" O R 4850 2650 60 
+F7 "Vbus" I L 3550 2350 60 
+$EndSheet
+$EndSCHEMATC

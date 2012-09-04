@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Tue 21 Aug 2012 04:28:32 PM EDT
+EESchema Schematic File Version 2  date Tue 04 Sep 2012 12:42:10 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -43,14 +43,15 @@ LIBS:ind
 LIBS:swd_10pin
 LIBS:pushbutton
 LIBS:xtal
+LIBS:cc1101
 LIBS:imu_logger-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 1 4
+Sheet 1 5
 Title "IMU Logger"
-Date "21 aug 2012"
+Date "4 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -58,6 +59,12 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Sheet
+S 7450 750  1600 1500
+U 50462493
+F0 "rf" 60
+F1 "rf.sch" 60
+$EndSheet
 $Sheet
 S 4300 4350 2200 2250
 U 50339999
@@ -93,7 +100,7 @@ F28 "POW_nCHRG" I L 4300 5300 60
 F29 "POW_SUSP_EN" O L 4300 5400 60 
 F30 "POW_HPWR" O L 4300 5500 60 
 F31 "POW_MODE" O L 4300 5600 60 
-F33 "EXTI10" I R 6500 6300 60 
+F32 "EXTI10" I R 6500 6300 60 
 $EndSheet
 Wire Wire Line
 	1700 5100 4300 5100

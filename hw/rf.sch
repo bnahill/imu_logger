@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Wed 05 Sep 2012 01:10:45 PM EDT
+EESchema Schematic File Version 2  date Wed 05 Sep 2012 02:20:33 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -47,6 +47,7 @@ LIBS:cc1101
 LIBS:sb
 LIBS:tp
 LIBS:antenna
+LIBS:imu_logger-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
@@ -298,7 +299,7 @@ L ANTENNA ANT?
 U 1 1 50478765
 P 10600 4050
 F 0 "ANT?" H 10850 3850 60  0000 C CNN
-F 1 "ANTENNA" H 10850 4250 60  0000 C CNN
+F 1 "ANT-916-HESM" H 10650 4250 60  0000 C CNN
 	1    10600 4050
 	1    0    0    -1  
 $EndComp
@@ -307,7 +308,7 @@ L ANTENNA ANT?
 U 1 1 5047875F
 P 10550 2000
 F 0 "ANT?" H 10800 1800 60  0000 C CNN
-F 1 "ANTENNA" H 10800 2200 60  0000 C CNN
+F 1 "ANT-433-HESM" H 10600 2200 60  0000 C CNN
 	1    10550 2000
 	1    0    0    -1  
 $EndComp

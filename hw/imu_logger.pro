@@ -1,4 +1,4 @@
-update=Tue 04 Sep 2012 12:38:21 PM EDT
+update=Wed 05 Sep 2012 01:09:45 PM EDT
 version=1
 last_client=eeschema
 [cvpcb]
@@ -115,3 +115,6 @@ LibName42=swd_10pin
 LibName43=pushbutton
 LibName44=xtal
 LibName45=cc1101
+LibName46=sb
+LibName47=tp
+LibName48=antenna

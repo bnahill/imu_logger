@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Tue 04 Sep 2012 12:42:10 PM EDT
+EESchema Schematic File Version 2  date Wed 05 Sep 2012 01:10:45 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -44,14 +44,16 @@ LIBS:swd_10pin
 LIBS:pushbutton
 LIBS:xtal
 LIBS:cc1101
-LIBS:imu_logger-cache
+LIBS:sb
+LIBS:tp
+LIBS:antenna
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 3 5
+Sheet 4 5
 Title "IMU Logger"
-Date "4 sep 2012"
+Date "5 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"

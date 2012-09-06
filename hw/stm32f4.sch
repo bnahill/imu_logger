@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Wed 05 Sep 2012 01:10:45 PM EDT
+EESchema Schematic File Version 2  date Wed 05 Sep 2012 07:22:05 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -47,11 +47,12 @@ LIBS:cc1101
 LIBS:sb
 LIBS:tp
 LIBS:antenna
+LIBS:imu_logger-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 3 5
+Sheet 2 5
 Title "IMU Logger"
 Date "5 sep 2012"
 Rev "a"
@@ -61,6 +62,8 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Wire Wire Line
+	6300 2800 6300 1700
 Wire Wire Line
 	6900 3800 7200 3800
 Wire Wire Line
@@ -343,12 +346,18 @@ Wire Wire Line
 	8200 3200 6900 3200
 Wire Wire Line
 	7200 3900 6900 3900
+Wire Wire Line
+	6200 1700 6200 2800
+Text HLabel 6200 1700 1    60   Input ~ 0
+EXTI12
+Text HLabel 6300 1700 1    60   Input ~ 0
+EXTI11
 Text HLabel 7200 3900 2    60   Output ~ 0
 RF_nCS
 Text HLabel 7200 4000 2    60   BiDi ~ 0
-RF_GDO2
+RF_GDO2/EXTI8
 Text HLabel 7200 4100 2    60   BiDi ~ 0
-RF_GDO0
+RF_GDO0/EXTI7
 Text HLabel 4450 4500 0    60   Input ~ 0
 POW_nCHRG
 Text HLabel 3700 4000 0    60   Output ~ 0

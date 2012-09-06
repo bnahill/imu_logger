@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Wed 05 Sep 2012 07:22:05 PM EDT
+EESchema Schematic File Version 2  date Thu 06 Sep 2012 07:49:39 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -54,7 +54,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 2 5
 Title "IMU Logger"
-Date "5 sep 2012"
+Date "6 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -62,6 +62,15 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Comp
+L XTAL_GND X1
+U 1 1 50492A1D
+P 3400 3450
+F 0 "X1" H 3400 3390 40  0000 C TNN
+F 1 "7B-8.000MAAJ" V 3300 3150 40  0000 C CNN
+	1    3400 3450
+	0    -1   -1   0   
+$EndComp
 Wire Wire Line
 	6300 2800 6300 1700
 Wire Wire Line
@@ -471,15 +480,6 @@ F 0 "C6" H 4020 3370 50  0000 L TNN
 F 1 "9p" H 4025 3420 30  0000 L BNN
 	1    4000 3400
 	1    0    0    -1  
-$EndComp
-$Comp
-L XTAL X1
-U 1 1 5033C895
-P 3400 3450
-F 0 "X1" H 3400 3390 40  0000 C TNN
-F 1 "7B-8.000MAAJ" V 3325 3150 40  0000 C BNN
-	1    3400 3450
-	0    -1   -1   0   
 $EndComp
 $Comp
 L XTAL X2

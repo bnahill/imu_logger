@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Wed 05 Sep 2012 07:22:05 PM EDT
+EESchema Schematic File Version 2  date Thu 06 Sep 2012 07:49:39 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -53,15 +53,24 @@ EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
 Sheet 3 5
-Title ""
-Date "5 sep 2012"
-Rev ""
-Comp ""
-Comment1 ""
+Title "IMU Logger"
+Date "6 sep 2012"
+Rev "a"
+Comp "McGill University"
+Comment1 "Ben Nahill (bnahill@gmail.com)"
 Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Comp
+L XTAL_GND X?
+U 1 1 50493685
+P 5550 4900
+F 0 "X?" H 5550 4840 40  0000 C TNN
+F 1 "NX3225SA-26.000000MHZ-STD-CSR-1" H 5550 4960 40  0000 C BNN
+	1    5550 4900
+	1    0    0    -1  
+$EndComp
 Wire Wire Line
 	7300 3700 7300 4000
 Wire Wire Line
@@ -518,15 +527,6 @@ F 0 "C?" H 5420 5070 50  0000 L TNN
 F 1 "27p" H 5425 5120 30  0000 L BNN
 	1    5400 5100
 	0    -1   -1   0   
-$EndComp
-$Comp
-L XTAL X?
-U 1 1 504768B9
-P 5550 4900
-F 0 "X?" H 5550 4840 40  0000 C TNN
-F 1 "NX3225SA-26.000000MHZ-STD-CSR-1" H 5550 4960 40  0000 C BNN
-	1    5550 4900
-	1    0    0    -1  
 $EndComp
 Text HLabel 5300 4650 3    60   Input ~ 0
 nCS

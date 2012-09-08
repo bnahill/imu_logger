@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Wed 05 Sep 2012 07:22:05 PM EDT
+EESchema Schematic File Version 2  date Sat 08 Sep 2012 02:57:07 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -47,14 +47,15 @@ LIBS:cc1101
 LIBS:sb
 LIBS:tp
 LIBS:antenna
+LIBS:ssd1306_ser
 LIBS:imu_logger-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 5 5
+Sheet 5 6
 Title "IMU Logger"
-Date "5 sep 2012"
+Date "8 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -185,10 +186,10 @@ NoConn ~ 6050 3300
 Text Label 4950 3250 2    60   ~ 0
 Vbat
 $Comp
-L GND #PWR26
+L GND #PWR033
 U 1 1 5033E920
 P 4700 3150
-F 0 "#PWR26" H 4700 3150 30  0001 C CNN
+F 0 "#PWR033" H 4700 3150 30  0001 C CNN
 F 1 "GND" H 4700 3080 30  0001 C CNN
 	1    4700 3150
 	1    0    0    -1  
@@ -196,10 +197,10 @@ $EndComp
 Text Label 5250 2650 2    60   ~ 0
 Vbus
 $Comp
-L GND #PWR29
+L GND #PWR034
 U 1 1 5033E92B
 P 6300 2750
-F 0 "#PWR29" H 6300 2750 30  0001 C CNN
+F 0 "#PWR034" H 6300 2750 30  0001 C CNN
 F 1 "GND" H 6300 2680 30  0001 C CNN
 	1    6300 2750
 	1    0    0    -1  
@@ -214,10 +215,10 @@ F 1 "1.74k(1%)" H 5900 2555 30  0000 C BNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR28
+L GND #PWR035
 U 1 1 5033E937
 P 6250 3700
-F 0 "#PWR28" H 6250 3700 30  0001 C CNN
+F 0 "#PWR035" H 6250 3700 30  0001 C CNN
 F 1 "GND" H 6250 3630 30  0001 C CNN
 	1    6250 3700
 	1    0    0    -1  
@@ -287,19 +288,19 @@ Vbat
 Text HLabel 3150 3250 0    60   Output ~ 0
 Vbat
 $Comp
-L GND #PWR27
+L GND #PWR036
 U 1 1 5032BA5E
 P 5800 4600
-F 0 "#PWR27" H 5800 4600 30  0001 C CNN
+F 0 "#PWR036" H 5800 4600 30  0001 C CNN
 F 1 "GND" H 5800 4530 30  0001 C CNN
 	1    5800 4600
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR25
+L GND #PWR037
 U 1 1 5033E93D
 P 4300 4600
-F 0 "#PWR25" H 4300 4600 30  0001 C CNN
+F 0 "#PWR037" H 4300 4600 30  0001 C CNN
 F 1 "GND" H 4300 4530 30  0001 C CNN
 	1    4300 4600
 	1    0    0    -1  

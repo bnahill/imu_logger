@@ -1,4 +1,4 @@
-update=Thu 06 Sep 2012 07:46:44 PM EDT
+update=Fri 07 Sep 2012 01:46:08 PM EDT
 version=1
 last_client=pcbnew
 [cvpcb]
@@ -6,6 +6,8 @@ version=1
 NetIExt=net
 [cvpcb/libraries]
 EquName1=devcms
+[general]
+version=1
 [eeschema]
 version=1
 LibDir=lib
@@ -86,13 +88,12 @@ LibName45=cc1101
 LibName46=sb
 LibName47=tp
 LibName48=antenna
-[general]
-version=1
+LibName49=ssd1306_ser
 [pcbnew]
 version=1
 PadDrlX=0
-PadDimH=1500
-PadDimV=3000
+PadDimH=291
+PadDimV=630
 BoardThickness=630
 TxtPcbV=800
 TxtPcbH=600
@@ -131,3 +132,6 @@ LibName21=lib/ANT_433_916_HESM
 LibName22=lib/CC1101
 LibName23=lib/NX3225SA
 LibName24=lib/SSPT7F
+LibName25=lib/LY091WG15
+LibName26=lib/SULLINS_5X2_050_SMT
+LibName27=lib/USBMICROCONN

@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Thu 06 Sep 2012 07:49:39 PM EDT
+EESchema Schematic File Version 2  date Sat 08 Sep 2012 02:57:07 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -47,14 +47,15 @@ LIBS:cc1101
 LIBS:sb
 LIBS:tp
 LIBS:antenna
+LIBS:ssd1306_ser
 LIBS:imu_logger-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 2 5
+Sheet 3 6
 Title "IMU Logger"
-Date "6 sep 2012"
+Date "8 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -62,15 +63,10 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L XTAL_GND X1
-U 1 1 50492A1D
-P 3400 3450
-F 0 "X1" H 3400 3390 40  0000 C TNN
-F 1 "7B-8.000MAAJ" V 3300 3150 40  0000 C CNN
-	1    3400 3450
-	0    -1   -1   0   
-$EndComp
+Wire Wire Line
+	6200 4900 6200 5200
+Wire Wire Line
+	6400 5200 6400 4900
 Wire Wire Line
 	6300 2800 6300 1700
 Wire Wire Line
@@ -97,14 +93,6 @@ Wire Wire Line
 	6100 1700 6100 2800
 Wire Wire Line
 	5900 2800 5900 1700
-Connection ~ 6400 5700
-Wire Wire Line
-	7200 5500 7200 5700
-Wire Wire Line
-	7200 5700 6400 5700
-Connection ~ 7000 4950
-Wire Wire Line
-	7000 4950 7000 5200
 Wire Wire Line
 	5800 4900 5800 5200
 Wire Wire Line
@@ -145,8 +133,6 @@ Wire Wire Line
 	4200 3150 4200 3100
 Wire Wire Line
 	4350 3300 4800 3300
-Wire Wire Line
-	6400 5800 6400 4900
 Connection ~ 5600 1800
 Wire Wire Line
 	5600 1700 5600 2800
@@ -291,8 +277,6 @@ Wire Wire Line
 	5700 1700 5700 2800
 Connection ~ 5700 1900
 Wire Wire Line
-	6300 4900 6300 5800
-Wire Wire Line
 	4200 3350 4200 3400
 Wire Wire Line
 	3550 3500 4800 3500
@@ -325,14 +309,6 @@ Wire Wire Line
 Wire Wire Line
 	5900 4900 5900 5200
 Wire Wire Line
-	7200 4950 7200 5200
-Connection ~ 7200 4950
-Wire Wire Line
-	6400 5600 7000 5600
-Wire Wire Line
-	7000 5600 7000 5500
-Connection ~ 6400 5600
-Wire Wire Line
 	6100 5200 6100 4900
 Wire Wire Line
 	5100 5200 5100 4900
@@ -357,6 +333,23 @@ Wire Wire Line
 	7200 3900 6900 3900
 Wire Wire Line
 	6200 1700 6200 2800
+Wire Wire Line
+	6300 4900 6300 5200
+Text HLabel 6300 5200 3    60   Input ~ 0
+OLED_nD/C
+Text HLabel 6400 5200 3    60   Input ~ 0
+OLED_nCS
+Text HLabel 6200 5200 3    60   Input ~ 0
+OLED_nRES
+$Comp
+L XTAL_GND X1
+U 1 1 50492A1D
+P 3400 3450
+F 0 "X1" H 3400 3390 40  0000 C TNN
+F 1 "7B-8.000MAAJ" V 3300 3150 40  0000 C CNN
+	1    3400 3450
+	0    -1   -1   0   
+$EndComp
 Text HLabel 6200 1700 1    60   Input ~ 0
 EXTI12
 Text HLabel 6300 1700 1    60   Input ~ 0
@@ -389,24 +382,6 @@ Text HLabel 6000 5200 3    60   Input ~ 0
 EXTI0
 Text HLabel 5900 1700 1    60   Input ~ 0
 EXTI4
-$Comp
-L RES R4
-U 1 1 5033D8A7
-P 7200 5350
-F 0 "R4" H 7270 5315 50  0000 L TNN
-F 1 "10k" H 7200 5405 30  0000 C BNN
-	1    7200 5350
-	0    1    1    0   
-$EndComp
-$Comp
-L RES R3
-U 1 1 5033D8A1
-P 7000 5350
-F 0 "R3" H 7070 5315 50  0000 L TNN
-F 1 "10k" H 7000 5405 30  0000 C BNN
-	1    7000 5350
-	0    1    1    0   
-$EndComp
 Text HLabel 6100 1700 1    60   Input ~ 0
 EXTI2
 Text HLabel 5900 5200 3    60   Output ~ 0
@@ -428,19 +403,19 @@ SPI1_MISO
 Text HLabel 5500 5200 3    60   Output ~ 0
 SPI1_CLK
 $Comp
-L GND #PWR5
+L GND #PWR06
 U 1 1 5033C928
 P 2950 3500
-F 0 "#PWR5" H 2950 3500 30  0001 C CNN
+F 0 "#PWR06" H 2950 3500 30  0001 C CNN
 F 1 "GND" H 2950 3430 30  0001 C CNN
 	1    2950 3500
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR7
+L GND #PWR07
 U 1 1 5033C91A
 P 3700 3300
-F 0 "#PWR7" H 3700 3300 30  0001 C CNN
+F 0 "#PWR07" H 3700 3300 30  0001 C CNN
 F 1 "GND" H 3700 3230 30  0001 C CNN
 	1    3700 3300
 	1    0    0    -1  
@@ -490,10 +465,6 @@ F 1 "SSPT7F" V 4125 3075 40  0000 C BNN
 	1    4200 3250
 	0    -1   -1   0   
 $EndComp
-Text HLabel 6400 5800 3    60   BiDi ~ 0
-I2C2_SDA
-Text HLabel 6300 5800 3    60   BiDi ~ 0
-I2C2_SCL
 $Comp
 L RES R1
 U 1 1 5033BFDC
@@ -528,10 +499,10 @@ $EndComp
 Text HLabel 8800 4300 0    60   Input ~ 0
 Vdd
 $Comp
-L GND #PWR13
+L GND #PWR08
 U 1 1 5033BC13
 P 9050 4800
-F 0 "#PWR13" H 9050 4800 30  0001 C CNN
+F 0 "#PWR08" H 9050 4800 30  0001 C CNN
 F 1 "GND" H 9050 4730 30  0001 C CNN
 	1    9050 4800
 	1    0    0    -1  
@@ -588,10 +559,10 @@ F 1 "100p" H 3675 4470 30  0000 L BNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR6
+L GND #PWR09
 U 1 1 5033E925
 P 3050 4700
-F 0 "#PWR6" H 3050 4700 30  0001 C CNN
+F 0 "#PWR09" H 3050 4700 30  0001 C CNN
 F 1 "GND" H 3050 4630 30  0001 C CNN
 	1    3050 4700
 	1    0    0    -1  
@@ -619,19 +590,19 @@ F 1 "0.1u" H 5325 5220 30  0000 L BNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR9
+L GND #PWR010
 U 1 1 5033A450
 P 5200 5400
-F 0 "#PWR9" H 5200 5400 30  0001 C CNN
+F 0 "#PWR010" H 5200 5400 30  0001 C CNN
 F 1 "GND" H 5200 5330 30  0001 C CNN
 	1    5200 5400
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR11
+L GND #PWR011
 U 1 1 5033E929
 P 6650 5300
-F 0 "#PWR11" H 6650 5300 30  0001 C CNN
+F 0 "#PWR011" H 6650 5300 30  0001 C CNN
 F 1 "GND" H 6650 5230 30  0001 C CNN
 	1    6650 5300
 	1    0    0    -1  
@@ -657,10 +628,10 @@ F 1 "2.2u" H 6525 5120 30  0000 L BNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR12
+L GND #PWR012
 U 1 1 5033A38E
 P 8500 3450
-F 0 "#PWR12" H 8500 3450 30  0001 C CNN
+F 0 "#PWR012" H 8500 3450 30  0001 C CNN
 F 1 "GND" H 8500 3380 30  0001 C CNN
 	1    8500 3450
 	1    0    0    -1  
@@ -686,19 +657,19 @@ $EndComp
 Text HLabel 8500 3100 2    60   Input ~ 0
 Vdd
 $Comp
-L GND #PWR8
+L GND #PWR013
 U 1 1 5033A35B
 P 4600 2850
-F 0 "#PWR8" H 4600 2850 30  0001 C CNN
+F 0 "#PWR013" H 4600 2850 30  0001 C CNN
 F 1 "GND" H 4600 2780 30  0001 C CNN
 	1    4600 2850
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR10
+L GND #PWR014
 U 1 1 5033E930
 P 5300 2100
-F 0 "#PWR10" H 5300 2100 30  0001 C CNN
+F 0 "#PWR014" H 5300 2100 30  0001 C CNN
 F 1 "GND" H 5300 2030 30  0001 C CNN
 	1    5300 2100
 	1    0    0    -1  

@@ -1,11 +1,11 @@
-EESchema-LIBRARY Version 2.3  Date: Wed 05 Sep 2012 11:57:42 AM EDT
+EESchema-LIBRARY Version 2.3  Date: Sat 08 Sep 2012 11:26:54 AM EDT
 #encoding utf-8
 #
-# TP_SMT
+# TP
 #
-DEF TP_SMT TP 0 0 N N 1 F N
+DEF TP TP 0 0 N N 1 F N
 F0 "TP" 0 -100 60 H V C CNN
-F1 "TP_SMT" 0 100 60 H V C CNN
+F1 "TP" 0 100 60 H V C CNN
 DRAW
 C 50 0 50 0 1 0 N
 X ~ 1 -100 0 100 R 50 50 1 1 I

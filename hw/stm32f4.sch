@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Tue 11 Sep 2012 02:20:43 PM EDT
+EESchema Schematic File Version 2  date Wed 12 Sep 2012 05:42:56 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -48,14 +48,13 @@ LIBS:sb
 LIBS:tp
 LIBS:antenna
 LIBS:ssd1306_ser
-LIBS:imu_logger-cache
 EELAYER 25  0
 EELAYER END
-$Descr A4 11700 8267
+$Descr A4 11693 8268
 encoding utf-8
 Sheet 3 6
 Title "IMU Logger"
-Date "11 sep 2012"
+Date "12 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -70,7 +69,7 @@ Wire Wire Line
 Wire Wire Line
 	3700 3200 3700 3300
 Wire Wire Line
-	3700 2800 3700 2550
+	3700 2550 3700 2800
 Wire Wire Line
 	3500 2750 4500 2750
 Wire Wire Line
@@ -118,12 +117,12 @@ Wire Wire Line
 Wire Wire Line
 	5600 4900 5600 5200
 Wire Wire Line
-	5300 5050 5400 5050
+	5300 5050 4900 5050
 Wire Wire Line
-	5400 5050 5400 5200
+	4900 5050 4900 5200
 Connection ~ 4200 3400
 Wire Wire Line
-	4800 3400 4100 3400
+	4100 3400 4800 3400
 Wire Wire Line
 	3100 3300 3050 3300
 Wire Wire Line
@@ -151,7 +150,7 @@ Wire Wire Line
 	5000 1900 5700 1900
 Connection ~ 5300 2050
 Wire Wire Line
-	5500 2050 5200 2050
+	5200 2050 5500 2050
 Connection ~ 8900 4300
 Wire Wire Line
 	8900 4400 8900 4300
@@ -186,7 +185,7 @@ Wire Wire Line
 Connection ~ 3450 4300
 Connection ~ 5300 5050
 Wire Wire Line
-	5300 5100 5300 4900
+	5300 4900 5300 5100
 Connection ~ 5200 5350
 Wire Wire Line
 	5300 5300 5300 5350
@@ -240,7 +239,7 @@ Wire Wire Line
 Wire Wire Line
 	3450 4300 3450 4350
 Wire Wire Line
-	3050 4700 3050 4200
+	3050 4200 3050 4700
 Wire Wire Line
 	3650 4350 3650 4300
 Connection ~ 3650 4300
@@ -296,7 +295,7 @@ Wire Wire Line
 	3850 3400 3900 3400
 Connection ~ 3850 3250
 Wire Wire Line
-	4800 3600 3300 3600
+	3300 3600 4800 3600
 Connection ~ 3400 3600
 Wire Wire Line
 	3050 3300 3050 3600
@@ -329,8 +328,6 @@ Wire Wire Line
 Wire Wire Line
 	6900 4100 7200 4100
 Wire Wire Line
-	3700 3800 4800 3800
-Wire Wire Line
 	4800 4000 3700 4000
 Wire Wire Line
 	3050 4200 4800 4200
@@ -339,7 +336,7 @@ Wire Wire Line
 Wire Wire Line
 	6900 4000 7200 4000
 Wire Wire Line
-	8500 3100 6900 3100
+	6900 3100 8500 3100
 Wire Wire Line
 	6900 3800 7200 3800
 Wire Wire Line
@@ -352,7 +349,7 @@ Wire Wire Line
 	4450 2550 4450 2400
 Connection ~ 3700 3250
 Wire Wire Line
-	3850 3250 3500 3250
+	3500 3250 3850 3250
 Wire Wire Line
 	3500 3250 3500 3050
 Wire Wire Line
@@ -445,7 +442,7 @@ Text HLabel 3700 4000 0    60   Output ~ 0
 POW_SUSP_EN
 Text HLabel 3700 3900 0    60   Output ~ 0
 POW_HPWR
-Text HLabel 3700 3800 0    60   Output ~ 0
+Text HLabel 5400 5200 3    60   Output ~ 0
 POW_MODE
 Text HLabel 6400 1700 1    60   Input ~ 0
 EXTI10
@@ -657,7 +654,7 @@ F 1 "0.1u" H 3475 4470 30  0000 L BNN
 $EndComp
 Text HLabel 3350 4300 0    60   Input ~ 0
 Vdd
-Text HLabel 5400 5200 3    60   Input ~ 0
+Text HLabel 4900 5200 3    60   Input ~ 0
 Vdd
 $Comp
 L CAP C9
@@ -773,4 +770,6 @@ F 1 "STM32F405RG" H 6950 4850 60  0000 C CNN
 	1    5850 3850
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	5400 5200 5400 4900
 $EndSCHEMATC

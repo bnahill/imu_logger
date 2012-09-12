@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPcb (2012-jan-04)-stable date = Sat 08 Sep 2012 03:01:04 PM EDT
+Cmp-Mod V01 Created by CvPcb (2012-jan-04)-stable date = Mon 10 Sep 2012 02:45:15 PM EDT
 
 BeginCmp
 TimeStamp = /50462493/50478765;
@@ -379,6 +379,41 @@ IdModule  = SM0402;
 EndCmp
 
 BeginCmp
+TimeStamp = /50339999/504E1FF3;
+Reference = C54;
+ValeurCmp = 10n;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
+TimeStamp = /50339999/504E2103;
+Reference = C55;
+ValeurCmp = DSK-3R3H224U-HL;
+IdModule  = DSK-XXXXXX-HL;
+EndCmp
+
+BeginCmp
+TimeStamp = /50339999/504E1FB3;
+Reference = D1;
+ValeurCmp = BAT43XV2;
+IdModule  = SOD-523F;
+EndCmp
+
+BeginCmp
+TimeStamp = /50339999/504E30E7;
+Reference = D2;
+ValeurCmp = LB_Q39G-L2N2-35-1;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5032B8A6/504E10A8;
+Reference = F1;
+ValeurCmp = PTS120616V025;
+IdModule  = SM1206;
+EndCmp
+
+BeginCmp
 TimeStamp = /504A0F06;
 Reference = J1;
 ValeurCmp = 10118194-0001LF;
@@ -458,29 +493,29 @@ EndCmp
 BeginCmp
 TimeStamp = /5033C37A;
 Reference = PB1;
-ValeurCmp = ALPS_SKQG;
-IdModule  = ;
+ValeurCmp = KMT011_NGJ_LHS;
+IdModule  = KMT0;
 EndCmp
 
 BeginCmp
 TimeStamp = /5033C37F;
 Reference = PB2;
-ValeurCmp = ALPS_SKQG;
-IdModule  = ;
+ValeurCmp = EVQ-P7C01K;
+IdModule  = EVQPSD;
 EndCmp
 
 BeginCmp
 TimeStamp = /5047CF75;
 Reference = PB3;
-ValeurCmp = ALPS_SKQG;
-IdModule  = ;
+ValeurCmp = EVQ-P7C01K;
+IdModule  = EVQPSD;
 EndCmp
 
 BeginCmp
 TimeStamp = /5047CF70;
 Reference = PB4;
-ValeurCmp = ALPS_SKQG;
-IdModule  = ;
+ValeurCmp = EVQ-P7C01K;
+IdModule  = EVQPSD;
 EndCmp
 
 BeginCmp
@@ -554,17 +589,24 @@ IdModule  = SM0402;
 EndCmp
 
 BeginCmp
+TimeStamp = /50339999/504E30FA;
+Reference = R11;
+ValeurCmp = 30;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
 TimeStamp = /50462493/504B63DF;
 Reference = TP1;
 ValeurCmp = TP;
-IdModule  = ;
+IdModule  = TP_SMD_2MM;
 EndCmp
 
 BeginCmp
 TimeStamp = /50462493/504B63D1;
 Reference = TP2;
 ValeurCmp = TP;
-IdModule  = ;
+IdModule  = TP_SMD_2MM;
 EndCmp
 
 BeginCmp

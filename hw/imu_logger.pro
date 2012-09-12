@@ -1,4 +1,4 @@
-update=Fri 07 Sep 2012 01:46:08 PM EDT
+update=Mon 10 Sep 2012 02:46:01 PM EDT
 version=1
 last_client=pcbnew
 [cvpcb]
@@ -92,8 +92,8 @@ LibName49=ssd1306_ser
 [pcbnew]
 version=1
 PadDrlX=0
-PadDimH=291
-PadDimV=630
+PadDimH=197
+PadDimV=315
 BoardThickness=630
 TxtPcbV=800
 TxtPcbH=600
@@ -105,7 +105,7 @@ DrawLar=150
 EdgeLar=150
 TxtLar=120
 MSegLar=39
-LastNetListRead=
+LastNetListRead=imu_logger.net
 [pcbnew/libraries]
 LibDir=
 LibName1=sockets
@@ -135,3 +135,8 @@ LibName24=lib/SSPT7F
 LibName25=lib/LY091WG15
 LibName26=lib/SULLINS_5X2_050_SMT
 LibName27=lib/USBMICROCONN
+LibName28=lib/TP
+LibName29=lib/DSK-XXXXXX-HL
+LibName30=lib/KMT0
+LibName31=lib/EVQPSD
+LibName32=lib/SOD-523F

@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Wed 12 Sep 2012 05:42:56 PM EDT
+EESchema Schematic File Version 2  date Thu 13 Sep 2012 02:20:42 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -48,13 +48,14 @@ LIBS:sb
 LIBS:tp
 LIBS:antenna
 LIBS:ssd1306_ser
+LIBS:imu_logger-cache
 EELAYER 25  0
 EELAYER END
-$Descr A4 11693 8268
+$Descr A4 11700 8267
 encoding utf-8
 Sheet 3 6
 Title "IMU Logger"
-Date "12 sep 2012"
+Date "13 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -69,7 +70,7 @@ Wire Wire Line
 Wire Wire Line
 	3700 3200 3700 3300
 Wire Wire Line
-	3700 2550 3700 2800
+	3700 2800 3700 2550
 Wire Wire Line
 	3500 2750 4500 2750
 Wire Wire Line
@@ -150,7 +151,7 @@ Wire Wire Line
 	5000 1900 5700 1900
 Connection ~ 5300 2050
 Wire Wire Line
-	5200 2050 5500 2050
+	5500 2050 5200 2050
 Connection ~ 8900 4300
 Wire Wire Line
 	8900 4400 8900 4300
@@ -239,7 +240,7 @@ Wire Wire Line
 Wire Wire Line
 	3450 4300 3450 4350
 Wire Wire Line
-	3050 4200 3050 4700
+	3050 4700 3050 4200
 Wire Wire Line
 	3650 4350 3650 4300
 Connection ~ 3650 4300
@@ -349,7 +350,7 @@ Wire Wire Line
 	4450 2550 4450 2400
 Connection ~ 3700 3250
 Wire Wire Line
-	3500 3250 3850 3250
+	3850 3250 3500 3250
 Wire Wire Line
 	3500 3250 3500 3050
 Wire Wire Line

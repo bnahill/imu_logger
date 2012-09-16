@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPcb (2012-jan-04)-stable date = Mon 10 Sep 2012 02:45:15 PM EDT
+Cmp-Mod V01 Created by CvPcb (2012-jan-04)-stable date = Sun 16 Sep 2012 01:51:31 PM EDT
 
 BeginCmp
 TimeStamp = /50462493/50478765;
@@ -435,6 +435,13 @@ IdModule  = LY091WG15;
 EndCmp
 
 BeginCmp
+TimeStamp = /5032B8A6/505606DA;
+Reference = J4;
+ValeurCmp = CONN_2;
+IdModule  = SIL-2;
+EndCmp
+
+BeginCmp
 TimeStamp = /5032F4FC/5033B21E;
 Reference = L1;
 ValeurCmp = ACML-0402-220;
@@ -596,6 +603,27 @@ IdModule  = SM0402;
 EndCmp
 
 BeginCmp
+TimeStamp = /50339999/50560565;
+Reference = R12;
+ValeurCmp = 100k;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
+TimeStamp = /50339999/5056056A;
+Reference = R13;
+ValeurCmp = 200k;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
+TimeStamp = /5032B8A6/50560D08;
+Reference = R14;
+ValeurCmp = 680k;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
 TimeStamp = /50462493/504B63DF;
 Reference = TP1;
 ValeurCmp = TP;
@@ -663,6 +691,13 @@ TimeStamp = /50462493/50462E7F;
 Reference = U8;
 ValeurCmp = CC1101;
 IdModule  = CC1101;
+EndCmp
+
+BeginCmp
+TimeStamp = /5032B8A6/50560FDD;
+Reference = U9;
+ValeurCmp = MCP111T-315;
+IdModule  = SOT323;
 EndCmp
 
 BeginCmp

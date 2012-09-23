@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPcb (2012-jan-04)-stable date = Sun 16 Sep 2012 01:51:31 PM EDT
+Cmp-Mod V01 Created by CvPcb (2012-jan-04)-stable date = Sun 23 Sep 2012 03:23:26 PM EDT
 
 BeginCmp
 TimeStamp = /50462493/50478765;
@@ -115,7 +115,7 @@ EndCmp
 BeginCmp
 TimeStamp = /5032F4FC/503314A4;
 Reference = C16;
-ValeurCmp = 100n;
+ValeurCmp = 0.1u;
 IdModule  = SM0402;
 EndCmp
 
@@ -192,7 +192,7 @@ EndCmp
 BeginCmp
 TimeStamp = /5032F4FC/5033E91F;
 Reference = C27;
-ValeurCmp = 100n;
+ValeurCmp = 0.1u;
 IdModule  = SM0402;
 EndCmp
 
@@ -241,7 +241,7 @@ EndCmp
 BeginCmp
 TimeStamp = /5032B8A6/5032BAF4;
 Reference = C34;
-ValeurCmp = 470n;
+ValeurCmp = 0.47u;
 IdModule  = SM0603;
 EndCmp
 
@@ -393,6 +393,13 @@ IdModule  = DSK-XXXXXX-HL;
 EndCmp
 
 BeginCmp
+TimeStamp = /5032B8A6/505E780C;
+Reference = C56;
+ValeurCmp = 1u;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
 TimeStamp = /50339999/504E1FB3;
 Reference = D1;
 ValeurCmp = BAT43XV2;
@@ -439,13 +446,6 @@ TimeStamp = /5032B8A6/505606DA;
 Reference = J4;
 ValeurCmp = CONN_2;
 IdModule  = SIL-2;
-EndCmp
-
-BeginCmp
-TimeStamp = /5032F4FC/5033B21E;
-Reference = L1;
-ValeurCmp = ACML-0402-220;
-IdModule  = SM0402;
 EndCmp
 
 BeginCmp
@@ -605,14 +605,14 @@ EndCmp
 BeginCmp
 TimeStamp = /50339999/50560565;
 Reference = R12;
-ValeurCmp = 100k;
+ValeurCmp = 5k_(1%);
 IdModule  = SM0402;
 EndCmp
 
 BeginCmp
 TimeStamp = /50339999/5056056A;
 Reference = R13;
-ValeurCmp = 200k;
+ValeurCmp = 10k_(1%);
 IdModule  = SM0402;
 EndCmp
 
@@ -620,6 +620,27 @@ BeginCmp
 TimeStamp = /5032B8A6/50560D08;
 Reference = R14;
 ValeurCmp = 680k;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
+TimeStamp = /5032F4FC/505E7AFF;
+Reference = R15;
+ValeurCmp = 4.7R;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
+TimeStamp = /505F58DF;
+Reference = R16;
+ValeurCmp = 100k;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
+TimeStamp = /504A09CD/505F5E33;
+Reference = R17;
+ValeurCmp = 100k;
 IdModule  = SM0402;
 EndCmp
 

@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 16 Sep 2012 03:37:22 PM EDT
+EESchema Schematic File Version 2  date Sun 23 Sep 2012 03:36:57 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -56,7 +56,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 2 6
 Title "IMU Logger"
-Date "16 sep 2012"
+Date "23 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -64,6 +64,11 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Connection ~ 4800 5300
+Wire Wire Line
+	4500 5300 5550 5300
+Wire Wire Line
+	4500 5300 4500 4900
 Connection ~ 4800 3850
 Wire Wire Line
 	4800 4450 4800 3850
@@ -85,7 +90,7 @@ Wire Wire Line
 	5150 4650 5150 4850
 Connection ~ 5350 5300
 Wire Wire Line
-	5550 5150 5550 5300
+	5550 5300 5550 5150
 Wire Wire Line
 	5650 3750 5150 3750
 Wire Wire Line
@@ -103,7 +108,7 @@ Wire Wire Line
 Wire Wire Line
 	5650 3650 5450 3650
 Wire Wire Line
-	5350 5150 5350 5400
+	5350 5400 5350 5150
 Wire Wire Line
 	5150 5300 5150 5150
 Wire Wire Line
@@ -116,16 +121,26 @@ Wire Wire Line
 	4950 3950 5650 3950
 Connection ~ 5150 5300
 Wire Wire Line
-	5650 3850 4700 3850
+	4700 3850 5650 3850
 Wire Wire Line
 	5650 4450 5300 4450
 Wire Wire Line
-	5650 4250 5300 4250
+	5650 4250 4300 4250
 Wire Wire Line
-	4800 4650 4800 5300
-Wire Wire Line
-	4800 5300 5550 5300
+	4800 5300 4800 4650
 Connection ~ 4950 5300
+Wire Wire Line
+	4500 4600 4500 4250
+Connection ~ 4500 4250
+$Comp
+L RES R17
+U 1 1 505F5E33
+P 4500 4750
+F 0 "R17" H 4570 4715 50  0000 L TNN
+F 1 "100k" H 4500 4805 30  0000 C BNN
+	1    4500 4750
+	0    -1   -1   0   
+$EndComp
 $Comp
 L CAP C37
 U 1 1 504A0E3E
@@ -136,14 +151,14 @@ F 1 "1u" H 4825 4570 30  0000 L BNN
 	0    -1   -1   0   
 $EndComp
 Text HLabel 4700 3850 0    60   Input ~ 0
-Vdd
+Vbat
 Text HLabel 5300 4550 0    60   Input ~ 0
 SDIN
 Text HLabel 5300 4450 0    60   Input ~ 0
 SCLK
 Text HLabel 5300 4350 0    60   Input ~ 0
 nD/C
-Text HLabel 5300 4250 0    60   Input ~ 0
+Text HLabel 4300 4250 0    60   Input ~ 0
 nRES
 Text HLabel 5300 4150 0    60   Input ~ 0
 nCS
@@ -177,10 +192,10 @@ F 1 "2.2u" H 5375 5070 30  0000 L BNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR05
+L GND #PWR5
 U 1 1 504A0CF1
 P 5350 5400
-F 0 "#PWR05" H 5350 5400 30  0001 C CNN
+F 0 "#PWR5" H 5350 5400 30  0001 C CNN
 F 1 "GND" H 5350 5330 30  0001 C CNN
 	1    5350 5400
 	1    0    0    -1  

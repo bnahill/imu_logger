@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 16 Sep 2012 03:37:22 PM EDT
+EESchema Schematic File Version 2  date Sun 23 Sep 2012 03:36:57 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -56,7 +56,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 5 6
 Title "IMU Logger"
-Date "16 sep 2012"
+Date "23 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -64,8 +64,8 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text Notes 7650 1050 0    60   ~ 0
-ST L3GD20 3-Axis Gyroscope
+Wire Wire Line
+	7150 4800 7600 4800
 Wire Notes Line
 	7100 2900 7100 1100
 Wire Notes Line
@@ -86,8 +86,6 @@ Wire Notes Line
 	8850 6900 8850 4400
 Wire Notes Line
 	8850 4400 6050 4400
-Wire Wire Line
-	7050 4800 7600 4800
 Wire Wire Line
 	7600 4800 7600 5000
 Connection ~ 7300 5100
@@ -160,7 +158,7 @@ Wire Wire Line
 	2500 2450 2500 2650
 Connection ~ 2100 2650
 Wire Wire Line
-	2100 3100 2100 2450
+	2100 2450 2100 3100
 Connection ~ 7800 1450
 Wire Wire Line
 	7800 1450 7800 1600
@@ -169,7 +167,7 @@ Wire Wire Line
 Wire Wire Line
 	7600 1850 8000 1850
 Wire Wire Line
-	7800 1900 7800 1800
+	7800 1800 7800 1900
 Connection ~ 9200 1400
 Wire Wire Line
 	9200 2250 9200 1300
@@ -201,7 +199,7 @@ Wire Wire Line
 Wire Wire Line
 	3400 3200 3400 3350
 Wire Wire Line
-	2100 2650 2550 2650
+	2550 2650 2100 2650
 Wire Wire Line
 	3100 2850 2950 2850
 Wire Wire Line
@@ -228,7 +226,7 @@ Wire Wire Line
 Wire Wire Line
 	2750 2650 3100 2650
 Wire Wire Line
-	3100 2950 2100 2950
+	2100 2950 3100 2950
 Connection ~ 2100 2950
 Wire Wire Line
 	8500 1550 8500 1450
@@ -273,7 +271,7 @@ Wire Wire Line
 	8000 1450 8000 1600
 Connection ~ 8000 1450
 Wire Wire Line
-	2300 2450 2300 2650
+	2300 2650 2300 2450
 Connection ~ 2300 2650
 Wire Wire Line
 	2100 2250 2100 2100
@@ -289,13 +287,13 @@ Wire Wire Line
 	2800 5900 2750 5900
 Connection ~ 2750 6000
 Wire Wire Line
-	2550 6000 2550 5950
+	2550 5950 2550 6000
 Connection ~ 2550 6000
 Wire Wire Line
 	2550 5750 2550 5700
 Connection ~ 2550 5700
 Wire Wire Line
-	4300 5800 3650 5800
+	3650 5800 4300 5800
 Connection ~ 4200 5800
 Wire Wire Line
 	2750 5900 2750 6000
@@ -334,7 +332,7 @@ Wire Wire Line
 	8500 5200 8500 5300
 Connection ~ 8500 5300
 Wire Wire Line
-	6450 5600 6450 5800
+	6450 5800 6450 5600
 Connection ~ 6450 5700
 Wire Wire Line
 	7500 4950 7300 4950
@@ -343,7 +341,7 @@ Wire Wire Line
 Wire Wire Line
 	7300 4950 7300 5150
 Wire Wire Line
-	7200 4850 7200 4800
+	7200 4800 7200 4850
 Connection ~ 7200 4800
 Wire Notes Line
 	4800 6800 4800 5200
@@ -357,6 +355,17 @@ Wire Notes Line
 	4950 3500 4950 1850
 Wire Notes Line
 	4950 1850 1600 1850
+$Comp
+L RES R15
+U 1 1 505E7AFF
+P 7000 4800
+F 0 "R15" H 7070 4765 50  0000 L TNN
+F 1 "4.7R" H 7000 4855 30  0000 C BNN
+	1    7000 4800
+	1    0    0    -1  
+$EndComp
+Text Notes 7650 1050 0    60   ~ 0
+ST L3GD20 3-Axis Gyroscope
 Text Notes 2350 1800 0    60   ~ 0
 Freescale MMA8452Q 3-Axis Accelerometer
 Text Notes 2500 5150 0    60   ~ 0
@@ -372,22 +381,13 @@ F 1 "0.01u" H 7225 4970 30  0000 L BNN
 	1    7200 4950
 	0    -1   -1   0   
 $EndComp
-$Comp
-L IND L1
-U 1 1 5033B21E
-P 6950 4800
-F 0 "L1" H 6970 4770 50  0000 L TNN
-F 1 "ACML-0402-220" H 6975 4820 30  0000 L BNN
-	1    6950 4800
-	1    0    0    -1  
-$EndComp
 NoConn ~ 7300 5400
 NoConn ~ 7300 5500
 $Comp
-L GND #PWR024
+L GND #PWR29
 U 1 1 5033E935
 P 6450 5800
-F 0 "#PWR024" H 6450 5800 30  0001 C CNN
+F 0 "#PWR29" H 6450 5800 30  0001 C CNN
 F 1 "GND" H 6450 5730 30  0001 C CNN
 	1    6450 5800
 	1    0    0    -1  
@@ -406,10 +406,10 @@ PRS_INT2
 Text HLabel 8000 5500 2    60   Output ~ 0
 PRS_INT1
 $Comp
-L GND #PWR025
+L GND #PWR32
 U 1 1 50339C21
 P 8600 5650
-F 0 "#PWR025" H 8600 5650 30  0001 C CNN
+F 0 "#PWR32" H 8600 5650 30  0001 C CNN
 F 1 "GND" H 8600 5580 30  0001 C CNN
 	1    8600 5650
 	1    0    0    -1  
@@ -443,10 +443,10 @@ $EndComp
 Text HLabel 6550 4650 0    60   Input ~ 0
 Vdd
 $Comp
-L GND #PWR026
+L GND #PWR30
 U 1 1 5033E92F
 P 7300 5150
-F 0 "#PWR026" H 7300 5150 30  0001 C CNN
+F 0 "#PWR30" H 7300 5150 30  0001 C CNN
 F 1 "GND" H 7300 5080 30  0001 C CNN
 	1    7300 5150
 	1    0    0    -1  
@@ -461,10 +461,10 @@ F 1 "LPS331AP" H 7710 5910 60  0000 L BNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR027
+L GND #PWR27
 U 1 1 5033E92C
 P 4450 5700
-F 0 "#PWR027" H 4450 5700 30  0001 C CNN
+F 0 "#PWR27" H 4450 5700 30  0001 C CNN
 F 1 "GND" H 4450 5630 30  0001 C CNN
 	1    4450 5700
 	1    0    0    -1  
@@ -476,10 +476,10 @@ MAG_I2C_SCL
 Text HLabel 3700 6050 3    60   BiDi ~ 0
 MAG_I2C_SDA
 $Comp
-L GND #PWR028
+L GND #PWR26
 U 1 1 5033E926
 P 4200 6200
-F 0 "#PWR028" H 4200 6200 30  0001 C CNN
+F 0 "#PWR26" H 4200 6200 30  0001 C CNN
 F 1 "GND" H 4200 6130 30  0001 C CNN
 	1    4200 6200
 	1    0    0    -1  
@@ -525,10 +525,10 @@ $EndComp
 Text HLabel 2400 5750 0    60   Input ~ 0
 Vdd
 $Comp
-L GND #PWR029
+L GND #PWR24
 U 1 1 5033E93C
 P 2150 6100
-F 0 "#PWR029" H 2150 6100 30  0001 C CNN
+F 0 "#PWR24" H 2150 6100 30  0001 C CNN
 F 1 "GND" H 2150 6030 30  0001 C CNN
 	1    2150 6100
 	1    0    0    -1  
@@ -556,7 +556,7 @@ L CAP C16
 U 1 1 503314A4
 P 2300 2350
 F 0 "C16" H 2320 2320 50  0000 L TNN
-F 1 "100n" H 2325 2370 30  0000 L BNN
+F 1 "0.1u" H 2325 2370 30  0000 L BNN
 	1    2300 2350
 	0    -1   -1   0   
 $EndComp
@@ -579,10 +579,10 @@ F 1 "2.2u" H 2125 2370 30  0000 L BNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR030
+L GND #PWR31
 U 1 1 5033E92E
 P 7800 1900
-F 0 "#PWR030" H 7800 1900 30  0001 C CNN
+F 0 "#PWR31" H 7800 1900 30  0001 C CNN
 F 1 "GND" H 7800 1830 30  0001 C CNN
 	1    7800 1900
 	1    0    0    -1  
@@ -610,7 +610,7 @@ L CAP C27
 U 1 1 5033E91F
 P 7800 1700
 F 0 "C27" H 7820 1670 50  0000 L TNN
-F 1 "100n" H 7825 1720 30  0000 L BNN
+F 1 "0.1u" H 7825 1720 30  0000 L BNN
 	1    7800 1700
 	0    -1   -1   0   
 $EndComp
@@ -624,10 +624,10 @@ F 1 "0.01u" H 8875 1320 30  0000 L BNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR031
+L GND #PWR33
 U 1 1 5033E928
 P 9200 2250
-F 0 "#PWR031" H 9200 2250 30  0001 C CNN
+F 0 "#PWR33" H 9200 2250 30  0001 C CNN
 F 1 "GND" H 9200 2180 30  0001 C CNN
 	1    9200 2250
 	1    0    0    -1  
@@ -656,10 +656,10 @@ F 1 "L3GD20" H 8850 2500 60  0000 L BNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR032
+L GND #PWR25
 U 1 1 50331129
 P 3400 3350
-F 0 "#PWR032" H 3400 3350 30  0001 C CNN
+F 0 "#PWR25" H 3400 3350 30  0001 C CNN
 F 1 "GND" H 3400 3280 30  0001 C CNN
 	1    3400 3350
 	1    0    0    -1  
@@ -670,10 +670,10 @@ NoConn ~ 3100 2750
 NoConn ~ 3300 2300
 NoConn ~ 3400 2300
 $Comp
-L GND #PWR033
+L GND #PWR23
 U 1 1 5033E924
 P 2100 3100
-F 0 "#PWR033" H 2100 3100 30  0001 C CNN
+F 0 "#PWR23" H 2100 3100 30  0001 C CNN
 F 1 "GND" H 2100 3030 30  0001 C CNN
 	1    2100 3100
 	1    0    0    -1  
@@ -688,10 +688,10 @@ F 1 "0.1u" H 2675 2670 30  0000 L BNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR034
+L GND #PWR28
 U 1 1 5033E922
 P 4700 2900
-F 0 "#PWR034" H 4700 2900 30  0001 C CNN
+F 0 "#PWR28" H 4700 2900 30  0001 C CNN
 F 1 "GND" H 4700 2830 30  0001 C CNN
 	1    4700 2900
 	1    0    0    -1  

@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 16 Sep 2012 03:37:22 PM EDT
+EESchema Schematic File Version 2  date Sun 23 Sep 2012 03:36:57 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -56,7 +56,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 4 6
 Title "IMU Logger"
-Date "16 sep 2012"
+Date "23 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -267,10 +267,10 @@ F 1 "5.6p" H 9875 4120 30  0000 L BNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR017
+L GND #PWR22
 U 1 1 5047CA2E
 P 9850 4300
-F 0 "#PWR017" H 9850 4300 30  0001 C CNN
+F 0 "#PWR22" H 9850 4300 30  0001 C CNN
 F 1 "GND" H 9850 4230 30  0001 C CNN
 	1    9850 4300
 	1    0    0    -1  
@@ -397,37 +397,37 @@ F 1 "12n" H 9675 3820 30  0000 L BNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR018
+L GND #PWR20
 U 1 1 50477013
 P 8500 4750
-F 0 "#PWR018" H 8500 4750 30  0001 C CNN
+F 0 "#PWR20" H 8500 4750 30  0001 C CNN
 F 1 "GND" H 8500 4680 30  0001 C CNN
 	1    8500 4750
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR019
+L GND #PWR21
 U 1 1 50477012
 P 9400 4300
-F 0 "#PWR019" H 9400 4300 30  0001 C CNN
+F 0 "#PWR21" H 9400 4300 30  0001 C CNN
 F 1 "GND" H 9400 4230 30  0001 C CNN
 	1    9400 4300
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR020
+L GND #PWR19
 U 1 1 50477011
 P 8500 3150
-F 0 "#PWR020" H 8500 3150 30  0001 C CNN
+F 0 "#PWR19" H 8500 3150 30  0001 C CNN
 F 1 "GND" H 8500 3080 30  0001 C CNN
 	1    8500 3150
 	-1   0    0    1   
 $EndComp
 $Comp
-L GND #PWR021
+L GND #PWR16
 U 1 1 50476945
 P 4550 4350
-F 0 "#PWR021" H 4550 4350 30  0001 C CNN
+F 0 "#PWR16" H 4550 4350 30  0001 C CNN
 F 1 "GND" H 4550 4280 30  0001 C CNN
 	1    4550 4350
 	1    0    0    -1  
@@ -466,10 +466,10 @@ $EndComp
 Text Label 6200 3400 0    60   ~ 0
 AVdd
 $Comp
-L GND #PWR022
+L GND #PWR17
 U 1 1 504768D8
 P 5600 5400
-F 0 "#PWR022" H 5600 5400 30  0001 C CNN
+F 0 "#PWR17" H 5600 5400 30  0001 C CNN
 F 1 "GND" H 5600 5330 30  0001 C CNN
 	1    5600 5400
 	1    0    0    -1  
@@ -515,10 +515,10 @@ F 1 "56k (1%)" H 5750 2655 30  0000 C BNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR023
+L GND #PWR18
 U 1 1 50462EFE
 P 6050 2500
-F 0 "#PWR023" H 6050 2500 30  0001 C CNN
+F 0 "#PWR18" H 6050 2500 30  0001 C CNN
 F 1 "GND" H 6050 2430 30  0001 C CNN
 	1    6050 2500
 	1    0    0    -1  

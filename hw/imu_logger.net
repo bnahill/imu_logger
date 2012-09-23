@@ -1,598 +1,618 @@
-# EESchema Netlist Version 1.1 created  Sun 16 Sep 2012 03:37:26 PM EDT
+# EESchema Netlist Version 1.1 created  Sun 23 Sep 2012 03:23:26 PM EDT
 (
- ( /504A0F06 $noname  J1 10118194-0001LF {Lib=USBMICROCONN}
-  (    1 /power/Vbus )
-  (    2 /stm32f4/USB_D- )
-  (    3 /stm32f4/USB_D+ )
-  (    4 /stm32f4/USB_ID )
-  (    5 GND )
- )
- ( /5047CF75 $noname  PB3 EVQ-P7C01K {Lib=PUSHBUTTON}
-  (    1 GND )
-  (    2 /stm32f4/EXTI12 )
- )
- ( /5047CF70 $noname  PB4 EVQ-P7C01K {Lib=PUSHBUTTON}
-  (    1 GND )
-  (    2 /stm32f4/EXTI11 )
- )
- ( /5033C37F $noname  PB2 EVQ-P7C01K {Lib=PUSHBUTTON}
-  (    1 GND )
-  (    2 /stm32f4/EXTI10 )
- )
- ( /5033C37A $noname  PB1 KMT011_NGJ_LHS {Lib=PUSHBUTTON}
-  (    1 GND )
-  (    2 /stm32f4/nRESET )
- )
- ( /00000000 $noname  U1 MT29FXX01A {Lib=MT29FXX01A}
-  (   D3 /stm32f4/Vdd )
-  (   G5 /stm32f4/FLASH_nHOLD )
-  (   G6 /stm32f4/Vdd )
-  (   G7 /stm32f4/SPI2_MISO )
-  (   J7 /oled/SDIN )
-  (   J8 /stm32f4/FLASH_nWP )
-  (   K3 GND )
-  (   K6 /oled/SCLK )
-  (   K7 /stm32f4/FLASH_nCS )
-  (   K8 GND )
- )
- ( /504A09CD/504A0E3E $noname  C37 1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /504A09CD/504A0D79 $noname  J3 SSD1306_SER {Lib=SSD1306_SER}
-  (    1 N-000100 )
-  (    2 N-000105 )
-  (    3 N-000101 )
-  (    4 N-000104 )
-  (    5 /stm32f4/Vdd )
-  (    6 GND )
-  (    7 /stm32f4/Vdd )
-  (    8 /stm32f4/OLED_nCS )
-  (    9 /stm32f4/OLED_nRES )
-  (   10 /stm32f4/OLED_nD/C )
-  (   11 /oled/SCLK )
-  (   12 /oled/SDIN )
-  (   13 N-000102 )
-  (   14 N-000099 )
-  (   15 N-000103 )
- )
- ( /504A09CD/504A0CF7 $noname  C41 2.2u {Lib=CAP}
-  (    1 GND )
-  (    2 N-000103 )
- )
- ( /504A09CD/504A0CF4 $noname  C40 2.2u {Lib=CAP}
-  (    1 GND )
-  (    2 N-000099 )
- )
- ( /504A09CD/504A0CDB $noname  R3 390k {Lib=RES}
-  (    1 GND )
-  (    2 N-000102 )
- )
- ( /504A09CD/504A0A07 $noname  C39 1u {Lib=CAP}
-  (    1 N-000101 )
-  (    2 N-000104 )
- )
- ( /504A09CD/504A09F8 $noname  C38 1u {Lib=CAP}
-  (    1 N-000100 )
-  (    2 N-000105 )
- )
- ( /50339999/5056056A $noname  R13 10k {Lib=RES}
-  (    1 /stm32f4/nSENSE_EN )
-  (    2 /stm32f4/SENSE )
- )
- ( /50339999/50560565 $noname  R12 5k {Lib=RES}
-  (    1 /stm32f4/SENSE )
-  (    2 /power/Vbat )
- )
- ( /50339999/504E30FA $noname  R11 30 {Lib=RES}
-  (    1 N-000070 )
-  (    2 N-000069 )
- )
- ( /50339999/504E30E7 $noname  D2 LB_Q39G-L2N2-35-1 {Lib=LED}
-  (    1 N-000070 )
-  (    2 GND )
- )
- ( /50339999/504E2103 $noname  C55 DSK-3R3H224U-HL {Lib=CP1}
-  (    1 N-000068 )
-  (    2 GND )
- )
- ( /50339999/504E1FF3 $noname  C54 10n {Lib=CAP}
-  (    1 GND )
-  (    2 N-000068 )
- )
- ( /50339999/504E1FB3 $noname  D1 BAT43XV2 {Lib=DIODESCH}
-  (    1 /stm32f4/Vdd )
-  (    2 N-000068 )
- )
- ( /50339999/50492A1D L2  X1 7B-8.000MAAJ {Lib=XTAL_GND}
-  (    1 N-000065 )
-  (    2 N-000064 )
-  (  GND GND )
- )
- ( /50339999/5033C908 $noname  C2 30p {Lib=CAP}
-  (    1 GND )
-  (    2 N-000065 )
- )
- ( /50339999/5033C8FC $noname  C1 30p {Lib=CAP}
-  (    1 GND )
-  (    2 N-000064 )
- )
- ( /50339999/5033C8F0 $noname  C5 9p {Lib=CAP}
-  (    1 GND )
-  (    2 N-000063 )
- )
- ( /50339999/5033C8E5 $noname  C6 9p {Lib=CAP}
-  (    1 GND )
-  (    2 N-000074 )
- )
- ( /50339999/5033C851 $noname  X2 SSPT7F {Lib=XTAL}
-  (    1 N-000074 )
-  (    2 N-000063 )
- )
- ( /50339999/5033BFDC $noname  R1 10k {Lib=RES}
-  (    1 /sensors/ACC_I2C_SDA )
-  (    2 /stm32f4/Vdd )
- )
- ( /50339999/5033BFCE $noname  R2 10k {Lib=RES}
-  (    1 /sensors/ACC_I2C_SCL )
-  (    2 /stm32f4/Vdd )
- )
- ( /50339999/5033BC2D $noname  C14 2.2u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /50339999/5033BB90 $noname  J2 GRPB052VWQS {Lib=SWD_10PIN}
-  (    1 /stm32f4/Vdd )
-  (    2 /stm32f4/SWDIO )
-  (    3 GND )
-  (    4 /stm32f4/SWCLK )
-  (    5 GND )
-  (    6 /stm32f4/SWO )
-  (    7 ? )
-  (    8 ? )
-  (    9 GND )
-  (   10 /stm32f4/nRESET )
- )
- ( /50339999/5033A53B $noname  C8 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /50339999/5033A494 $noname  C4 100p {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /50339999/5033A480 $noname  C3 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /50339999/5033A457 $noname  C9 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /50339999/5033A42A $noname  C11 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /50339999/5033A422 $noname  C10 2.2u {Lib=CAP}
-  (    1 GND )
-  (    2 N-000066 )
- )
- ( /50339999/5033A382 $noname  C13 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /50339999/5033A378 $noname  C12 2.2u {Lib=CAP}
-  (    1 GND )
-  (    2 N-000073 )
- )
- ( /50339999/5033E931 $noname  C7 1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /50339999/5033E932 $noname  U2 STM32F405RG {Lib=STM32F405RG}
-  (    1 N-000068 )
-  (    2 ? )
-  (    3 N-000063 )
-  (    4 N-000074 )
-  (    5 N-000064 )
-  (    6 N-000065 )
-  (    7 /stm32f4/nRESET )
-  (    8 ? )
-  (    9 /power/HPWR_EN )
-  (   10 /stm32f4/POW_SUSP_EN )
-  (   11 N-000069 )
-  (   12 GND )
-  (   13 /stm32f4/Vdd )
-  (   14 /stm32f4/nSENSE_EN )
-  (   15 /stm32f4/POW_nCHRG )
-  (   16 /stm32f4/SENSE )
-  (   17 /stm32f4/EXTI3 )
-  (   18 GND )
-  (   19 /stm32f4/Vdd )
-  (   20 /stm32f4/POW_MODE )
-  (   21 /sensors/GYR_SPI_CLK )
-  (   22 /sensors/GYR_SPI_MISO )
-  (   23 /sensors/GYR_SPI_MOSI )
-  (   24 /sensors/GYR_SPI_nCS )
-  (   25 /sensors/PRS_SPI_nCS )
-  (   26 /stm32f4/EXTI0 )
-  (   27 /stm32f4/EXTI1 )
-  (   28 /stm32f4/OLED_nRES )
-  (   29 /stm32f4/OLED_nD/C )
-  (   30 /stm32f4/OLED_nCS )
-  (   31 N-000066 )
-  (   32 /stm32f4/Vdd )
-  (   33 /stm32f4/FLASH_nCS )
-  (   34 /oled/SCLK )
-  (   35 /stm32f4/SPI2_MISO )
-  (   36 /oled/SDIN )
-  (   37 /stm32f4/FLASH_nHOLD )
-  (   38 /rf/GDO0 )
-  (   39 /rf/GDO2 )
-  (   40 /stm32f4/RF_nCS )
-  (   41 /stm32f4/FLASH_nWP )
-  (   42 /power/Vbus )
-  (   43 /stm32f4/USB_ID )
-  (   44 /stm32f4/USB_D- )
-  (   45 /stm32f4/USB_D+ )
-  (   46 /stm32f4/SWDIO )
-  (   47 N-000073 )
-  (   48 /stm32f4/Vdd )
-  (   49 /stm32f4/SWCLK )
-  (   50 ? )
-  (   51 /stm32f4/EXTI10 )
-  (   52 /stm32f4/EXTI11 )
-  (   53 /stm32f4/EXTI12 )
-  (   54 /sensors/ACC_INT1 )
-  (   55 /stm32f4/SWO )
-  (   56 /sensors/ACC_INT2 )
-  (   57 ? )
-  (   58 /sensors/ACC_I2C_SCL )
-  (   59 /sensors/ACC_I2C_SDA )
-  (   60 GND )
-  (   61 ? )
-  (   62 ? )
-  (   63 GND )
-  (   64 /stm32f4/Vdd )
- )
- ( /50462493/504B63DF $noname  TP1 TP {Lib=TP}
-  (    1 /rf/GDO2 )
- )
- ( /50462493/504B63D1 $noname  TP2 TP {Lib=TP}
-  (    1 /rf/GDO0 )
- )
- ( /50462493/50493685 $noname  X3 NX3225SA-26.000000MHZ-STD-CSR-1 {Lib=XTAL_GND}
-  (    1 N-000086 )
-  (    2 N-000088 )
-  (  GND GND )
- )
- ( /50462493/5047CA2F $noname  C52 5.6p {Lib=CAP}
-  (    1 N-000098 )
-  (    2 GND )
- )
- ( /50462493/50478765 $noname  ANT1 ANT-916/433-HESM {Lib=ANTENNA}
-  (    1 N-000089 )
- )
- ( /50462493/5047701F $noname  C47 1.0p {Lib=CAP}
-  (    1 N-000093 )
-  (    2 N-000097 )
- )
- ( /50462493/5047701E $noname  C48 1.5p {Lib=CAP}
-  (    1 N-000097 )
-  (    2 GND )
- )
- ( /50462493/5047701D $noname  C49 100p {Lib=CAP}
-  (    1 GND )
-  (    2 N-000090 )
- )
- ( /50462493/5047701C $noname  C50 1.5p {Lib=CAP}
-  (    1 N-000096 )
-  (    2 N-000093 )
- )
- ( /50462493/5047701B $noname  C51 3.3p {Lib=CAP}
-  (    1 N-000095 )
-  (    2 GND )
- )
- ( /50462493/5047701A $noname  C53 12p {Lib=CAP}
-  (    1 N-000098 )
-  (    2 N-000089 )
- )
- ( /50462493/50477019 $noname  L3 12n {Lib=IND}
-  (    1 N-000091 )
-  (    2 N-000097 )
- )
- ( /50462493/50477018 $noname  L4 12n {Lib=IND}
-  (    1 N-000092 )
-  (    2 N-000093 )
- )
- ( /50462493/50477017 $noname  L6 18n {Lib=IND}
-  (    1 N-000097 )
-  (    2 N-000096 )
- )
- ( /50462493/50477016 $noname  L5 18n {Lib=IND}
-  (    1 N-000090 )
-  (    2 N-000093 )
- )
- ( /50462493/50477015 $noname  L7 12n {Lib=IND}
-  (    1 N-000096 )
-  (    2 N-000095 )
- )
- ( /50462493/50477014 $noname  L8 12n {Lib=IND}
-  (    1 N-000095 )
-  (    2 N-000098 )
- )
- ( /50462493/5047693E $noname  C42 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 N-000087 )
- )
- ( /50462493/5047690A $noname  C46 0.01u {Lib=CAP}
-  (    1 /rf/AVdd )
-  (    2 GND )
- )
- ( /50462493/504768F9 $noname  R10 4.7R {Lib=RES}
-  (    1 /rf/AVdd )
-  (    2 /stm32f4/Vdd )
- )
- ( /50462493/504768CF $noname  C44 27p {Lib=CAP}
-  (    1 GND )
-  (    2 N-000088 )
- )
- ( /50462493/504768CC $noname  C43 27p {Lib=CAP}
-  (    1 GND )
-  (    2 N-000086 )
- )
- ( /50462493/50462F5B $noname  C45 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /50462493/50462F15 $noname  R4 56k_(1%) {Lib=RES}
-  (    1 GND )
-  (    2 N-000085 )
- )
- ( /50462493/50462E7F $noname  U8 CC1101 {Lib=CC1101}
-  (    1 /sensors/GYR_SPI_CLK )
-  (    2 /sensors/GYR_SPI_MISO )
-  (    3 /rf/GDO2 )
-  (    4 /stm32f4/Vdd )
-  (    5 N-000087 )
-  (    6 /rf/GDO0 )
-  (    7 /stm32f4/RF_nCS )
-  (    8 N-000086 )
-  (    9 /rf/AVdd )
-  (   10 N-000088 )
-  (   11 /rf/AVdd )
-  (   12 N-000092 )
-  (   13 N-000091 )
-  (   14 /rf/AVdd )
-  (   15 /rf/AVdd )
-  (   16 GND )
-  (   17 N-000085 )
-  (   18 /stm32f4/Vdd )
-  (   19 GND )
-  (   20 /sensors/GYR_SPI_MOSI )
-  (  GND GND )
- )
- ( /5032F4FC/5033B22F $noname  C25 0.01u {Lib=CAP}
-  (    1 GND )
-  (    2 N-000060 )
- )
- ( /5032F4FC/5033B21E $noname  L1 ACML-0402-220 {Lib=IND}
-  (    1 /stm32f4/Vdd )
-  (    2 N-000060 )
- )
- ( /5032F4FC/50339C67 $noname  C30 1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/50339BB2 $noname  C24 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/50339B9C $noname  C29 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/5033E92D $noname  U5 LPS331AP {Lib=LPS331AP}
-  (    1 /stm32f4/Vdd )
-  (    2 ? )
-  (    3 ? )
-  (    4 /sensors/GYR_SPI_CLK )
-  (    5 GND )
-  (    6 /sensors/GYR_SPI_MOSI )
-  (    7 /sensors/GYR_SPI_MISO )
-  (    8 /sensors/PRS_SPI_nCS )
-  (    9 ? )
-  (   10 GND )
-  (   11 /stm32f4/EXTI0 )
-  (   12 GND )
-  (   13 GND )
-  (   14 /stm32f4/Vdd )
-  (   15 N-000060 )
-  (   16 GND )
- )
- ( /5032F4FC/50339815 $noname  C23 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/503397EC $noname  C21 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/503397E7 $noname  C19 1u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/50339781 $noname  C22 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 N-000052 )
- )
- ( /5032F4FC/5033E933 $noname  C17 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 N-000051 )
- )
- ( /5032F4FC/5033E934 $noname  U3 MAG3110 {Lib=MAG3110}
-  (    1 N-000051 )
-  (    2 /stm32f4/Vdd )
-  (    3 ? )
-  (    4 N-000052 )
-  (    5 GND )
-  (    6 /sensors/ACC_I2C_SDA )
-  (    7 /sensors/ACC_I2C_SCL )
-  (    8 /stm32f4/Vdd )
-  (    9 /stm32f4/EXTI3 )
-  (   10 GND )
- )
- ( /5032F4FC/503314A4 $noname  C16 100n {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/503314A3 $noname  C18 100p {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/503314A2 $noname  C15 2.2u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/50331457 $noname  C26 2.2u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/50331455 $noname  C28 100p {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/5033E91F $noname  C27 100n {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032F4FC/5033E92A $noname  C31 0.01u {Lib=CAP}
-  (    1 N-000059 )
-  (    2 GND )
- )
- ( /5032F4FC/5033E927 $noname  U6 L3GD20 {Lib=L3GD20}
-  (    1 /stm32f4/Vdd )
-  (    2 /sensors/GYR_SPI_CLK )
-  (    3 /sensors/GYR_SPI_MOSI )
-  (    4 /sensors/GYR_SPI_MISO )
-  (    5 /sensors/GYR_SPI_nCS )
-  (    6 ? )
-  (    7 /stm32f4/EXTI1 )
-  (    8 GND )
-  (    9 GND )
-  (   10 GND )
-  (   11 GND )
-  (   12 GND )
-  (   13 GND )
-  (   14 N-000059 )
-  (   15 /stm32f4/Vdd )
-  (   16 /stm32f4/Vdd )
- )
- ( /5032F4FC/5033E923 $noname  C20 0.1u {Lib=CAP}
-  (    1 GND )
-  (    2 N-000058 )
- )
- ( /5032F4FC/5033E921 $noname  U4 MMA8452Q {Lib=MMA8452Q}
-  (    1 /stm32f4/Vdd )
-  (    2 N-000058 )
-  (    3 ? )
-  (    4 /sensors/ACC_I2C_SCL )
-  (    5 GND )
-  (    6 /sensors/ACC_I2C_SDA )
-  (    7 GND )
-  (    8 ? )
-  (    9 /sensors/ACC_INT2 )
-  (   10 GND )
-  (   11 /sensors/ACC_INT1 )
-  (   12 GND )
-  (   13 ? )
-  (   14 /stm32f4/Vdd )
-  (   15 ? )
-  (   16 ? )
- )
- ( /5032B8A6/50560FDD $noname  U9 MCP111T-315 {Lib=LV_DETECT}
-  (    1 /power/REG_EN )
-  (    2 GND )
-  (    3 /power/Vbat )
- )
- ( /5032B8A6/50560D08 $noname  R14 680k {Lib=RES}
-  (    1 /power/REG_EN )
-  (    2 /power/Vbat )
- )
- ( /5032B8A6/505606DA $noname  J4 CONN_2 {Lib=CONN_2}
-  (    1 /power/Vbat )
-  (    2 GND )
- )
- ( /5032B8A6/504E10A8 $noname  F1 PTS120616V025 {Lib=FUSE}
-  (    1 /power/Vbat )
-  (    2 N-000043 )
- )
- ( /5032B8A6/5033E936 $noname  R9 1.74k(1%) {Lib=RES}
-  (    1 N-000044 )
-  (    2 GND )
- )
- ( /5032B8A6/5032BB7C $noname  C36 2.2u {Lib=CAP}
-  (    1 GND )
-  (    2 /power/Vbat )
- )
- ( /5032B8A6/5032BB2C $noname  C35 10u {Lib=CAP}
-  (    1 N-000047 )
-  (    2 /power/Vbat )
- )
- ( /5032B8A6/5032BAF4 $noname  C34 470n {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032B8A6/5032BAEF $noname  C33 10u {Lib=CAP}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032B8A6/5033E93A $noname  L2 MLZ2012M4R7H {Lib=INDUCTOR}
-  (    1 /stm32f4/Vdd )
-  (    2 N-000046 )
- )
- ( /5032B8A6/5033E93B $noname  C32 22p {Lib=CAP}
-  (    1 /stm32f4/Vdd )
-  (    2 N-000042 )
- )
- ( /5032B8A6/5032BA1A $noname  R8 1R {Lib=RES}
-  (    1 GND )
-  (    2 N-000047 )
- )
- ( /5032B8A6/5032BA03 $noname  R5 220k {Lib=RES}
-  (    1 GND )
-  (    2 /stm32f4/POW_MODE )
- )
- ( /5032B8A6/5032B9FE $noname  R7 680k(1%) {Lib=RES}
-  (    1 GND )
-  (    2 /stm32f4/Vdd )
- )
- ( /5032B8A6/5033E939 $noname  R6 220k(1%) {Lib=RES}
-  (    1 /stm32f4/Vdd )
-  (    2 N-000042 )
- )
- ( /5032B8A6/5033E938 $noname  U7 LTC3559 {Lib=LTC3559}
-  (    1 GND )
-  (    2 /power/Vbat )
-  (    3 /stm32f4/POW_MODE )
-  (    4 N-000042 )
-  (    5 /power/REG_EN )
-  (    6 N-000046 )
-  (    7 N-000043 )
-  (    8 ? )
-  (    9 GND )
-  (   10 ? )
-  (   11 /stm32f4/POW_SUSP_EN )
-  (   12 /power/HPWR_EN )
-  (   13 GND )
-  (   14 N-000044 )
-  (   15 /stm32f4/POW_nCHRG )
-  (   16 /power/Vbus )
-  (   17 GND )
+ ( /50462493/50478765 ANT_433_916_HESM ANT1 ANT-916/433-HESM
+  ( 1 N-000089 )
+ )
+ ( /50339999/5033C8FC SM0402 C1 30p
+  ( 1 GND )
+  ( 2 N-000064 )
+ )
+ ( /50339999/5033C908 SM0402 C2 30p
+  ( 1 GND )
+  ( 2 N-000065 )
+ )
+ ( /50339999/5033A480 SM0402 C3 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /50339999/5033A494 SM0402 C4 100p
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /50339999/5033C8F0 SM0402 C5 9p
+  ( 1 GND )
+  ( 2 N-000063 )
+ )
+ ( /50339999/5033C8E5 SM0402 C6 9p
+  ( 1 GND )
+  ( 2 N-000074 )
+ )
+ ( /50339999/5033E931 SM0603 C7 1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /50339999/5033A53B SM0402 C8 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /50339999/5033A457 SM0402 C9 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /50339999/5033A422 SM0603 C10 2.2u
+  ( 1 GND )
+  ( 2 N-000066 )
+ )
+ ( /50339999/5033A42A SM0402 C11 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /50339999/5033A378 SM0603 C12 2.2u
+  ( 1 GND )
+  ( 2 N-000073 )
+ )
+ ( /50339999/5033A382 SM0402 C13 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /50339999/5033BC2D SM0603 C14 2.2u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/503314A2 SM0603 C15 2.2u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/503314A4 SM0402 C16 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/5033E933 SM0603 C17 0.1u
+  ( 1 GND )
+  ( 2 N-000051 )
+ )
+ ( /5032F4FC/503314A3 SM0402 C18 100p
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/503397E7 SM0603 C19 1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/5033E923 SM0402 C20 0.1u
+  ( 1 GND )
+  ( 2 N-000058 )
+ )
+ ( /5032F4FC/503397EC SM0402 C21 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/50339781 SM0402 C22 0.1u
+  ( 1 GND )
+  ( 2 N-000052 )
+ )
+ ( /5032F4FC/50339815 SM0402 C23 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/50339BB2 SM0402 C24 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/5033B22F SM0402 C25 0.01u
+  ( 1 GND )
+  ( 2 N-000060 )
+ )
+ ( /5032F4FC/50331457 SM0603 C26 2.2u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/5033E91F SM0402 C27 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/50331455 SM0402 C28 100p
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/50339B9C SM0402 C29 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/50339C67 SM0603 C30 1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032F4FC/5033E92A SM0402 C31 0.01u
+  ( 1 N-000059 )
+  ( 2 GND )
+ )
+ ( /5032B8A6/5033E93B SM0402 C32 22p
+  ( 1 /rf/Vdd )
+  ( 2 N-000042 )
+ )
+ ( /5032B8A6/5032BAEF SM0805 C33 10u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032B8A6/5032BAF4 SM0603 C34 0.47u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032B8A6/5032BB2C SM0805 C35 10u
+  ( 1 N-000047 )
+  ( 2 /power/Vbat )
+ )
+ ( /5032B8A6/5032BB7C SM0603 C36 2.2u
+  ( 1 GND )
+  ( 2 /power/Vbat )
+ )
+ ( /504A09CD/504A0E3E SM0603 C37 1u
+  ( 1 GND )
+  ( 2 /power/Vbat )
+ )
+ ( /504A09CD/504A09F8 SM0603 C38 1u
+  ( 1 N-000102 )
+  ( 2 N-000100 )
+ )
+ ( /504A09CD/504A0A07 SM0603 C39 1u
+  ( 1 N-000101 )
+  ( 2 N-000105 )
+ )
+ ( /504A09CD/504A0CF4 SM0603 C40 2.2u
+  ( 1 GND )
+  ( 2 N-000099 )
+ )
+ ( /504A09CD/504A0CF7 SM0603 C41 2.2u
+  ( 1 GND )
+  ( 2 N-000103 )
+ )
+ ( /50462493/5047693E SM0603 C42 0.1u
+  ( 1 GND )
+  ( 2 N-000087 )
+ )
+ ( /50462493/504768CC SM0402 C43 27p
+  ( 1 GND )
+  ( 2 N-000086 )
+ )
+ ( /50462493/504768CF SM0402 C44 27p
+  ( 1 GND )
+  ( 2 N-000088 )
+ )
+ ( /50462493/50462F5B SM0402 C45 0.1u
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /50462493/5047690A SM0402 C46 0.01u
+  ( 1 /rf/AVdd )
+  ( 2 GND )
+ )
+ ( /50462493/5047701F SM0402 C47 1.0p
+  ( 1 N-000093 )
+  ( 2 N-000097 )
+ )
+ ( /50462493/5047701E SM0402 C48 1.5p
+  ( 1 N-000097 )
+  ( 2 GND )
+ )
+ ( /50462493/5047701D SM0402 C49 100p
+  ( 1 GND )
+  ( 2 N-000090 )
+ )
+ ( /50462493/5047701C SM0402 C50 1.5p
+  ( 1 N-000096 )
+  ( 2 N-000093 )
+ )
+ ( /50462493/5047701B SM0402 C51 3.3p
+  ( 1 N-000095 )
+  ( 2 GND )
+ )
+ ( /50462493/5047CA2F SM0402 C52 5.6p
+  ( 1 N-000098 )
+  ( 2 GND )
+ )
+ ( /50462493/5047701A SM0402 C53 12p
+  ( 1 N-000098 )
+  ( 2 N-000089 )
+ )
+ ( /50339999/504E1FF3 SM0402 C54 10n
+  ( 1 GND )
+  ( 2 N-000068 )
+ )
+ ( /50339999/504E2103 DSK-XXXXXX-HL C55 DSK-3R3H224U-HL
+  ( 1 N-000068 )
+  ( 2 GND )
+ )
+ ( /5032B8A6/505E780C SM0603 C56 1u
+  ( 1 GND )
+  ( 2 /power/Vbus )
+ )
+ ( /50339999/504E1FB3 SOD-523F D1 BAT43XV2
+  ( 1 /rf/Vdd )
+  ( 2 N-000068 )
+ )
+ ( /50339999/504E30E7 SM0603 D2 LB_Q39G-L2N2-35-1
+  ( 1 N-000070 )
+  ( 2 GND )
+ )
+ ( /5032B8A6/504E10A8 SM1206 F1 PTS120616V025
+  ( 1 /power/Vbat )
+  ( 2 N-000044 )
+ )
+ ( /504A0F06 USBMICROCONN J1 10118194-0001LF
+  ( 1 /power/Vbus )
+  ( 2 /stm32f4/USB_D- )
+  ( 3 /stm32f4/USB_D+ )
+  ( 4 /stm32f4/USB_ID )
+  ( 5 GND )
+ )
+ ( /50339999/5033BB90 SULLINS_5X2_050_SMT J2 GRPB052VWQS
+  ( 1 /rf/Vdd )
+  ( 2 /stm32f4/SWDIO )
+  ( 3 GND )
+  ( 4 /stm32f4/SWCLK )
+  ( 5 GND )
+  ( 6 /stm32f4/SWO )
+  ( 7 ? )
+  ( 8 ? )
+  ( 9 GND )
+  ( 10 /stm32f4/nRESET )
+ )
+ ( /504A09CD/504A0D79 LY091WG15 J3 SSD1306_SER
+  ( 1 N-000102 )
+  ( 2 N-000100 )
+  ( 3 N-000101 )
+  ( 4 N-000105 )
+  ( 5 /power/Vbat )
+  ( 6 GND )
+  ( 7 /rf/Vdd )
+  ( 8 /stm32f4/OLED_nCS )
+  ( 9 /stm32f4/OLED_nRES )
+  ( 10 /stm32f4/OLED_nD/C )
+  ( 11 /oled/SCLK )
+  ( 12 /oled/SDIN )
+  ( 13 N-000104 )
+  ( 14 N-000099 )
+  ( 15 N-000103 )
+ )
+ ( /5032B8A6/505606DA SIL-2 J4 CONN_2
+  ( 1 /power/Vbat )
+  ( 2 GND )
+ )
+ ( /5032B8A6/5033E93A SMD2012 L2 MLZ2012M4R7H
+  ( 1 /rf/Vdd )
+  ( 2 N-000046 )
+ )
+ ( /50462493/50477019 SM0402 L3 12n
+  ( 1 N-000091 )
+  ( 2 N-000097 )
+ )
+ ( /50462493/50477018 SM0402 L4 12n
+  ( 1 N-000092 )
+  ( 2 N-000093 )
+ )
+ ( /50462493/50477016 SM0402 L5 18n
+  ( 1 N-000090 )
+  ( 2 N-000093 )
+ )
+ ( /50462493/50477017 SM0402 L6 18n
+  ( 1 N-000097 )
+  ( 2 N-000096 )
+ )
+ ( /50462493/50477015 SM0402 L7 12n
+  ( 1 N-000096 )
+  ( 2 N-000095 )
+ )
+ ( /50462493/50477014 SM0402 L8 12n
+  ( 1 N-000095 )
+  ( 2 N-000098 )
+ )
+ ( /5033C37A KMT0 PB1 KMT011_NGJ_LHS
+  ( 1 GND )
+  ( 2 /stm32f4/nRESET )
+ )
+ ( /5033C37F EVQPSD PB2 EVQ-P7C01K
+  ( 1 GND )
+  ( 2 /stm32f4/EXTI10 )
+ )
+ ( /5047CF75 EVQPSD PB3 EVQ-P7C01K
+  ( 1 GND )
+  ( 2 /stm32f4/EXTI12 )
+ )
+ ( /5047CF70 EVQPSD PB4 EVQ-P7C01K
+  ( 1 GND )
+  ( 2 /stm32f4/EXTI11 )
+ )
+ ( /50339999/5033BFDC SM0402 R1 10k
+  ( 1 /sensors/ACC_I2C_SDA )
+  ( 2 /rf/Vdd )
+ )
+ ( /50339999/5033BFCE SM0402 R2 10k
+  ( 1 /sensors/ACC_I2C_SCL )
+  ( 2 /rf/Vdd )
+ )
+ ( /504A09CD/504A0CDB SM0402 R3 390k
+  ( 1 GND )
+  ( 2 N-000104 )
+ )
+ ( /50462493/50462F15 SM0402 R4 56k_(1%)
+  ( 1 GND )
+  ( 2 N-000085 )
+ )
+ ( /5032B8A6/5032BA03 SM0402 R5 220k
+  ( 1 GND )
+  ( 2 /stm32f4/POW_MODE )
+ )
+ ( /5032B8A6/5033E939 SM0402 R6 220k(1%)
+  ( 1 /rf/Vdd )
+  ( 2 N-000042 )
+ )
+ ( /5032B8A6/5032B9FE SM0402 R7 680k(1%)
+  ( 1 GND )
+  ( 2 /rf/Vdd )
+ )
+ ( /5032B8A6/5032BA1A SM0402 R8 1R
+  ( 1 GND )
+  ( 2 N-000047 )
+ )
+ ( /5032B8A6/5033E936 SM0402 R9 1.74k(1%)
+  ( 1 N-000043 )
+  ( 2 GND )
+ )
+ ( /50462493/504768F9 SM0402 R10 4.7R
+  ( 1 /rf/AVdd )
+  ( 2 /rf/Vdd )
+ )
+ ( /50339999/504E30FA SM0402 R11 30
+  ( 1 N-000070 )
+  ( 2 N-000069 )
+ )
+ ( /50339999/50560565 SM0402 R12 5k_(1%)
+  ( 1 /stm32f4/SENSE )
+  ( 2 /power/Vbat )
+ )
+ ( /50339999/5056056A SM0402 R13 10k_(1%)
+  ( 1 /stm32f4/nSENSE_EN )
+  ( 2 /stm32f4/SENSE )
+ )
+ ( /5032B8A6/50560D08 SM0402 R14 680k
+  ( 1 /power/REG_EN )
+  ( 2 /power/Vbat )
+ )
+ ( /5032F4FC/505E7AFF SM0402 R15 4.7R
+  ( 1 /rf/Vdd )
+  ( 2 N-000060 )
+ )
+ ( /505F58DF SM0402 R16 100k
+  ( 1 /stm32f4/FLASH_nCS )
+  ( 2 /rf/Vdd )
+ )
+ ( /504A09CD/505F5E33 SM0402 R17 100k
+  ( 1 GND )
+  ( 2 /stm32f4/OLED_nRES )
+ )
+ ( /50462493/504B63DF TP_SMD_2MM TP1 TP
+  ( 1 /rf/GDO2 )
+ )
+ ( /50462493/504B63D1 TP_SMD_2MM TP2 TP
+  ( 1 /rf/GDO0 )
+ )
+ ( /00000000 MICRON_VFBGA63 U1 MT29FXX01A
+  ( D3 /rf/Vdd )
+  ( G5 /stm32f4/FLASH_nHOLD )
+  ( G6 /rf/Vdd )
+  ( G7 /stm32f4/SPI2_MISO )
+  ( J7 /oled/SDIN )
+  ( J8 /stm32f4/FLASH_nWP )
+  ( K3 GND )
+  ( K6 /oled/SCLK )
+  ( K7 /stm32f4/FLASH_nCS )
+  ( K8 GND )
+ )
+ ( /50339999/5033E932 STM32_LQFP64 U2 STM32F405RG
+  ( 1 N-000068 )
+  ( 2 ? )
+  ( 3 N-000063 )
+  ( 4 N-000074 )
+  ( 5 N-000064 )
+  ( 6 N-000065 )
+  ( 7 /stm32f4/nRESET )
+  ( 8 ? )
+  ( 9 /power/HPWR_EN )
+  ( 10 /stm32f4/POW_SUSP_EN )
+  ( 11 N-000069 )
+  ( 12 GND )
+  ( 13 /rf/Vdd )
+  ( 14 /stm32f4/nSENSE_EN )
+  ( 15 /stm32f4/POW_nCHRG )
+  ( 16 /stm32f4/SENSE )
+  ( 17 /stm32f4/EXTI3 )
+  ( 18 GND )
+  ( 19 /rf/Vdd )
+  ( 20 /stm32f4/POW_MODE )
+  ( 21 /sensors/GYR_SPI_CLK )
+  ( 22 /sensors/GYR_SPI_MISO )
+  ( 23 /sensors/GYR_SPI_MOSI )
+  ( 24 /sensors/GYR_SPI_nCS )
+  ( 25 /sensors/PRS_SPI_nCS )
+  ( 26 /stm32f4/EXTI0 )
+  ( 27 /stm32f4/EXTI1 )
+  ( 28 /stm32f4/OLED_nRES )
+  ( 29 /stm32f4/OLED_nD/C )
+  ( 30 /stm32f4/OLED_nCS )
+  ( 31 N-000066 )
+  ( 32 /rf/Vdd )
+  ( 33 /stm32f4/FLASH_nCS )
+  ( 34 /oled/SCLK )
+  ( 35 /stm32f4/SPI2_MISO )
+  ( 36 /oled/SDIN )
+  ( 37 /stm32f4/FLASH_nHOLD )
+  ( 38 /rf/GDO0 )
+  ( 39 /rf/GDO2 )
+  ( 40 /stm32f4/RF_nCS )
+  ( 41 /stm32f4/FLASH_nWP )
+  ( 42 /power/Vbus )
+  ( 43 /stm32f4/USB_ID )
+  ( 44 /stm32f4/USB_D- )
+  ( 45 /stm32f4/USB_D+ )
+  ( 46 /stm32f4/SWDIO )
+  ( 47 N-000073 )
+  ( 48 /rf/Vdd )
+  ( 49 /stm32f4/SWCLK )
+  ( 50 ? )
+  ( 51 /stm32f4/EXTI10 )
+  ( 52 /stm32f4/EXTI11 )
+  ( 53 /stm32f4/EXTI12 )
+  ( 54 /sensors/ACC_INT1 )
+  ( 55 /stm32f4/SWO )
+  ( 56 /sensors/ACC_INT2 )
+  ( 57 ? )
+  ( 58 /sensors/ACC_I2C_SCL )
+  ( 59 /sensors/ACC_I2C_SDA )
+  ( 60 GND )
+  ( 61 ? )
+  ( 62 ? )
+  ( 63 GND )
+  ( 64 /rf/Vdd )
+ )
+ ( /5032F4FC/5033E934 MAG3110 U3 MAG3110
+  ( 1 N-000051 )
+  ( 2 /rf/Vdd )
+  ( 3 ? )
+  ( 4 N-000052 )
+  ( 5 GND )
+  ( 6 /sensors/ACC_I2C_SDA )
+  ( 7 /sensors/ACC_I2C_SCL )
+  ( 8 /rf/Vdd )
+  ( 9 /stm32f4/EXTI3 )
+  ( 10 GND )
+ )
+ ( /5032F4FC/5033E921 MMA8451Q U4 MMA8452Q
+  ( 1 /rf/Vdd )
+  ( 2 N-000058 )
+  ( 3 ? )
+  ( 4 /sensors/ACC_I2C_SCL )
+  ( 5 GND )
+  ( 6 /sensors/ACC_I2C_SDA )
+  ( 7 GND )
+  ( 8 ? )
+  ( 9 /sensors/ACC_INT2 )
+  ( 10 GND )
+  ( 11 /sensors/ACC_INT1 )
+  ( 12 GND )
+  ( 13 ? )
+  ( 14 /rf/Vdd )
+  ( 15 ? )
+  ( 16 ? )
+ )
+ ( /5032F4FC/5033E92D LPS331AP U5 LPS331AP
+  ( 1 /rf/Vdd )
+  ( 2 ? )
+  ( 3 ? )
+  ( 4 /sensors/GYR_SPI_CLK )
+  ( 5 GND )
+  ( 6 /sensors/GYR_SPI_MOSI )
+  ( 7 /sensors/GYR_SPI_MISO )
+  ( 8 /sensors/PRS_SPI_nCS )
+  ( 9 ? )
+  ( 10 GND )
+  ( 11 /stm32f4/EXTI0 )
+  ( 12 GND )
+  ( 13 GND )
+  ( 14 /rf/Vdd )
+  ( 15 N-000060 )
+  ( 16 GND )
+ )
+ ( /5032F4FC/5033E927 L3GD20 U6 L3GD20
+  ( 1 /rf/Vdd )
+  ( 2 /sensors/GYR_SPI_CLK )
+  ( 3 /sensors/GYR_SPI_MOSI )
+  ( 4 /sensors/GYR_SPI_MISO )
+  ( 5 /sensors/GYR_SPI_nCS )
+  ( 6 ? )
+  ( 7 /stm32f4/EXTI1 )
+  ( 8 GND )
+  ( 9 GND )
+  ( 10 GND )
+  ( 11 GND )
+  ( 12 GND )
+  ( 13 GND )
+  ( 14 N-000059 )
+  ( 15 /rf/Vdd )
+  ( 16 /rf/Vdd )
+ )
+ ( /5032B8A6/5033E938 LTC3559 U7 LTC3559
+  ( 1 GND )
+  ( 2 /power/Vbat )
+  ( 3 /stm32f4/POW_MODE )
+  ( 4 N-000042 )
+  ( 5 /power/REG_EN )
+  ( 6 N-000046 )
+  ( 7 N-000044 )
+  ( 8 ? )
+  ( 9 GND )
+  ( 10 ? )
+  ( 11 /stm32f4/POW_SUSP_EN )
+  ( 12 /power/HPWR_EN )
+  ( 13 GND )
+  ( 14 N-000043 )
+  ( 15 /stm32f4/POW_nCHRG )
+  ( 16 /power/Vbus )
+  ( 17 GND )
+ )
+ ( /50462493/50462E7F CC1101 U8 CC1101
+  ( 1 /sensors/GYR_SPI_CLK )
+  ( 2 /sensors/GYR_SPI_MISO )
+  ( 3 /rf/GDO2 )
+  ( 4 /rf/Vdd )
+  ( 5 N-000087 )
+  ( 6 /rf/GDO0 )
+  ( 7 /stm32f4/RF_nCS )
+  ( 8 N-000086 )
+  ( 9 /rf/AVdd )
+  ( 10 N-000088 )
+  ( 11 /rf/AVdd )
+  ( 12 N-000092 )
+  ( 13 N-000091 )
+  ( 14 /rf/AVdd )
+  ( 15 /rf/AVdd )
+  ( 16 GND )
+  ( 17 N-000085 )
+  ( 18 /rf/Vdd )
+  ( 19 GND )
+  ( 20 /sensors/GYR_SPI_MOSI )
+  ( GND GND )
+ )
+ ( /5032B8A6/50560FDD SOT323 U9 MCP111T-315
+  ( 1 /power/REG_EN )
+  ( 2 GND )
+  ( 3 /power/Vbat )
+ )
+ ( /50339999/50492A1D TXC_7B X1 7B-8.000MAAJ
+  ( 1 N-000065 )
+  ( 2 N-000064 )
+  ( GND GND )
+ )
+ ( /50339999/5033C851 SSPT7F X2 SSPT7F
+  ( 1 N-000074 )
+  ( 2 N-000063 )
+ )
+ ( /50462493/50493685 NX3225SA X3 NX3225SA-26.000000MHZ-STD-CSR-1
+  ( 1 N-000086 )
+  ( 2 N-000088 )
+  ( GND GND )
  )
 )
 *
 { Allowed footprints by component:
+$component C55
+ CP*
+ SM*
+$endlist
+$component D1
+ D?
+ S*
+$endlist
 $component D2
  LED-3MM
  LED-5MM
@@ -602,465 +622,5 @@ $component D2
  LED-1206
  LEDV
 $endlist
-$component C55
- CP*
- SM*
-$endlist
-$component D1
- D?
- S*
-$endlist
 $endfootprintlist
 }
-{ Pin List by Nets
-Net 1 "/stm32f4/USB_D+" "USB_D+"
- U2 45
- J1 3
-Net 2 "/stm32f4/USB_ID" "USB_ID"
- J1 4
- U2 43
-Net 3 "/stm32f4/nRESET" "nRESET"
- J2 10
- U2 7
- PB1 2
-Net 4 "/stm32f4/EXTI11" "EXTI11"
- PB4 2
- U2 52
-Net 5 "/stm32f4/EXTI12" "EXTI12"
- PB3 2
- U2 53
-Net 6 "/stm32f4/OLED_nRES" "OLED_nRES"
- J3 9
- U2 28
-Net 7 "/oled/SCLK" "SCLK"
- U1 K6
- U2 34
- J3 11
-Net 8 "/sensors/ACC_INT1" "ACC_INT1"
- U4 11
- U2 54
-Net 9 "/stm32f4/EXTI3" "EXTI3"
- U3 9
- U2 17
-Net 10 "/stm32f4/SPI2_MISO" "SPI2_MISO"
- U1 G7
- U2 35
-Net 11 "/rf/GDO0" "GDO0"
- U2 38
- U8 6
- TP2 1
-Net 12 "/stm32f4/OLED_nCS" "OLED_nCS"
- J3 8
- U2 30
-Net 13 "/stm32f4/USB_D-" "USB_D-"
- J1 2
- U2 44
-Net 14 "/stm32f4/FLASH_nWP" "FLASH_nWP"
- U1 J8
- U2 41
-Net 15 "GND" "GND"
- U5 5
- PB3 1
- D2 2
- C55 2
- C54 1
- C20 1
- U4 12
- U4 10
- U4 7
- U4 5
- C28 1
- C31 2
- C27 1
- C26 1
- U3 5
- C19 1
- C21 1
- C23 1
- C22 1
- C16 1
- U3 10
- C17 1
- C30 1
- U5 12
- U5 10
- U5 13
- U5 16
- C24 1
- C29 1
- C15 1
- C18 1
- U6 13
- U6 12
- U6 11
- U6 10
- U6 9
- U6 8
- C25 1
- X3 GND
- C43 1
- R4 1
- C45 1
- C44 1
- C12 1
- C7 1
- C37 1
- C41 1
- C40 1
- R3 1
- J3 6
- C46 2
- U8 GND
- U8 19
- U8 16
- C51 2
- C49 1
- C48 2
- C13 1
- C52 2
- C42 1
- C6 1
- C2 1
- C1 1
- C5 1
- C14 1
- J2 3
- C9 1
- C4 1
- J2 5
- J2 9
- U2 60
- U2 12
- C11 1
- C10 1
- U2 18
- U2 63
- X1 GND
- C3 1
- C8 1
- U1 K8
- U7 17
- U9 2
- U7 13
- J4 2
- U7 1
- U1 K3
- U7 9
- C33 1
- R8 1
- R5 1
- R7 1
- PB1 1
- PB2 1
- C36 1
- C34 1
- PB4 1
- R9 2
- J1 5
-Net 16 "/stm32f4/FLASH_nHOLD" "FLASH_nHOLD"
- U2 37
- U1 G5
-Net 18 "/sensors/ACC_I2C_SCL" "ACC_I2C_SCL"
- U4 4
- U3 7
- R2 1
- U2 58
-Net 19 "/sensors/GYR_SPI_nCS" "GYR_SPI_nCS"
- U2 24
- U6 5
-Net 20 "/sensors/GYR_SPI_MISO" "GYR_SPI_MISO"
- U6 4
- U5 7
- U2 22
- U8 2
-Net 21 "/stm32f4/POW_MODE" "POW_MODE"
- U7 3
- R5 2
- U2 20
-Net 22 "/power/Vbus" "Vbus"
- J1 1
- U7 16
- U2 42
-Net 23 "/sensors/GYR_SPI_CLK" "GYR_SPI_CLK"
- U8 1
- U2 21
- U5 4
- U6 2
-Net 24 "/power/Vbat" "Vbat"
- J4 1
- R12 2
- U9 3
- C36 2
- C35 2
- U7 2
- F1 1
- R14 2
-Net 25 "/stm32f4/OLED_nD/C" "OLED_nD/C"
- J3 10
- U2 29
-Net 26 "/rf/GDO2" "GDO2"
- TP1 1
- U2 39
- U8 3
-Net 27 "/stm32f4/RF_nCS" "RF_nCS"
- U8 7
- U2 40
-Net 28 "/power/HPWR_EN" "HPWR_EN"
- U2 9
- U7 12
-Net 29 "/stm32f4/POW_SUSP_EN" "POW_SUSP_EN"
- U2 10
- U7 11
-Net 30 "/stm32f4/POW_nCHRG" "POW_nCHRG"
- U2 15
- U7 15
-Net 31 "/stm32f4/EXTI10" "EXTI10"
- PB2 2
- U2 51
-Net 33 "/sensors/ACC_I2C_SDA" "ACC_I2C_SDA"
- U3 6
- U2 59
- R1 1
- U4 6
-Net 34 "/sensors/ACC_INT2" "ACC_INT2"
- U4 9
- U2 56
-Net 35 "/stm32f4/EXTI1" "EXTI1"
- U2 27
- U6 7
-Net 36 "/sensors/PRS_SPI_nCS" "PRS_SPI_nCS"
- U5 8
- U2 25
-Net 37 "/sensors/GYR_SPI_MOSI" "GYR_SPI_MOSI"
- U8 20
- U2 23
- U6 3
- U5 6
-Net 38 "/oled/SDIN" "SDIN"
- J3 12
- U2 36
- U1 J7
-Net 39 "/stm32f4/FLASH_nCS" "FLASH_nCS"
- U2 33
- U1 K7
-Net 40 "/stm32f4/EXTI0" "EXTI0"
- U2 26
- U5 11
-Net 41 "/stm32f4/Vdd" "Vdd"
- U1 G6
- U1 D3
- J2 1
- U8 4
- U2 48
- C11 2
- C45 2
- J3 7
- C37 2
- C4 2
- C8 2
- C13 2
- R10 2
- J3 5
- U2 13
- C7 2
- U2 64
- U2 32
- C3 2
- U8 18
- U2 19
- C9 2
- U6 16
- D1 1
- U6 15
- U4 14
- C16 2
- R6 1
- R7 2
- C33 2
- C26 2
- U6 1
- C15 2
- C18 2
- C28 2
- L2 1
- C32 1
- U4 1
- C34 2
- L1 1
- C27 2
- U3 8
- C24 2
- C19 2
- C30 2
- C21 2
- C23 2
- C14 2
- U5 14
- U5 1
- U3 2
- C29 2
- R2 2
- R1 2
-Net 42 "" ""
- U7 4
- C32 2
- R6 2
-Net 43 "" ""
- F1 2
- U7 7
-Net 44 "" ""
- U7 14
- R9 1
-Net 45 "/power/REG_EN" "REG_EN"
- U7 5
- U9 1
- R14 1
-Net 46 "" ""
- L2 2
- U7 6
-Net 47 "" ""
- C35 1
- R8 2
-Net 51 "" ""
- U3 1
- C17 2
-Net 52 "" ""
- U3 4
- C22 2
-Net 58 "" ""
- U4 2
- C20 2
-Net 59 "" ""
- U6 14
- C31 1
-Net 60 "" ""
- C25 2
- U5 15
- L1 2
-Net 63 "" ""
- U2 3
- X2 2
- C5 2
-Net 64 "" ""
- U2 5
- C1 2
- X1 2
-Net 65 "" ""
- U2 6
- C2 2
- X1 1
-Net 66 "" ""
- C10 2
- U2 31
-Net 67 "/stm32f4/SWDIO" "SWDIO"
- J2 2
- U2 46
-Net 68 "" ""
- U2 1
- C55 1
- C54 2
- D1 2
-Net 69 "" ""
- R11 2
- U2 11
-Net 70 "" ""
- D2 1
- R11 1
-Net 71 "/stm32f4/SWCLK" "SWCLK"
- U2 49
- J2 4
-Net 72 "/stm32f4/SWO" "SWO"
- U2 55
- J2 6
-Net 73 "" ""
- U2 47
- C12 2
-Net 74 "" ""
- X2 1
- U2 4
- C6 2
-Net 76 "/stm32f4/nSENSE_EN" "nSENSE_EN"
- R13 1
- U2 14
-Net 78 "/stm32f4/SENSE" "SENSE"
- R13 2
- R12 1
- U2 16
-Net 85 "" ""
- U8 17
- R4 2
-Net 86 "" ""
- X3 1
- C43 2
- U8 8
-Net 87 "" ""
- U8 5
- C42 2
-Net 88 "" ""
- X3 2
- C44 2
- U8 10
-Net 89 "" ""
- C53 2
- ANT1 1
-Net 90 "" ""
- C49 2
- L5 1
-Net 91 "" ""
- L3 1
- U8 13
-Net 92 "" ""
- U8 12
- L4 1
-Net 93 "" ""
- L4 2
- L5 2
- C47 1
- C50 2
-Net 94 "/rf/AVdd" "AVdd"
- R10 1
- C46 1
- U8 9
- U8 15
- U8 14
- U8 11
-Net 95 "" ""
- C51 1
- L7 2
- L8 1
-Net 96 "" ""
- C50 1
- L6 2
- L7 1
-Net 97 "" ""
- C48 1
- C47 2
- L6 1
- L3 2
-Net 98 "" ""
- L8 2
- C52 1
- C53 1
-Net 99 "" ""
- J3 14
- C40 2
-Net 100 "" ""
- J3 1
- C38 1
-Net 101 "" ""
- C39 1
- J3 3
-Net 102 "" ""
- R3 2
- J3 13
-Net 103 "" ""
- C41 2
- J3 15
-Net 104 "" ""
- J3 4
- C39 2
-Net 105 "" ""
- J3 2
- C38 2
-}
-#End

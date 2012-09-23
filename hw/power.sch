@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 16 Sep 2012 03:37:22 PM EDT
+EESchema Schematic File Version 2  date Sun 23 Sep 2012 03:36:57 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -56,7 +56,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 6 6
 Title "IMU Logger"
-Date "16 sep 2012"
+Date "23 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -64,19 +64,9 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L LV_DETECT U9
-U 1 1 50560FDD
-P 2850 4050
-F 0 "U9" H 2950 3750 60  0000 C CNN
-F 1 "MCP111T-315" V 2650 4050 60  0000 C CNN
-	1    2850 4050
-	1    0    0    -1  
-$EndComp
-Text Label 5350 3900 2    60   ~ 0
-REG_EN
-Text Label 3250 4050 3    60   ~ 0
-REG_EN
+Connection ~ 4850 2650
+Wire Wire Line
+	4850 2750 4850 2650
 Wire Wire Line
 	3100 4050 3250 4050
 Wire Wire Line
@@ -92,17 +82,17 @@ Wire Wire Line
 	7750 3500 7750 3600
 Connection ~ 3500 3200
 Wire Wire Line
-	3500 3400 3500 3200
+	3500 3200 3500 3400
 Wire Wire Line
 	5700 4500 5600 4500
 Connection ~ 4950 4200
 Wire Wire Line
-	5100 4200 4700 4200
+	4700 4200 5100 4200
 Wire Wire Line
 	5600 4500 5600 4350
 Connection ~ 4150 3300
 Wire Wire Line
-	5050 3300 4100 3300
+	4100 3300 5050 3300
 Wire Wire Line
 	6450 3100 6050 3100
 Connection ~ 3500 3350
@@ -132,7 +122,7 @@ Wire Wire Line
 	4700 4450 4700 4550
 Connection ~ 4700 4200
 Wire Wire Line
-	4700 4000 4700 4250
+	4700 4250 4700 4000
 Connection ~ 4500 4100
 Connection ~ 4300 4550
 Wire Wire Line
@@ -148,7 +138,7 @@ Wire Wire Line
 Wire Wire Line
 	4500 4550 4500 4450
 Wire Wire Line
-	4500 4150 4500 4050
+	4500 4050 4500 4150
 Wire Wire Line
 	4750 4100 4500 4100
 Connection ~ 4700 4100
@@ -179,11 +169,11 @@ Wire Wire Line
 Wire Wire Line
 	5600 2500 5750 2500
 Wire Wire Line
-	5050 2650 5400 2650
+	4550 2650 5400 2650
 Wire Wire Line
 	5400 2650 5400 2750
 Wire Wire Line
-	2750 3200 5050 3200
+	5050 3200 2750 3200
 Wire Wire Line
 	5500 2750 5500 2300
 Wire Wire Line
@@ -197,21 +187,46 @@ Wire Wire Line
 Wire Wire Line
 	5400 3900 5400 3750
 Wire Wire Line
-	5050 3100 4900 3100
+	5050 3100 4950 3100
 Wire Wire Line
-	4900 3100 4900 2950
+	4950 3100 4950 3000
 Wire Wire Line
-	4900 2950 4750 2950
+	4950 3000 4750 3000
 Wire Wire Line
-	4750 2950 4750 3000
+	4750 3000 4750 3050
 Wire Wire Line
 	7750 3300 7900 3300
 Wire Wire Line
-	2850 3700 2850 3200
+	2850 3200 2850 3700
 Connection ~ 2850 3200
 Wire Wire Line
-	3250 3400 3250 3200
+	3250 3200 3250 3400
 Connection ~ 3250 3200
+Wire Wire Line
+	4850 2950 4850 3000
+Connection ~ 4850 3000
+$Comp
+L CAP C56
+U 1 1 505E780C
+P 4850 2850
+F 0 "C56" H 4870 2820 50  0000 L TNN
+F 1 "1u" H 4875 2870 30  0000 L BNN
+	1    4850 2850
+	0    -1   -1   0   
+$EndComp
+$Comp
+L LV_DETECT U9
+U 1 1 50560FDD
+P 2850 4050
+F 0 "U9" H 2950 3750 60  0000 C CNN
+F 1 "MCP111T-315" V 2650 4050 60  0000 C CNN
+	1    2850 4050
+	1    0    0    -1  
+$EndComp
+Text Label 5350 3900 2    60   ~ 0
+REG_EN
+Text Label 3250 4050 3    60   ~ 0
+REG_EN
 $Comp
 L RES R14
 U 1 1 50560D08
@@ -222,10 +237,10 @@ F 1 "680k" H 3250 3605 30  0000 C BNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND #PWR035
+L GND #PWR39
 U 1 1 505606F7
 P 7750 3600
-F 0 "#PWR035" H 7750 3600 30  0001 C CNN
+F 0 "#PWR39" H 7750 3600 30  0001 C CNN
 F 1 "GND" H 7750 3530 30  0001 C CNN
 	1    7750 3600
 	1    0    0    -1  
@@ -265,19 +280,19 @@ HPWR_EN
 NoConn ~ 5700 3750
 NoConn ~ 6050 3300
 $Comp
-L GND #PWR036
+L GND #PWR36
 U 1 1 5033E920
-P 4750 3000
-F 0 "#PWR036" H 4750 3000 30  0001 C CNN
-F 1 "GND" H 4750 2930 30  0001 C CNN
-	1    4750 3000
+P 4750 3050
+F 0 "#PWR36" H 4750 3050 30  0001 C CNN
+F 1 "GND" H 4750 2980 30  0001 C CNN
+	1    4750 3050
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR037
+L GND #PWR38
 U 1 1 5033E92B
 P 6300 2750
-F 0 "#PWR037" H 6300 2750 30  0001 C CNN
+F 0 "#PWR38" H 6300 2750 30  0001 C CNN
 F 1 "GND" H 6300 2680 30  0001 C CNN
 	1    6300 2750
 	1    0    0    -1  
@@ -292,10 +307,10 @@ F 1 "1.74k(1%)" H 5900 2555 30  0000 C BNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR038
+L GND #PWR37
 U 1 1 5033E937
 P 6250 3700
-F 0 "#PWR038" H 6250 3700 30  0001 C CNN
+F 0 "#PWR37" H 6250 3700 30  0001 C CNN
 F 1 "GND" H 6250 3630 30  0001 C CNN
 	1    6250 3700
 	1    0    0    -1  
@@ -323,7 +338,7 @@ L CAP C34
 U 1 1 5032BAF4
 P 4950 4350
 F 0 "C34" H 4970 4320 50  0000 L TNN
-F 1 "470n" H 4975 4370 30  0000 L BNN
+F 1 "0.47u" H 4975 4370 30  0000 L BNN
 	1    4950 4350
 	0    -1   -1   0   
 $EndComp
@@ -357,19 +372,19 @@ $EndComp
 Text HLabel 2750 3200 0    60   Output ~ 0
 Vbat
 $Comp
-L GND #PWR039
+L GND #PWR34
 U 1 1 5032BA5E
 P 3700 4050
-F 0 "#PWR039" H 3700 4050 30  0001 C CNN
+F 0 "#PWR34" H 3700 4050 30  0001 C CNN
 F 1 "GND" H 3700 3980 30  0001 C CNN
 	1    3700 4050
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR040
+L GND #PWR35
 U 1 1 5033E93D
 P 4300 4600
-F 0 "#PWR040" H 4300 4600 30  0001 C CNN
+F 0 "#PWR35" H 4300 4600 30  0001 C CNN
 F 1 "GND" H 4300 4530 30  0001 C CNN
 	1    4300 4600
 	1    0    0    -1  
@@ -414,7 +429,7 @@ F 1 "220k(1%)" H 4500 3955 30  0000 C BNN
 	1    4500 3900
 	0    -1   -1   0   
 $EndComp
-Text HLabel 5050 2650 0    60   Input ~ 0
+Text HLabel 4550 2650 0    60   Input ~ 0
 Vbus
 $Comp
 L LTC3559 U7

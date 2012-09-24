@@ -1,4 +1,4 @@
-# EESchema Netlist Version 1.1 created  Sun 23 Sep 2012 03:23:26 PM EDT
+# EESchema Netlist Version 1.1 created  Mon 24 Sep 2012 05:36:13 PM EDT
 (
  ( /50462493/50478765 ANT_433_916_HESM ANT1 ANT-916/433-HESM
   ( 1 N-000089 )
@@ -246,7 +246,7 @@
   ( 4 /stm32f4/USB_ID )
   ( 5 GND )
  )
- ( /50339999/5033BB90 SULLINS_5X2_050_SMT J2 GRPB052VWQS
+ ( /50339999/5033BB90 SULLINS_5X2_050_THRU J2 GRPB052VWQS
   ( 1 /rf/Vdd )
   ( 2 /stm32f4/SWDIO )
   ( 3 GND )

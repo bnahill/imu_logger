@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPcb (2012-jan-04)-stable date = Sun 23 Sep 2012 03:23:26 PM EDT
+Cmp-Mod V01 Created by CvPcb (2012-jan-04)-stable date = Mon 24 Sep 2012 05:36:13 PM EDT
 
 BeginCmp
 TimeStamp = /50462493/50478765;
@@ -431,7 +431,7 @@ BeginCmp
 TimeStamp = /50339999/5033BB90;
 Reference = J2;
 ValeurCmp = GRPB052VWQS;
-IdModule  = SULLINS_5X2_050_SMT;
+IdModule  = SULLINS_5X2_050_THRU;
 EndCmp
 
 BeginCmp

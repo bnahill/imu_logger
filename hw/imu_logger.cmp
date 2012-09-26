@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPcb (2012-jan-04)-stable date = Mon 24 Sep 2012 05:36:13 PM EDT
+Cmp-Mod V01 Created by CvPcb (2012-jan-04)-stable date = Tue 25 Sep 2012 02:18:39 PM EDT
 
 BeginCmp
 TimeStamp = /50462493/50478765;
@@ -645,6 +645,34 @@ IdModule  = SM0402;
 EndCmp
 
 BeginCmp
+TimeStamp = /50462493/5061E38F;
+Reference = R18;
+ValeurCmp = 220k;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
+TimeStamp = /5032F4FC/5061E405;
+Reference = R19;
+ValeurCmp = 220k;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
+TimeStamp = /5032F4FC/5061E3E3;
+Reference = R20;
+ValeurCmp = 220k;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
+TimeStamp = /5032B8A6/5061E13A;
+Reference = R21;
+ValeurCmp = 220k;
+IdModule  = SM0402;
+EndCmp
+
+BeginCmp
 TimeStamp = /50462493/504B63DF;
 Reference = TP1;
 ValeurCmp = TP;
@@ -656,6 +684,62 @@ TimeStamp = /50462493/504B63D1;
 Reference = TP2;
 ValeurCmp = TP;
 IdModule  = TP_SMD_2MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /5061EABF;
+Reference = TP3;
+ValeurCmp = TP;
+IdModule  = TP_SMD_2MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /5061EACA;
+Reference = TP4;
+ValeurCmp = TP;
+IdModule  = TP_SMD_1_2MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /5061EACC;
+Reference = TP5;
+ValeurCmp = TP;
+IdModule  = TP_SMD_1_2MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /5061EA37;
+Reference = TP6;
+ValeurCmp = TP;
+IdModule  = TP_SMD_2MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /5061EA44;
+Reference = TP7;
+ValeurCmp = TP;
+IdModule  = TP_SMD_2MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /5061E9B9;
+Reference = TP8;
+ValeurCmp = TP;
+IdModule  = TP_SMD_1_2MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /5061E9C1;
+Reference = TP9;
+ValeurCmp = TP;
+IdModule  = TP_SMD_1_2MM;
+EndCmp
+
+BeginCmp
+TimeStamp = /5061E9C3;
+Reference = TP10;
+ValeurCmp = TP;
+IdModule  = TP_SMD_1_2MM;
 EndCmp
 
 BeginCmp

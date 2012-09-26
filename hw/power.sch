@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 23 Sep 2012 03:36:57 PM EDT
+EESchema Schematic File Version 2  date Tue 25 Sep 2012 06:41:41 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -56,7 +56,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 6 6
 Title "IMU Logger"
-Date "23 sep 2012"
+Date "25 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -64,6 +64,11 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Connection ~ 6250 3650
+Wire Wire Line
+	6250 3650 6400 3650
+Wire Wire Line
+	6400 3650 6400 3600
 Connection ~ 4850 2650
 Wire Wire Line
 	4850 2750 4850 2650
@@ -205,6 +210,18 @@ Connection ~ 3250 3200
 Wire Wire Line
 	4850 2950 4850 3000
 Connection ~ 4850 3000
+Wire Wire Line
+	6400 3300 6400 3200
+Connection ~ 6400 3200
+$Comp
+L RES R21
+U 1 1 5061E13A
+P 6400 3450
+F 0 "R21" H 6470 3415 50  0000 L TNN
+F 1 "220k" H 6400 3505 30  0000 C BNN
+	1    6400 3450
+	0    -1   -1   0   
+$EndComp
 $Comp
 L CAP C56
 U 1 1 505E780C

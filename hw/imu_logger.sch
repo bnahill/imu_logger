@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 23 Sep 2012 03:36:57 PM EDT
+EESchema Schematic File Version 2  date Tue 25 Sep 2012 06:41:41 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -56,7 +56,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 6
 Title "IMU Logger"
-Date "23 sep 2012"
+Date "25 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -64,19 +64,18 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Sheet
-S 5250 1050 1200 1400
-U 504A09CD
-F0 "oled" 60
-F1 "oled.sch" 60
-F2 "Vdd" I L 5250 1150 60 
-F3 "SDIN" I L 5250 1900 60 
-F4 "SCLK" I L 5250 1800 60 
-F5 "nD/C" I L 5250 2100 60 
-F6 "nRES" I L 5250 2200 60 
-F7 "nCS" I L 5250 2000 60 
-F8 "Vbat" I L 5250 1250 60 
-$EndSheet
+Connection ~ 3600 6100
+Wire Wire Line
+	3600 6900 3600 6100
+Connection ~ 4000 5900
+Wire Wire Line
+	4000 6900 4000 5900
+Connection ~ 6700 4500
+Wire Wire Line
+	6700 4150 6700 4500
+Connection ~ 9050 5550
+Wire Wire Line
+	9050 6300 9050 5550
 Connection ~ 3000 3000
 Wire Wire Line
 	3000 1250 3000 4400
@@ -245,7 +244,7 @@ Wire Wire Line
 Wire Wire Line
 	2150 6400 2150 6350
 Wire Wire Line
-	8450 3100 2900 3100
+	2900 3100 8450 3100
 Wire Wire Line
 	1050 2100 1100 2100
 Wire Wire Line
@@ -345,7 +344,7 @@ Wire Wire Line
 Wire Wire Line
 	2700 5900 2500 5900
 Wire Wire Line
-	6900 7700 6900 7300
+	6900 7300 6900 7700
 Wire Wire Line
 	4100 5300 4000 5300
 Wire Wire Line
@@ -424,6 +423,103 @@ Wire Wire Line
 Wire Wire Line
 	1250 6500 2300 6500
 Connection ~ 1600 6500
+Wire Wire Line
+	9300 6300 9300 5450
+Connection ~ 9300 5450
+Wire Wire Line
+	8800 6300 8800 5650
+Connection ~ 8800 5650
+Wire Wire Line
+	6400 4150 6400 4600
+Connection ~ 6400 4600
+Wire Wire Line
+	3800 7100 3800 6000
+Connection ~ 3800 6000
+$Comp
+L TP TP5
+U 1 1 5061EACC
+P 4000 7000
+F 0 "TP5" H 4000 6900 60  0000 C CNN
+F 1 "TP" H 4000 7100 60  0000 C CNN
+	1    4000 7000
+	0    1    1    0   
+$EndComp
+$Comp
+L TP TP4
+U 1 1 5061EACA
+P 3800 7200
+F 0 "TP4" H 3800 7100 60  0000 C CNN
+F 1 "TP" H 3800 7300 60  0000 C CNN
+	1    3800 7200
+	0    1    1    0   
+$EndComp
+$Comp
+L TP TP3
+U 1 1 5061EABF
+P 3600 7000
+F 0 "TP3" H 3600 6900 60  0000 C CNN
+F 1 "TP" H 3600 7100 60  0000 C CNN
+	1    3600 7000
+	0    1    1    0   
+$EndComp
+$Comp
+L TP TP7
+U 1 1 5061EA44
+P 6700 4050
+F 0 "TP7" H 6700 3950 60  0000 C CNN
+F 1 "TP" H 6700 4150 60  0000 C CNN
+	1    6700 4050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L TP TP6
+U 1 1 5061EA37
+P 6400 4050
+F 0 "TP6" H 6400 3950 60  0000 C CNN
+F 1 "TP" H 6400 4150 60  0000 C CNN
+	1    6400 4050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L TP TP10
+U 1 1 5061E9C3
+P 9300 6400
+F 0 "TP10" H 9300 6300 60  0000 C CNN
+F 1 "TP" H 9300 6500 60  0000 C CNN
+	1    9300 6400
+	0    1    1    0   
+$EndComp
+$Comp
+L TP TP9
+U 1 1 5061E9C1
+P 9050 6400
+F 0 "TP9" H 9050 6300 60  0000 C CNN
+F 1 "TP" H 9050 6500 60  0000 C CNN
+	1    9050 6400
+	0    1    1    0   
+$EndComp
+$Comp
+L TP TP8
+U 1 1 5061E9B9
+P 8800 6400
+F 0 "TP8" H 8800 6300 60  0000 C CNN
+F 1 "TP" H 8800 6500 60  0000 C CNN
+	1    8800 6400
+	0    1    1    0   
+$EndComp
+$Sheet
+S 5250 1050 1200 1400
+U 504A09CD
+F0 "oled" 60
+F1 "oled.sch" 60
+F2 "Vdd" I L 5250 1150 60 
+F3 "SDIN" I L 5250 1900 60 
+F4 "SCLK" I L 5250 1800 60 
+F5 "nD/C" I L 5250 2100 60 
+F6 "nRES" I L 5250 2200 60 
+F7 "nCS" I L 5250 2000 60 
+F8 "Vbat" I L 5250 1250 60 
+$EndSheet
 $Comp
 L RES R16
 U 1 1 505F58DF

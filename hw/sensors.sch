@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 23 Sep 2012 03:36:57 PM EDT
+EESchema Schematic File Version 2  date Tue 25 Sep 2012 06:41:41 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -56,7 +56,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 5 6
 Title "IMU Logger"
-Date "23 sep 2012"
+Date "25 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -64,6 +64,19 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Wire Wire Line
+	8450 5950 8000 5950
+Connection ~ 7700 6400
+Wire Wire Line
+	7700 6400 8000 6400
+Wire Wire Line
+	8000 6400 8000 6300
+Wire Wire Line
+	8000 5950 8000 6000
+Wire Wire Line
+	7550 2300 8100 2300
+Wire Wire Line
+	8100 2300 8100 2350
 Wire Wire Line
 	7150 4800 7600 4800
 Wire Notes Line
@@ -158,7 +171,7 @@ Wire Wire Line
 	2500 2450 2500 2650
 Connection ~ 2100 2650
 Wire Wire Line
-	2100 2450 2100 3100
+	2100 3100 2100 2450
 Connection ~ 7800 1450
 Wire Wire Line
 	7800 1450 7800 1600
@@ -167,7 +180,7 @@ Wire Wire Line
 Wire Wire Line
 	7600 1850 8000 1850
 Wire Wire Line
-	7800 1800 7800 1900
+	7800 1900 7800 1800
 Connection ~ 9200 1400
 Wire Wire Line
 	9200 2250 9200 1300
@@ -199,7 +212,7 @@ Wire Wire Line
 Wire Wire Line
 	3400 3200 3400 3350
 Wire Wire Line
-	2550 2650 2100 2650
+	2100 2650 2550 2650
 Wire Wire Line
 	3100 2850 2950 2850
 Wire Wire Line
@@ -226,14 +239,14 @@ Wire Wire Line
 Wire Wire Line
 	2750 2650 3100 2650
 Wire Wire Line
-	2100 2950 3100 2950
+	3100 2950 2100 2950
 Connection ~ 2100 2950
 Wire Wire Line
 	8500 1550 8500 1450
 Wire Wire Line
-	8400 2650 8500 2650
+	7950 2700 8500 2700
 Wire Wire Line
-	8500 2650 8500 2550
+	8500 2700 8500 2550
 Wire Wire Line
 	8100 2100 8300 2100
 Wire Wire Line
@@ -271,7 +284,7 @@ Wire Wire Line
 	8000 1450 8000 1600
 Connection ~ 8000 1450
 Wire Wire Line
-	2300 2650 2300 2450
+	2300 2450 2300 2650
 Connection ~ 2300 2650
 Wire Wire Line
 	2100 2250 2100 2100
@@ -293,7 +306,7 @@ Wire Wire Line
 	2550 5750 2550 5700
 Connection ~ 2550 5700
 Wire Wire Line
-	3650 5800 4300 5800
+	4300 5800 3650 5800
 Connection ~ 4200 5800
 Wire Wire Line
 	2750 5900 2750 6000
@@ -315,7 +328,7 @@ Connection ~ 6800 5300
 Wire Wire Line
 	7600 6100 7600 6000
 Wire Wire Line
-	7700 6100 7700 6000
+	7700 6000 7700 6600
 Wire Wire Line
 	8600 5600 7900 5600
 Wire Wire Line
@@ -332,7 +345,7 @@ Wire Wire Line
 	8500 5200 8500 5300
 Connection ~ 8500 5300
 Wire Wire Line
-	6450 5800 6450 5600
+	6450 5600 6450 5800
 Connection ~ 6450 5700
 Wire Wire Line
 	7500 4950 7300 4950
@@ -341,7 +354,7 @@ Wire Wire Line
 Wire Wire Line
 	7300 4950 7300 5150
 Wire Wire Line
-	7200 4800 7200 4850
+	7200 4850 7200 4800
 Connection ~ 7200 4800
 Wire Notes Line
 	4800 6800 4800 5200
@@ -355,6 +368,33 @@ Wire Notes Line
 	4950 3500 4950 1850
 Wire Notes Line
 	4950 1850 1600 1850
+Wire Wire Line
+	8100 2650 8100 2700
+Connection ~ 8100 2700
+Wire Wire Line
+	7700 6600 7800 6600
+$Comp
+L RES R19
+U 1 1 5061E405
+P 8000 6150
+F 0 "R19" H 8070 6115 50  0000 L TNN
+F 1 "220k" H 8000 6205 30  0000 C BNN
+	1    8000 6150
+	0    -1   -1   0   
+$EndComp
+Text HLabel 8450 5950 2    60   Input ~ 0
+Vdd
+Text HLabel 7550 2300 0    60   Input ~ 0
+Vdd
+$Comp
+L RES R20
+U 1 1 5061E3E3
+P 8100 2500
+F 0 "R20" H 8170 2465 50  0000 L TNN
+F 1 "220k" H 8100 2555 30  0000 C BNN
+	1    8100 2500
+	0    -1   -1   0   
+$EndComp
 $Comp
 L RES R15
 U 1 1 505E7AFF
@@ -420,7 +460,7 @@ Text HLabel 7500 6100 3    60   Input ~ 0
 PRS_SPI_MOSI
 Text HLabel 7600 6100 3    60   Output ~ 0
 PRS_SPI_MISO
-Text HLabel 7700 6100 3    60   Input ~ 0
+Text HLabel 7800 6600 2    60   Input ~ 0
 PRS_SPI_nCS
 $Comp
 L CAP C24
@@ -642,7 +682,7 @@ Text HLabel 8100 2100 0    60   Input ~ 0
 GYR_SPI_MOSI
 Text HLabel 8100 2200 0    60   Output ~ 0
 GYR_SPI_MISO
-Text HLabel 8400 2650 0    60   Input ~ 0
+Text HLabel 7950 2700 0    60   Input ~ 0
 GYR_SPI_nCS
 Text HLabel 7500 1450 0    60   Input ~ 0
 Vdd

@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 23 Sep 2012 03:36:57 PM EDT
+EESchema Schematic File Version 2  date Tue 25 Sep 2012 06:41:41 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -56,7 +56,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 4 6
 Title "IMU Logger"
-Date "23 sep 2012"
+Date "25 sep 2012"
 Rev "a"
 Comp "McGill University"
 Comment1 "Ben Nahill (bnahill@gmail.com)"
@@ -64,33 +64,11 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L TP TP1
-U 1 1 504B63DF
-P 4000 3400
-F 0 "TP1" H 4000 3300 60  0000 C CNN
-F 1 "TP" H 4000 3500 60  0000 C CNN
-	1    4000 3400
-	0    -1   -1   0   
-$EndComp
-$Comp
-L TP TP2
-U 1 1 504B63D1
-P 5000 4600
-F 0 "TP2" H 5000 4500 60  0000 C CNN
-F 1 "TP" H 5000 4700 60  0000 C CNN
-	1    5000 4600
-	-1   0    0    1   
-$EndComp
-$Comp
-L XTAL_GND X3
-U 1 1 50493685
-P 5550 4900
-F 0 "X3" H 5550 4840 40  0000 C TNN
-F 1 "NX3225SA-26.000000MHZ-STD-CSR-1" H 5550 4960 40  0000 C BNN
-	1    5550 4900
-	1    0    0    -1  
-$EndComp
+Connection ~ 5300 5050
+Wire Wire Line
+	5300 5050 4850 5050
+Wire Wire Line
+	4850 5050 4850 4900
 Wire Wire Line
 	7300 3700 7300 4000
 Wire Wire Line
@@ -101,9 +79,9 @@ Wire Wire Line
 	10150 3800 10500 3800
 Wire Wire Line
 	10500 3800 10500 3700
-Connection ~ 5200 4600
+Connection ~ 5200 4400
 Wire Wire Line
-	5200 4300 5200 4800
+	5200 4600 5200 4300
 Wire Wire Line
 	4000 3500 4000 3600
 Wire Wire Line
@@ -111,14 +89,14 @@ Wire Wire Line
 Wire Wire Line
 	9400 4200 9400 4300
 Wire Wire Line
-	9950 3800 9750 3800
+	9750 3800 9950 3800
 Wire Wire Line
-	9550 3800 9250 3800
+	9250 3800 9550 3800
 Wire Wire Line
 	8500 4300 8500 4450
 Connection ~ 8250 4000
 Wire Wire Line
-	8250 4000 8250 3900
+	8250 3900 8250 4000
 Connection ~ 9000 3800
 Wire Wire Line
 	8900 4000 9000 4000
@@ -126,9 +104,9 @@ Wire Wire Line
 	9000 4000 9000 3600
 Connection ~ 8250 3600
 Wire Wire Line
-	8250 3600 8250 3700
+	8250 3700 8250 3600
 Wire Wire Line
-	8700 3600 8050 3600
+	8050 3600 8700 3600
 Wire Wire Line
 	8500 3600 8500 3450
 Connection ~ 8500 3600
@@ -137,7 +115,7 @@ Wire Wire Line
 Wire Wire Line
 	9050 3800 9000 3800
 Wire Wire Line
-	8700 4000 8050 4000
+	8050 4000 8700 4000
 Wire Wire Line
 	8500 4000 8500 4100
 Connection ~ 8500 4000
@@ -156,7 +134,7 @@ Wire Wire Line
 	6850 3400 7100 3400
 Connection ~ 6450 3400
 Wire Wire Line
-	6450 3350 6450 3400
+	6450 3400 6450 3350
 Connection ~ 5600 5300
 Wire Wire Line
 	5400 5200 5400 5300
@@ -164,11 +142,11 @@ Wire Wire Line
 	5400 5300 5750 5300
 Connection ~ 5400 4900
 Wire Wire Line
-	5400 4300 5400 5000
+	5400 5000 5400 4300
 Wire Wire Line
 	5450 4900 5400 4900
 Wire Wire Line
-	5300 4650 5300 4300
+	5300 5150 5300 4300
 Connection ~ 5400 2050
 Wire Wire Line
 	5400 2050 5900 2050
@@ -207,7 +185,7 @@ Wire Wire Line
 	5750 2750 5750 2800
 Connection ~ 5750 2800
 Wire Wire Line
-	5400 2900 5400 2000
+	5400 2000 5400 2900
 Wire Wire Line
 	5900 2800 5900 2300
 Connection ~ 5900 2400
@@ -225,7 +203,7 @@ Wire Wire Line
 Wire Wire Line
 	5750 5300 5750 5200
 Wire Wire Line
-	6550 3400 6100 3400
+	6100 3400 6550 3400
 Connection ~ 6200 3400
 Wire Wire Line
 	6450 3150 6450 2400
@@ -250,13 +228,55 @@ Wire Notes Line
 Wire Notes Line
 	7650 4900 7650 2950
 Wire Wire Line
-	5200 4600 5100 4600
+	5100 4400 5200 4400
 Wire Wire Line
-	4700 3600 3750 3600
+	3750 3600 4700 3600
 Connection ~ 4000 3600
 Wire Wire Line
-	9850 3800 9850 4000
+	9850 4000 9850 3800
 Connection ~ 9850 3800
+Wire Wire Line
+	4750 4500 4850 4500
+Wire Wire Line
+	4850 4500 4850 4600
+Text HLabel 4750 4500 0    60   Input ~ 0
+Vdd
+$Comp
+L RES R18
+U 1 1 5061E38F
+P 4850 4750
+F 0 "R18" H 4920 4715 50  0000 L TNN
+F 1 "220k" H 4850 4805 30  0000 C BNN
+	1    4850 4750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L TP TP1
+U 1 1 504B63DF
+P 4000 3400
+F 0 "TP1" H 4000 3300 60  0000 C CNN
+F 1 "TP" H 4000 3500 60  0000 C CNN
+	1    4000 3400
+	0    -1   -1   0   
+$EndComp
+$Comp
+L TP TP2
+U 1 1 504B63D1
+P 5000 4400
+F 0 "TP2" H 5000 4300 60  0000 C CNN
+F 1 "TP" H 5000 4500 60  0000 C CNN
+	1    5000 4400
+	-1   0    0    1   
+$EndComp
+$Comp
+L XTAL_GND X3
+U 1 1 50493685
+P 5550 4900
+F 0 "X3" H 5550 4840 40  0000 C TNN
+F 1 "NX3225SA-26.000000MHZ-STD-CSR-1" H 5550 4960 40  0000 C BNN
+	1    5550 4900
+	1    0    0    -1  
+$EndComp
 $Comp
 L CAP C52
 U 1 1 5047CA2F
@@ -284,7 +304,7 @@ F 1 "ANT-916/433-HESM" H 10550 3750 60  0000 C CNN
 	1    10500 3550
 	1    0    0    -1  
 $EndComp
-Text HLabel 5200 4800 3    60   BiDi ~ 0
+Text HLabel 5200 4600 3    60   BiDi ~ 0
 GDO0
 Text HLabel 3750 3600 0    60   BiDi ~ 0
 GDO2
@@ -492,7 +512,7 @@ F 1 "27p" H 5425 5120 30  0000 L BNN
 	1    5400 5100
 	0    -1   -1   0   
 $EndComp
-Text HLabel 5300 4650 3    60   Input ~ 0
+Text HLabel 5300 5150 3    60   Input ~ 0
 nCS
 $Comp
 L CAP C45

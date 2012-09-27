@@ -1,4 +1,4 @@
-update=Mon 24 Sep 2012 05:52:01 PM EDT
+update=Wed 26 Sep 2012 01:04:23 PM EDT
 version=1
 last_client=pcbnew
 [cvpcb]
@@ -143,3 +143,4 @@ LibName31=lib/EVQPSD
 LibName32=lib/SOD-523F
 LibName33=lib/SULLINS_5X2_050_THRU
 LibName34=lib/DRILLS
+LibName35=lib/MCGILL_LOGO

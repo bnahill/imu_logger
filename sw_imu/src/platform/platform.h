@@ -29,6 +29,8 @@
 #include <imu/l3gd20.h>
 #include <imu/ltc3559.h>
 #include <imu/ssd1306.h>
+#include <imu/usbserial.h>
+#include <imu/rtc.h>
 
 /*!
  @brief Platform-dependent component definitions
@@ -46,7 +48,8 @@ namespace Platform {
 	extern SPI spi2;
 	extern L3GD20_SPI gyro1;
 	
-	extern Button button[3];
+	typedef Button<EXTD1> button_t;
+	extern button_t button[3];
 	
 	extern gpio_pin_t led1;
 	
@@ -56,6 +59,11 @@ namespace Platform {
 	extern LTC3559 reg1;
 	
 	extern LY091WG15 oled;
+	
+	typedef USBSerial<USBD1> usbserial1_t;
+	extern usbserial1_t usbserial1;
+	
+	typedef RealTimeClock<RTCD1> rtc1;
 };
 
 using namespace Platform;

@@ -1,0 +1,20 @@
+EESchema-LIBRARY Version 2.3  Date: Wed 05 Sep 2012 11:49:57 AM EDT
+#encoding utf-8
+#
+# SB3
+#
+DEF SB3 SB 0 40 Y Y 1 F N
+F0 "SB" 450 -400 60 H V C CNN
+F1 "SB3" 400 650 60 H V C CNN
+DRAW
+C -100 0 6 0 1 0 N
+C 0 -50 6 0 1 0 N
+C 0 50 6 0 1 0 N
+P 2 0 1 0  -100 0  0 50 N
+X ~ 1 -200 0 100 R 50 50 1 1 I
+X ~ 2 100 50 100 L 50 50 1 1 I
+X ~ 3 100 -50 100 L 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
+#End Library

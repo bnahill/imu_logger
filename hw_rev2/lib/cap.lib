@@ -1,0 +1,19 @@
+EESchema-LIBRARY Version 2.3  Date: Mon 20 Aug 2012 06:19:25 PM EDT
+#encoding utf-8
+#
+# CAP
+#
+DEF CAP C 0 0 N N 1 F N
+F0 "C" 20 -30 50 H V L TNN
+F1 "CAP" 25 20 30 H V L BNN
+DRAW
+P 2 0 1 0  -50 0  -10 0 N
+P 2 0 1 10  -10 60  -10 -60 N
+P 2 0 1 10  10 60  10 -60 N
+P 2 0 1 0  50 0  10 0 N
+X 1 1 -100 0 50 R 50 50 1 1 I
+X 2 2 100 0 50 L 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
+#End Library

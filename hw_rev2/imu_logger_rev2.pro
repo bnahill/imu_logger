@@ -1,4 +1,4 @@
-update=Sun 21 Apr 2013 01:42:35 PM EDT
+update=Wed 24 Apr 2013 04:28:26 PM EDT
 version=1
 last_client=eeschema
 [cvpcb]
@@ -98,3 +98,4 @@ LibName48=lib/tp
 LibName49=lib/usbmicroconn
 LibName50=lib/xtal
 LibName51=lib/STM32F40x_BGA176
+LibName52=lib/johan_balun

@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Wed 24 Apr 2013 04:33:31 PM EDT
+EESchema Schematic File Version 2  date Wed 24 Apr 2013 09:25:25 PM EDT
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -51,13 +51,14 @@ LIBS:usbmicroconn
 LIBS:xtal
 LIBS:STM32F40x_BGA176
 LIBS:johan_balun
+LIBS:imu_logger_rev2-cache
 EELAYER 27 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 2
+Sheet 2 3
 Title "IMU Logger"
-Date "24 apr 2013"
+Date "25 apr 2013"
 Rev "2"
 Comp "McGill Integrated Microsystems Lab"
 Comment1 ""

@@ -1,11 +1,6 @@
-update=Wed 24 Apr 2013 04:28:26 PM EDT
+update=Wed 24 Apr 2013 09:39:28 PM EDT
 version=1
-last_client=eeschema
-[cvpcb]
-version=1
-NetIExt=net
-[cvpcb/libraries]
-EquName1=devcms
+last_client=cvpcb
 [pcbnew]
 version=1
 LastNetListRead=
@@ -24,7 +19,6 @@ EdgeLar=80
 TxtLar=120
 MSegLar=120
 [pcbnew/libraries]
-LibDir=
 LibName1=sockets
 LibName2=connect
 LibName3=discret
@@ -36,6 +30,8 @@ LibName8=led
 LibName9=dip_sockets
 LibName10=pga_sockets
 LibName11=valves
+LibName12=lib/STM32F4_BGA176
+LibDir=
 [general]
 version=1
 [eeschema]
@@ -99,3 +95,8 @@ LibName49=lib/usbmicroconn
 LibName50=lib/xtal
 LibName51=lib/STM32F40x_BGA176
 LibName52=lib/johan_balun
+[cvpcb]
+version=1
+NetIExt=net
+[cvpcb/libraries]
+EquName1=devcms
